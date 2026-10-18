@@ -218,10 +218,6 @@ New-Item -ItemType Directory -Path $env:TEST_EVIDENCE_DIR -Force | Out-Null
 
 Sau đó chạy các lệnh test ở trên. Script tạo DB test có tên riêng; giữ lại evidence và DB khi cần điều tra. Chỉ xóa tài nguyên test sau khi đã xác minh đúng tên và chắc chắn không còn cần.
 
-## Docker
-
-Có profile Docker Compose trong compose.yaml và hướng dẫn tại docs/runbooks/docker-local.md. Profile này gồm MySQL, khởi tạo migration, web, worker, scheduler và volume dữ liệu. Trạng thái kiểm thử Docker được ghi trong runbook; cấu hình compose tồn tại không đồng nghĩa runtime đã được xác minh.
-
 ## Cập nhật dự án
 
 Trước khi cập nhật: backup database và file riêng tư, giữ nguyên .env/APP_KEY, kiểm tra Git working tree. Lấy thay đổi từ branch đã giao:
