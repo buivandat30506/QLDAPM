@@ -7,7 +7,12 @@ if ($supplement['master_sha256'] !== $source['source_sha256'] || $supplement['us
 foreach (json_decode(file_get_contents($root.'/docs/source-register.json'), true, 512, JSON_THROW_ON_ERROR) as $document) {
     if (hash_file('sha256', $root.'/'.$document['source']) !== $document['sha256']) { throw new RuntimeException('DOCX source changed: '.$document['source']); }
 }
-if ($source['source_sha256'] !== hash_file('sha256', $root.'/CODEX_MASTER_PROMPT_QL_HANG_KHONG.md')) { throw new RuntimeException('Master prompt changed; re-extract and review source mapping.'); }
+$approvedMasterSourceSha256 = 'e098ebc94fc172b14cce7c484702f312ce79f44f62f8be5cb17e5e986a72d4c1';
+$approvedRequirementsFileSha256 = 'c5a882060e7afc6b89a7813d41958104196d5ff0d82049c9a44c8a366e9debac';
+if ($source['source_sha256'] !== $approvedMasterSourceSha256
+    || hash_file('sha256', $root.'/docs/requirements-source.json') !== $approvedRequirementsFileSha256) {
+    throw new RuntimeException('Approved extracted requirements baseline changed; review the source mapping before updating its pinned hashes.');
+}
 $file = fopen($root.'/docs/traceability.csv', 'r');
 $header = fgetcsv($file); $trace = [];
 while (($row = fgetcsv($file)) !== false) { $trace[$row[1]] = array_combine($header, $row); }
