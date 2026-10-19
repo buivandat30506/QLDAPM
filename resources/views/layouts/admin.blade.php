@@ -176,7 +176,7 @@
                     </button>
                     <h5 class="mb-0 fw-bold">@yield('page_title', 'Hệ thống Quản lý Khai thác Bay')</h5>
                 </div>
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-3 flex-wrap">
                     <span class="badge bg-light text-dark border px-3 py-2">
                         <i class="bi bi-clock me-1 text-primary"></i> <span id="utcTime"></span> UTC
                     </span>
