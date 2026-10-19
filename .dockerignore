@@ -1,0 +1,12 @@
+.git
+.env
+.env.*
+vendor
+node_modules
+storage
+bootstrap/cache/*.php
+public/build
+public/hot
+docs/testing/evidence
+database/sql
+*.zip
