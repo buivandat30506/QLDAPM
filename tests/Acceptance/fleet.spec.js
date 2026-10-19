@@ -52,7 +52,16 @@ test('UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao
     expect(configs.map(c => c.version)).toEqual([2, 1]); expect(configs.map(c => c.sellable_capacity)).toEqual([4, 3]);
     await page.request.post('/api/v1/auth/logout', { headers: auth });
     await page.setViewportSize({ width: 390, height: 844 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const mobileWidth = await page.evaluate(() => new Promise(resolve => {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            const offenders = [...document.body.querySelectorAll('*')].map(element => {
+                const rect = element.getBoundingClientRect();
+                return { tag: element.tagName, id: element.id, className: typeof element.className === 'string' ? element.className : '', left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width) };
+            }).filter(element => element.right > innerWidth + 1 || element.left < -1).slice(0, 20);
+            resolve({ viewport: innerWidth, document: document.documentElement.scrollWidth, body: document.body.scrollWidth, offenders });
+        }));
+    }));
+    expect(mobileWidth.document <= mobileWidth.viewport, JSON.stringify(mobileWidth)).toBe(true);
     expect(await page.locator('[id]').evaluateAll(elements => {
         const ids = elements.map(e => e.id); return ids.filter((id, i) => ids.indexOf(id) !== i);
     })).toEqual([]);
