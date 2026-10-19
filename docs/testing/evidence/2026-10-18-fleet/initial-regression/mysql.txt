@@ -1,0 +1,28 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Admin\Desktop\airline-smart\phpunit.xml
+
+...............................................................  63 / 138 ( 45%)
+.........................................................F..... 126 / 138 ( 91%)
+............                                                    138 / 138 (100%)
+
+Time: 08:24.940, Memory: 66.00 MB
+
+There was 1 failure:
+
+1) Tests\Feature\MySqlBookingRaceTest::test_two_connections_compete_for_last_seat_without_overbooking
+Failed asserting that two arrays are equal.
+--- Expected
++++ Actual
+@@ @@
+ Array (
+     0 => 'created'
+-    1 => 'rejected'
++    1 => 'created'
+ )
+
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MySqlBookingRaceTest.php:54
+
+FAILURES!
+Tests: 138, Assertions: 1167, Failures: 1.

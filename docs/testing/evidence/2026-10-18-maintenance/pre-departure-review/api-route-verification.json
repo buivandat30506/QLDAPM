@@ -1,0 +1,415 @@
+{
+    "status": "Passed",
+    "executed_at_utc": "2026-10-18T05:51:37+00:00",
+    "operations_checked": 68,
+    "operations": [
+        {
+            "operation_id": "listAirports",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports"
+        },
+        {
+            "operation_id": "createAirport",
+            "method": "POST",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports"
+        },
+        {
+            "operation_id": "getAirport",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/{iataCode}"
+        },
+        {
+            "operation_id": "updateAirport",
+            "method": "PUT",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/{iataCode}"
+        },
+        {
+            "operation_id": "deleteUnusedAirport",
+            "method": "DELETE",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/{iataCode}"
+        },
+        {
+            "operation_id": "listAirportResources",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/{iataCode}/resources"
+        },
+        {
+            "operation_id": "createAirportResource",
+            "method": "POST",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/{iataCode}/resources"
+        },
+        {
+            "operation_id": "updateAirportResource",
+            "method": "PUT",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/resources/{id}"
+        },
+        {
+            "operation_id": "deleteUnusedResource",
+            "method": "DELETE",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/airports/resources/{resourceId}"
+        },
+        {
+            "operation_id": "listMasterData",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data"
+        },
+        {
+            "operation_id": "createMasterDraft",
+            "method": "POST",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data"
+        },
+        {
+            "operation_id": "inspectMasterDraftQuality",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/{id}"
+        },
+        {
+            "operation_id": "updateMasterDraft",
+            "method": "PUT",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/{id}"
+        },
+        {
+            "operation_id": "getEffectiveMasterSnapshot",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/{id}/published"
+        },
+        {
+            "operation_id": "transitionMasterData",
+            "method": "POST",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/{id}/{action}"
+        },
+        {
+            "operation_id": "previewMasterCsv",
+            "method": "POST",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/imports"
+        },
+        {
+            "operation_id": "inspectImportBatch",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/imports/{batch}"
+        },
+        {
+            "operation_id": "commitMasterImport",
+            "method": "POST",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/imports/{batch}/commit"
+        },
+        {
+            "operation_id": "exportMasterReport",
+            "method": "GET",
+            "document": "foundation.openapi.yaml",
+            "uri": "api/v1/core/master-data/export"
+        },
+        {
+            "operation_id": "planningRoutes",
+            "method": "GET",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/routes"
+        },
+        {
+            "operation_id": "planningRouteCreate",
+            "method": "POST",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/routes"
+        },
+        {
+            "operation_id": "planningRouteGet",
+            "method": "GET",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/routes/{id}"
+        },
+        {
+            "operation_id": "planningRouteUpdate",
+            "method": "PUT",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/routes/{id}"
+        },
+        {
+            "operation_id": "planningRouteDelete",
+            "method": "DELETE",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/routes/{id}"
+        },
+        {
+            "operation_id": "planningSchedules",
+            "method": "GET",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/schedules"
+        },
+        {
+            "operation_id": "planningScheduleCreate",
+            "method": "POST",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/schedules"
+        },
+        {
+            "operation_id": "planningScheduleGet",
+            "method": "GET",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/schedules/{id}"
+        },
+        {
+            "operation_id": "planningScheduleUpdate",
+            "method": "PUT",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/schedules/{id}"
+        },
+        {
+            "operation_id": "planningScheduleCheck",
+            "method": "POST",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/schedules/{id}/check"
+        },
+        {
+            "operation_id": "planningScheduleTransition",
+            "method": "POST",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/schedules/{id}/{action}"
+        },
+        {
+            "operation_id": "planningVersions",
+            "method": "GET",
+            "document": "flight-planning.openapi.yaml",
+            "uri": "api/v1/core/versions"
+        },
+        {
+            "operation_id": "fleetModels",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircraft-models"
+        },
+        {
+            "operation_id": "fleetCreateModel",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircraft-models"
+        },
+        {
+            "operation_id": "fleetList",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts"
+        },
+        {
+            "operation_id": "fleetCreate",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts"
+        },
+        {
+            "operation_id": "fleetAlerts",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/maintenance-alerts"
+        },
+        {
+            "operation_id": "fleetDetail",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}"
+        },
+        {
+            "operation_id": "fleetUpdate",
+            "method": "PUT",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}"
+        },
+        {
+            "operation_id": "fleetDelete",
+            "method": "DELETE",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}"
+        },
+        {
+            "operation_id": "fleetConfigurations",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}/configurations"
+        },
+        {
+            "operation_id": "fleetConfigure",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}/configurations"
+        },
+        {
+            "operation_id": "fleetUsage",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}/usage"
+        },
+        {
+            "operation_id": "fleetReceiveUsage",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/aircrafts/{tailNumber}/usage"
+        },
+        {
+            "operation_id": "crewProfiles",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members"
+        },
+        {
+            "operation_id": "crewCreate",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members"
+        },
+        {
+            "operation_id": "crewProfile",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members/{id}"
+        },
+        {
+            "operation_id": "crewUpdate",
+            "method": "PUT",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members/{id}"
+        },
+        {
+            "operation_id": "crewDelete",
+            "method": "DELETE",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members/{id}"
+        },
+        {
+            "operation_id": "crewCalendar",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members/{id}/availability"
+        },
+        {
+            "operation_id": "crewAddWindow",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members/{id}/availability"
+        },
+        {
+            "operation_id": "crewCancelWindow",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-members/{id}/availability/{window}/cancel"
+        },
+        {
+            "operation_id": "crewSuggestions",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/flights/{flightId}/crew/suggestions"
+        },
+        {
+            "operation_id": "crewFlightPlan",
+            "method": "GET",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/flights/{flightId}/crew"
+        },
+        {
+            "operation_id": "crewAssign",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/flights/{flightId}/crew/assign"
+        },
+        {
+            "operation_id": "crewApprove",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/flights/{id}/crew/approve"
+        },
+        {
+            "operation_id": "crewConfirm",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-assignments/{id}/confirm"
+        },
+        {
+            "operation_id": "crewReplace",
+            "method": "POST",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/crew-assignments/{id}/replace"
+        },
+        {
+            "operation_id": "crewRemove",
+            "method": "DELETE",
+            "document": "fleet-crew.openapi.yaml",
+            "uri": "api/v1/core/flights/crew-assignments/{assignmentId}"
+        },
+        {
+            "operation_id": "maintenancePlans",
+            "method": "GET",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/plans"
+        },
+        {
+            "operation_id": "maintenancePlanCreate",
+            "method": "POST",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/plans"
+        },
+        {
+            "operation_id": "maintenancePlanDetail",
+            "method": "GET",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/plans/{plan}"
+        },
+        {
+            "operation_id": "maintenancePlanRevise",
+            "method": "PUT",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/plans/{plan}"
+        },
+        {
+            "operation_id": "maintenanceOrderCreate",
+            "method": "POST",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/plans/{plan}/orders"
+        },
+        {
+            "operation_id": "maintenanceLegacyAdopt",
+            "method": "POST",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/orders/{order}/adopt"
+        },
+        {
+            "operation_id": "maintenanceOrderAction",
+            "method": "POST",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/orders/{order}/{action}"
+        },
+        {
+            "operation_id": "maintenanceEvidenceUpload",
+            "method": "POST",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/orders/{order}/evidence"
+        },
+        {
+            "operation_id": "maintenanceEvidenceDownload",
+            "method": "GET",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/evidence/{evidence}"
+        },
+        {
+            "operation_id": "maintenanceMaterialReceipt",
+            "method": "POST",
+            "document": "maintenance.openapi.yaml",
+            "uri": "api/v1/core/maintenance/materials/receipts"
+        }
+    ]
+}

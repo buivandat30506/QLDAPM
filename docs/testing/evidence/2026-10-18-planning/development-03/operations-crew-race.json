@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-CREW-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_021959_47bca0",
+    "connections": [
+        1012,
+        1013
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "id": "01a14cd0-6e90-71f7-9475-a18862407a24"
+        },
+        {
+            "result": "rejected",
+            "fields": [
+                "rest"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T02:21:30+00:00"
+}

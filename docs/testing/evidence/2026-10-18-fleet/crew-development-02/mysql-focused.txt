@@ -1,0 +1,49 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Admin\Desktop\airline-smart\phpunit.xml
+
+..FF....                                                            8 / 8 (100%)
+
+Time: 00:12.553, Memory: 58.00 MB
+
+There were 2 failures:
+
+1) Tests\Feature\CrewWorkflowTest::test_suggestions_include_qualified_standby_and_warn_when_none_are_eligible
+Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+-Array &0 []
++Array &0 [
++    0 => Array &1 [
++        'id' => '01a14d15-c2c3-731f-9674-7bcb87012ee0',
++        'crew_code' => 'CW-CAP',
++        'full_name' => 'Nhân sự kiểm thử CW-CAP',
++        'rank' => 'CAPTAIN',
++        'standby' => true,
++    ],
++]
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\AssertableJsonString.php:243
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:880
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php:78
+
+2) Tests\Feature\CrewWorkflowTest::test_approval_confirmation_and_replacement_have_actor_policy_and_immutable_events
+Failed asserting that a row in the table [crew_assignment_events] matches the attributes {
+    "id": 43,
+    "snapshot": "{\"id\": \"01a14d15-c5de-704d-8ac6-9ddb143db3e2\", \"notes\": null, \"status\": \"ASSIGNED\", \"crew_id\": \"01a14d15-c5c3-7376-ad96-861cea452d27\", \"revision\": 1, \"flight_id\": \"01a14d15-c5d2-721c-ac41-8e4baabfc124\", \"created_at\": \"2026-10-18T02:30:00.000000Z\", \"updated_at\": \"2026-10-18T02:30:00.000000Z\", \"approved_at\": null, \"approved_by\": null, \"confirmed_at\": null, \"confirmed_by\": null, \"duty_end_utc\": \"2026-11-15T14:30:00.000000Z\", \"duty_start_utc\": \"2026-11-15T11:00:00.000000Z\", \"assigned_position\": \"CAPTAIN\", \"confirmation_mode\": null, \"rule_version_code\": \"local-crew-v1\"}"
+}.
+
+Found similar results: [
+    {
+        "id": 43,
+        "snapshot": "{\"id\": \"01a14d15-c5de-704d-8ac6-9ddb143db3e2\", \"notes\": null, \"status\": \"ASSIGNED\", \"crew_id\": \"01a14d15-c5c3-7376-ad96-861cea452d27\", \"revision\": 1, \"flight_id\": \"01a14d15-c5d2-721c-ac41-8e4baabfc124\", \"created_at\": \"2026-10-18T02:30:00.000000Z\", \"updated_at\": \"2026-10-18T02:30:00.000000Z\", \"approved_at\": null, \"approved_by\": null, \"confirmed_at\": null, \"confirmed_by\": null, \"duty_end_utc\": \"2026-11-15T14:30:00.000000Z\", \"duty_start_utc\": \"2026-11-15T11:00:00.000000Z\", \"assigned_position\": \"CAPTAIN\", \"confirmation_mode\": null, \"rule_version_code\": \"local-crew-v1\"}"
+    }
+].
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase.php:43
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php:93
+
+FAILURES!
+Tests: 8, Assertions: 99, Failures: 2.

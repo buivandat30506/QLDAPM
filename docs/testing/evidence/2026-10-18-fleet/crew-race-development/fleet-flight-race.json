@@ -1,0 +1,25 @@
+{
+    "test_id": "IT-FLEET-FLIGHT-RACE-01",
+    "database": "airline_test_20261018_034001_54e2bb",
+    "engine": "8.0.46",
+    "observed_lock_waiters": 2,
+    "connections": [
+        2184,
+        2185
+    ],
+    "results": [
+        {
+            "result": "committed",
+            "operation": "flight",
+            "id": "01a14d19-6eed-7106-a925-033ef9618d3c"
+        },
+        {
+            "result": "rejected",
+            "operation": "configure",
+            "fields": [
+                "configuration"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T03:41:14+00:00"
+}

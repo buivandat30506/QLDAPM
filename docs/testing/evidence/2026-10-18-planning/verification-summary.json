@@ -1,0 +1,25 @@
+{
+    "build_sha256": "817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d",
+    "source_fingerprint_verified_after_tests": true,
+    "verified_at_utc": "2026-10-18T02:45:50+00:00",
+    "results": {
+        "mysql": {
+            "total": 115,
+            "Passed": 115,
+            "Failed": 0,
+            "Skipped": 0
+        },
+        "sqlite": {
+            "total": 115,
+            "Passed": 104,
+            "Failed": 0,
+            "Skipped": 11
+        },
+        "browser": {
+            "total": 9,
+            "Passed": 9,
+            "Failed": 0,
+            "Skipped": 0
+        }
+    }
+}

@@ -1,0 +1,20 @@
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="20.311809999999998">
+<testsuite name="administration.spec.js" timestamp="2026-10-18T01:28:45.116Z" hostname="" tests="2" failures="0" skipped="0" time="3.885" errors="0">
+<testcase name="UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit" classname="administration.spec.js" time="2.537">
+</testcase>
+<testcase name="UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token" classname="administration.spec.js" time="1.348">
+</testcase>
+</testsuite>
+<testsuite name="foundation.spec.js" timestamp="2026-10-18T01:28:45.116Z" hostname="" tests="3" failures="0" skipped="0" time="11.968" errors="0">
+<testcase name="UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật" classname="foundation.spec.js" time="4.786">
+</testcase>
+<testcase name="UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc" classname="foundation.spec.js" time="4.391">
+</testcase>
+<testcase name="UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối" classname="foundation.spec.js" time="2.791">
+</testcase>
+</testsuite>
+<testsuite name="passenger.spec.js" timestamp="2026-10-18T01:28:45.116Z" hostname="" tests="1" failures="0" skipped="0" time="3.037" errors="0">
+<testcase name="UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật" classname="passenger.spec.js" time="3.037">
+</testcase>
+</testsuite>
+</testsuites>

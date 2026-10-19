@@ -1,0 +1,18 @@
+npm notice run test:acceptance
+npm notice run playwright test
+
+Running 9 tests using 1 worker
+
+(node:158504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\Acceptance\administration.spec.js:10:1 › UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit (2.9s)
+  ok 2 tests\Acceptance\administration.spec.js:36:1 › UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token (1.5s)
+  ok 3 tests\Acceptance\foundation.spec.js:16:1 › UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật (5.7s)
+  ok 4 tests\Acceptance\foundation.spec.js:59:1 › UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc (6.5s)
+  ok 5 tests\Acceptance\foundation.spec.js:92:1 › UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối (3.9s)
+  ok 6 tests\Acceptance\passenger.spec.js:3:1 › UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật (4.2s)
+  ok 7 tests\Acceptance\planning.spec.js:18:1 › UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện (4.1s)
+  ok 8 tests\Acceptance\planning.spec.js:52:1 › UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi (9.4s)
+  ok 9 tests\Acceptance\planning.spec.js:110:1 › UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch (5.2s)
+
+  9 passed (45.1s)

@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-AIRCRAFT-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_034434_b33a14",
+    "connections": [
+        2651,
+        2653
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "id": "01a14d21-f52f-72c9-8f8a-b378b7a16713"
+        },
+        {
+            "result": "rejected",
+            "fields": [
+                "aircraft_tail"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T03:50:33+00:00"
+}

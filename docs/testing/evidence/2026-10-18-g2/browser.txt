@@ -1,0 +1,11 @@
+
+Running 6 tests using 1 worker
+
+  ok 1 tests\Acceptance\administration.spec.js:10:1 › UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit (2.5s)
+  ok 2 tests\Acceptance\administration.spec.js:36:1 › UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token (1.3s)
+  ok 3 tests\Acceptance\foundation.spec.js:16:1 › UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật (4.8s)
+  ok 4 tests\Acceptance\foundation.spec.js:59:1 › UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc (4.4s)
+  ok 5 tests\Acceptance\foundation.spec.js:92:1 › UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối (2.8s)
+  ok 6 tests\Acceptance\passenger.spec.js:3:1 › UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật (3.0s)
+
+  6 passed (20.3s)

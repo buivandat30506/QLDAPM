@@ -1,0 +1,6 @@
+{
+  "status": "Interrupted",
+  "executed_at_utc": "2026-10-18T06:08:41.088857+00:00",
+  "reason": "BA process 9.7 explicitly requires approval before maintenance execution; stop owned runner to complete requirement, then retest. No Passed import for incomplete MySQL run.",
+  "build_sha256": "8018932d25cd522a7f06cf1e57dc4da5e8fcf81078a385dc45ca4e8d926f35ab"
+}

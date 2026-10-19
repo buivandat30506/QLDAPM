@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="10" assertions="108" errors="1" failures="3" skipped="0" time="26.258487">
+    <testsuite name="Feature" tests="10" assertions="108" errors="1" failures="3" skipped="0" time="26.258487">
+      <testsuite name="Tests\Feature\FleetManagementTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" tests="10" assertions="108" errors="1" failures="3" skipped="0" time="26.258487">
+        <testcase name="test_aircraft_crud_normalization_revision_and_noneditable_usage" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="52" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="15" time="19.834741"/>
+        <testcase name="test_opening_balances_require_provenance_and_overdue_aircraft_is_unavailable" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="68" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="11" time="0.672374"/>
+        <testcase name="test_configuration_versions_are_immutable_with_actual_seats_and_actor" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="77" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="19" time="0.798881"/>
+        <testcase name="test_invalid_or_stale_configuration_never_replaces_published_version" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="92" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="14" time="0.781843"/>
+        <testcase name="test_materialized_flight_pins_capacity_and_blocks_reconfiguration" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="108" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="8" time="0.760600"/>
+        <testcase name="test_booking_and_checkin_use_sellable_seats_and_reject_missing_or_blocked_seat" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="125" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="3" time="0.696841">
+          <error type="BadMethodCallException">Tests\Feature\FleetManagementTest::test_booking_and_checkin_use_sellable_seats_and_reject_missing_or_blocked_seat&#13;
+BadMethodCallException: Call to undefined method App\Models\OrderBooking::items()
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:67
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:36
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2544
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:132</error>
+        </testcase>
+        <testcase name="test_usage_from_completed_facts_is_idempotent_with_durable_alias_receipts" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="148" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="11" time="0.672563">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\FleetManagementTest::test_usage_from_completed_facts_is_idempotent_with_durable_alias_receipts&#13;
+Failed asserting that 3 is identical to 2.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:159</failure>
+        </testcase>
+        <testcase name="test_usage_rejects_wrong_aircraft_unfinished_flight_and_client_totals" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="165" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="7" time="0.669125">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\FleetManagementTest::test_usage_rejects_wrong_aircraft_unfinished_flight_and_client_totals&#13;
+Expected response status code [422] but received 200.
+Failed asserting that 200 is identical to 422.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:175
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:221
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:173</failure>
+        </testcase>
+        <testcase name="test_threshold_alert_blocks_operations_and_reconciliation_exposes_discrepancy" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="176" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="11" time="0.698367"/>
+        <testcase name="test_airport_scopes_filter_collections_and_protect_objects_and_configuration_history" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="187" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="9" time="0.673151">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\FleetManagementTest::test_airport_scopes_filter_collections_and_protect_objects_and_configuration_history&#13;
+Expected response status code [403] but received 200.
+Failed asserting that 200 is identical to 403.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:175
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:141
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:193</failure>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

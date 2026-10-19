@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-FLEET-CREW-PROFILE-RACE-01",
+    "database": "airline_test_20261018_053725_68356b",
+    "engine": "8.0.46",
+    "observed_lock_waiters": 2,
+    "connections": [
+        3858,
+        3859
+    ],
+    "results": [
+        {
+            "result": "committed",
+            "operation": "crew-approve",
+            "id": "01a14d86-c358-7353-b9a8-95ce062dffed"
+        },
+        {
+            "result": "committed",
+            "operation": "crew-profile",
+            "id": "01a14d86-c190-733c-bc8b-bb084b49ac1d"
+        }
+    ],
+    "executed_at_utc": "2026-10-18T05:40:40+00:00"
+}

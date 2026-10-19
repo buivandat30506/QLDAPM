@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-FLEET-CONFIGURE-RACE-01",
+    "database": "airline_test_20261018_060316_bd09b1",
+    "engine": "8.0.46",
+    "observed_lock_waiters": 2,
+    "connections": [
+        4922,
+        4923
+    ],
+    "results": [
+        {
+            "result": "committed",
+            "operation": "configure",
+            "id": 1
+        },
+        {
+            "result": "rejected",
+            "operation": "configure",
+            "status": 409
+        }
+    ],
+    "executed_at_utc": "2026-10-18T06:04:25+00:00"
+}

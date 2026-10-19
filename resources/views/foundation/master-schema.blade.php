@@ -1,0 +1,1 @@
+<p class="text-muted small">Mọi nhóm cần name (tối đa 150 ký tự); timezone IANA tùy chọn. CABIN: demo boolean tùy chọn. SERVICE: cabin_code tùy chọn, tham chiếu hạng khoang đã công bố. CURRENCY: minor_units bắt buộc (0–4). Thuộc tính khác bị từ chối.</p>

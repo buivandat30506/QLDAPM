@@ -1,0 +1,45 @@
+{
+  "test_id": "SMOKE-LOCAL-DEMO-01",
+  "status": "Passed",
+  "database": "airline_demo_20261018_010122_1556ab",
+  "engine": {
+    "version": "8.0.46",
+    "product": "MySQL Community Server - GPL"
+  },
+  "started_at_utc": "2026-10-18T06:14:34.879Z",
+  "finished_at_utc": "2026-10-18T06:14:47.723Z",
+  "base_url": "http://127.0.0.1:8000",
+  "checks": [
+    {
+      "check": "demo_data authenticates with private generated credentials",
+      "status": "Passed"
+    },
+    {
+      "check": "/admin/airports renders real demo data",
+      "status": "Passed"
+    },
+    {
+      "check": "/admin/airports/HAN renders real demo data",
+      "status": "Passed"
+    },
+    {
+      "check": "/admin/master-data renders real demo data",
+      "status": "Passed"
+    },
+    {
+      "check": "/admin/routes renders real demo data",
+      "status": "Passed"
+    },
+    {
+      "check": "demo_customer authenticates with private generated credentials",
+      "status": "Passed"
+    },
+    {
+      "check": "Customer profile portal and denied master data",
+      "status": "Passed"
+    }
+  ],
+  "browser_errors": [],
+  "readiness": "ready",
+  "background": "Database queue processed scheduled RuntimeHeartbeat"
+}
