@@ -1,0 +1,12 @@
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="8.479721999999999">
+<testsuite name="administration.spec.js" timestamp="2026-10-18T00:27:20.811Z" hostname="" tests="2" failures="0" skipped="0" time="4.513" errors="0">
+<testcase name="UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit" classname="administration.spec.js" time="3.23">
+</testcase>
+<testcase name="UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token" classname="administration.spec.js" time="1.283">
+</testcase>
+</testsuite>
+<testsuite name="passenger.spec.js" timestamp="2026-10-18T00:27:20.811Z" hostname="" tests="1" failures="0" skipped="0" time="2.784" errors="0">
+<testcase name="UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật" classname="passenger.spec.js" time="2.784">
+</testcase>
+</testsuite>
+</testsuites>

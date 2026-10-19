@@ -1,0 +1,73 @@
+<testsuites id="" name="" tests="2" failures="2" skipped="0" errors="0" time="13.259379999999998">
+<testsuite name="fleet.spec.js" timestamp="2026-10-18T03:28:32.726Z" hostname="" tests="2" failures="2" skipped="0" time="11.152" errors="0">
+<testcase name="UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật" classname="fleet.spec.js" time="8.135">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\..\..\..\storage\app\browser-results\fleet-UAT-UC10-hồ-sơ-phiên-7e0b3-iao-diện-mobile-lưu-DB-thật\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(locator).toContainText(expected) failed" type="expect.toContainText">
+<![CDATA[  fleet.spec.js:16:1 › UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('status')
+    Expected substring: "Đã công bố phiên bản"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('status') with timeout 5000ms
+      - waiting for getByRole('status')
+
+
+      30 |     await form.getByLabel('Lý do / hồ sơ cấu hình', { exact: true }).fill('Cấu hình tổng hợp dùng cho UAT');
+      31 |     await form.getByRole('button', { name: 'Công bố cấu hình', exact: true }).click();
+    > 32 |     await expect(page.getByRole('status')).toContainText('Đã công bố phiên bản');
+         |                                            ^
+      33 |     await expect(page.getByLabel('Sơ đồ ghế', { exact: true })).toContainText('1A');
+      34 |     await expect(page.getByLabel('Sơ đồ ghế', { exact: true }).getByText('2B', { exact: true })).toHaveClass(/bg-secondary/);
+      35 |     await page.reload();
+        at C:\Users\Admin\Desktop\airline-smart\tests\Acceptance\fleet.spec.js:32:44
+
+    Error Context: ..\..\storage\app\browser-results\fleet-UAT-UC10-hồ-sơ-phiên-7e0b3-iao-diện-mobile-lưu-DB-thật\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp" classname="fleet.spec.js" time="3.017">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\..\..\..\storage\app\browser-results\fleet-UAT-UC11-lịch-sử-sau-b3783--lại-sự-kiện-không-cộng-lặp\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(locator).toContainText(expected) failed" type="expect.toContainText">
+<![CDATA[  fleet.spec.js:66:1 › UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('tbody')
+    Expected substring: "DM105"
+    Error: strict mode violation: locator('tbody') resolved to 2 elements:
+        1) <tbody>…</tbody> aka getByRole('rowgroup').filter({ hasText: 'Chưa có phiên bản.' })
+        2) <tbody>…</tbody> aka getByRole('rowgroup').filter({ hasText: 'DM1051.33 /' })
+
+    Call log:
+      - Expect "toContainText" locator('tbody') with timeout 5000ms
+      - waiting for locator('tbody')
+
+
+      78 |     await page.getByLabel('Nguồn', { exact: true }).selectOption('OPERATIONS');
+      79 |     await page.getByRole('button', { name: 'Lọc lịch sử', exact: true }).click();
+    > 80 |     await expect(page.locator('tbody')).toContainText('DM105');
+         |                                         ^
+      81 |     await expect(page.locator('tbody')).toContainText('arrival:' + record.flight_id);
+      82 |     await page.getByLabel('Nguồn', { exact: true }).selectOption('FIDS');
+      83 |     await page.getByRole('button', { name: 'Lọc lịch sử', exact: true }).click();
+        at C:\Users\Admin\Desktop\airline-smart\tests\Acceptance\fleet.spec.js:80:41
+
+    Error Context: ..\..\storage\app\browser-results\fleet-UAT-UC11-lịch-sử-sau-b3783--lại-sự-kiện-không-cộng-lặp\error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>

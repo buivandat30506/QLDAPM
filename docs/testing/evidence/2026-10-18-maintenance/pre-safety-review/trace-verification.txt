@@ -1,0 +1,1 @@
+Traceability verified: 48 UC, 16 modules, exact priorities and main/alternative/exception source flows; planned tests are not execution evidence.

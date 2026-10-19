@@ -1,0 +1,7 @@
+{
+    "test_id": "DOC-API-ROUTES-01",
+    "status": "Passed",
+    "checked_operations": 58,
+    "executed_at_utc": "2026-10-18T03:50:59+00:00",
+    "check": "OpenAPI methods and normalized parameter paths exist in actual Laravel route registry"
+}

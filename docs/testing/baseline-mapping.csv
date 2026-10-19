@@ -1,0 +1,44 @@
+id,source_id,week,objective,expected_result,actual_test_type,profile,implementation,status,evidence_path,approval
+UT-W1-LOGIN-01,UT-LOGIN-01,W1,"Đăng nhập đúng tài khoản","Trả token/session và role","Feature/DB; source label UT preserved",mysql,test_login_roles_and_token_revocation,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W1-FLIGHT-01,UT-FLIGHT-01,W1,"Tạo chuyến với dữ liệu hợp lệ","Lưu chuyến thành công","Feature/DB; source label UT preserved",mysql,test_aircraft_conflict_turnaround_boundary_and_maintenance,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W1-FLIGHT-02,UT-FLIGHT-02,W1,"Từ chối giờ đến <= giờ đi","Validation error","Feature/DB; source label UT preserved",mysql,test_ut_w1_w2_flight_02_rejects_arrival_not_after_departure,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W1-BOOK-01,UT-BOOK-01,W1,"Tạo booking đủ thông tin","Booking ID được tạo","MySQL integration race; capacity hold, seat assignment deferred to check-in",mysql,test_two_connections_compete_for_last_seat_without_overbooking,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-AUTH-01,UT-AUTH-01,W2,"Đăng nhập hợp lệ","Tạo session/token và trả đúng role","Feature/DB; source label UT preserved",mysql,test_login_roles_and_token_revocation,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-AUTH-02,UT-AUTH-02,W2,"Từ chối role không đủ quyền","Access denied/403; không thay đổi dữ liệu","Feature/DB; source label UT preserved",mysql,test_admin_cannot_release_and_role_without_scope_cannot_write,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-AIRPORT-01,UT-AIRPORT-01,W2,"Tạo sân bay có định danh duy nhất","Lưu sân bay thành công","Feature/DB; source label UT preserved",mysql,test_airport_crud_and_validation,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-ROUTE-01,UT-ROUTE-01,W2,"Tạo đường bay với 2 sân bay hợp lệ","Lưu route, FK hợp lệ","Feature/DB; source label UT preserved",mysql,test_route_crud_and_duplicate_constraints,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-FLIGHT-01,UT-FLIGHT-01,W2,"Tạo chuyến hợp lệ","Lưu chuyến thành công","Feature/DB; source label UT preserved",mysql,test_aircraft_conflict_turnaround_boundary_and_maintenance,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-FLIGHT-02,UT-FLIGHT-02,W2,"Từ chối giờ đến <= giờ đi","Validation error","Feature/DB; source label UT preserved",mysql,test_ut_w1_w2_flight_02_rejects_arrival_not_after_departure,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-FLIGHT-03,UT-FLIGHT-03,W2,"Kiểm tra xung đột tàu bay","Phát hiện xung đột theo BR-005","Feature/DB; source label UT preserved",mysql,test_aircraft_conflict_turnaround_boundary_and_maintenance,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-CREW-01,UT-CREW-01,W2,"Từ chối tổ bay không đủ điều kiện","Không cho phân công","Feature/DB; source label UT preserved",mysql,test_crew_license_availability_rest_and_replacement_rollback,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-BOOK-01,UT-BOOK-01,W2,"Tạo booking đủ dữ liệu","Tạo Booking ID","MySQL integration race; capacity hold, seat assignment deferred to check-in",mysql,test_two_connections_compete_for_last_seat_without_overbooking,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-BOOK-02,UT-BOOK-02,W2,"Giải phóng giữ chỗ hết hạn","Ghế được trả về tồn chỗ theo BR-011","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-TICKET-01,UT-TICKET-01,W2,"Sinh QR cho vé hợp lệ","QR/token liên kết đúng vé","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-CHECKIN-01,UT-CHECKIN-01,W2,"Kiểm tra điều kiện check-in","Cho phép check-in khi đủ điều kiện","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-BAG-01,UT-BAG-01,W2,"Tạo thẻ hành lý","Tag duy nhất, liên kết đúng hành trình","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-MAINT-01,UT-MAINT-01,W2,"Tính/cảnh báo bảo dưỡng đến hạn","Sinh cảnh báo đến hạn","Feature/DB; source label UT preserved",mysql,test_plan_date_hours_cycles_condition_and_due_alerts_block_planning_synchronously,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-MAINT-02,UT-MAINT-02,W2,"Chặn khai thác khi bảo dưỡng quá hạn","Aircraft unavailable theo BR-007","Feature/DB; source label UT preserved",mysql,test_maintenance_requires_resources_completion_approval_and_non_overdue_release,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UT-W2-DASH-01,UT-DASH-01,W2,"Lọc KPI theo thời gian","Trả đúng tập dữ liệu/filter","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-AI-01,UT-AI-01,W2,"Nhận bộ feature chuyến bay","Trả probability/expected delay theo schema","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-AI-02,UT-AI-02,W2,"Phát hiện mẫu cảm biến bất thường","Trả anomaly flag/score","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-IOT-01,UT-IOT-01,W2,"Đọc dữ liệu cảm biến mô phỏng","Sinh payload JSON đúng schema","Not implemented/executed",,,"Not Run",,N/A
+UT-W2-AUDIT-01,UT-AUDIT-01,W2,"Ghi log thay đổi quan trọng","Audit log có actor/time/action","Feature/DB; source label UT preserved",mysql,test_audit_redacts_nested_pii_and_has_correlation,Passed,docs/testing/evidence/2026-10-18-maintenance/mysql.xml,N/A
+UAT-W1-01,UAT-01,W1,"Đăng nhập và phân quyền","Đúng chức năng theo role","Browser acceptance; approval Pending",browser,UAT-UC45-G1:,Passed,docs/testing/evidence/2026-10-18-maintenance/browser.xml,Pending
+UAT-W1-02,UAT-02,W1,"Quản lý chuyến/lịch bay","CRUD + trạng thái hoạt động","Not implemented/executed",,,"Not Run",,Pending
+UAT-W1-03,UAT-03,W1,"Hành khách/booking/vé/QR","Luồng demo hoàn chỉnh","Not implemented/executed",,,"Not Run",,Pending
+UAT-W1-04,UAT-04,W1,"AI/IoT mô phỏng","Có cảnh báo và dashboard","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-01,UAT-01,W2,"Đăng nhập & phân quyền","Quản lý/Nhân viên chỉ sử dụng chức năng được cấp","Browser acceptance; approval Pending",browser,UAT-UC45-G1:,Passed,docs/testing/evidence/2026-10-18-maintenance/browser.xml,Pending
+UAT-W2-02,UAT-02,W2,"Quản lý sân bay","Thêm/sửa/xem dữ liệu sân bay và định danh duy nhất","Browser acceptance; approval Pending",browser,UAT-UC01-02:,Passed,docs/testing/evidence/2026-10-18-maintenance/browser.xml,Pending
+UAT-W2-03,UAT-03,W2,"Đường bay & lịch/chuyến bay","Tạo route/flight và kiểm tra xung đột cơ bản","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-04,UAT-04,W2,"Đội tàu bay","Theo dõi trạng thái/khả dụng tàu bay","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-05,UAT-05,W2,"Tổ bay","Phân công theo khả dụng/điều kiện","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-06,UAT-06,W2,"Hành khách","Quản lý hồ sơ hành khách đúng quyền","Browser acceptance; approval Pending",browser,UAT-UC18-19:,Passed,docs/testing/evidence/2026-10-18-maintenance/browser.xml,Pending
+UAT-W2-07,UAT-07,W2,Booking,"Tìm chuyến và tạo booking/giữ ghế","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-08,UAT-08,W2,"Vé & QR","Phát hành vé/QR mô phỏng từ booking","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-09,UAT-09,W2,Check-in/Boarding,"Check-in và quét QR cập nhật trạng thái","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-10,UAT-10,W2,"Hành lý","Tạo tag và theo dõi hành trình hành lý","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-11,UAT-11,W2,"Dịch vụ mặt đất","Theo dõi nhiệm vụ và tiến độ quay đầu","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-12,UAT-12,W2,"Bảo dưỡng","Theo dõi lịch/work order và cảnh báo quá hạn","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-13,UAT-13,W2,Dashboard,"Hiển thị KPI và bộ lọc dữ liệu","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-14,UAT-14,W2,AI,"Có dự đoán/cảnh báo hỗ trợ quyết định; không tự thay thế người có thẩm quyền","Not implemented/executed",,,"Not Run",,Pending
+UAT-W2-15,UAT-15,W2,"IoT mô phỏng","Wokwi phát telemetry; hệ thống nhận và cảnh báo","Not implemented/executed",,,"Not Run",,Pending

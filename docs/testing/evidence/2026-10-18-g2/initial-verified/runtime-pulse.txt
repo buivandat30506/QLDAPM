@@ -1,0 +1,6 @@
+
+  2026-10-18 01:21:28 Running [runtime-heartbeat] ....................................................... 36.74ms DONE
+
+  2026-10-18 01:21:29 App\Jobs\RuntimeHeartbeat .............................................................. RUNNING
+  2026-10-18 01:21:29 App\Jobs\RuntimeHeartbeat ......................................................... 16.78ms DONE
+{"status":"ready","database":"ready","queue_connection":"database","background_required":true,"scheduler":"fresh","worker":"fresh","failed_jobs":0,"pending_jobs":0}

@@ -1,0 +1,44 @@
+<testsuites id="" name="" tests="14" failures="0" skipped="0" errors="0" time="99.008065">
+<testsuite name="administration.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="2" failures="0" skipped="0" time="4.823" errors="0">
+<testcase name="UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit" classname="administration.spec.js" time="3.192">
+</testcase>
+<testcase name="UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token" classname="administration.spec.js" time="1.631">
+</testcase>
+</testsuite>
+<testsuite name="crew.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="2" failures="0" skipped="0" time="18.249" errors="0">
+<testcase name="UAT-UC15: hồ sơ năng định, nghỉ phép, dự bị và hủy khoảng có lịch sử" classname="crew.spec.js" time="5.481">
+</testcase>
+<testcase name="UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay thế giữ lịch sử" classname="crew.spec.js" time="12.768">
+</testcase>
+</testsuite>
+<testsuite name="fleet.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="2" failures="0" skipped="0" time="14.023" errors="0">
+<testcase name="UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật" classname="fleet.spec.js" time="8.287">
+</testcase>
+<testcase name="UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp" classname="fleet.spec.js" time="5.736">
+</testcase>
+</testsuite>
+<testsuite name="foundation.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="3" failures="0" skipped="0" time="18.929" errors="0">
+<testcase name="UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật" classname="foundation.spec.js" time="7.469">
+</testcase>
+<testcase name="UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc" classname="foundation.spec.js" time="7.212">
+</testcase>
+<testcase name="UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối" classname="foundation.spec.js" time="4.248">
+</testcase>
+</testsuite>
+<testsuite name="maintenance.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="1" failures="0" skipped="0" time="15.981" errors="0">
+<testcase name="UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng" classname="maintenance.spec.js" time="15.981">
+</testcase>
+</testsuite>
+<testsuite name="passenger.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="1" failures="0" skipped="0" time="4.413" errors="0">
+<testcase name="UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật" classname="passenger.spec.js" time="4.413">
+</testcase>
+</testsuite>
+<testsuite name="planning.spec.js" timestamp="2026-10-18T06:03:15.619Z" hostname="" tests="3" failures="0" skipped="0" time="20.714" errors="0">
+<testcase name="UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện" classname="planning.spec.js" time="5.082">
+</testcase>
+<testcase name="UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi" classname="planning.spec.js" time="9.939">
+</testcase>
+<testcase name="UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch" classname="planning.spec.js" time="5.693">
+</testcase>
+</testsuite>
+</testsuites>

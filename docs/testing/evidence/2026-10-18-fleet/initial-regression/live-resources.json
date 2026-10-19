@@ -1,0 +1,17 @@
+{
+  "test_id": "SMOKE-RESOURCES-DEMO-01",
+  "status": "Passed",
+  "started_at_utc": "2026-10-18T03:49:08.798Z",
+  "finished_at_utc": "2026-10-18T03:49:11.676Z",
+  "username": "demo_ops",
+  "base_url": "http://127.0.0.1:8000",
+  "checks": [
+    "Actual login",
+    "Fleet scoped navigation/detail/usage",
+    "Crew plan navigation/local policy label",
+    "Logout"
+  ],
+  "limitations": [
+    "Read-only live-demo smoke; mutations exercised on isolated browser test DB"
+  ]
+}

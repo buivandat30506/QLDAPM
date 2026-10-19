@@ -1,0 +1,14 @@
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="0" time="30.259519">
+<testsuite name="crew.spec.js" timestamp="2026-10-18T03:39:53.077Z" hostname="" tests="2" failures="0" skipped="0" time="16.337" errors="0">
+<testcase name="UAT-UC15: hồ sơ năng định, nghỉ phép, dự bị và hủy khoảng có lịch sử" classname="crew.spec.js" time="5.464">
+</testcase>
+<testcase name="UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay thế giữ lịch sử" classname="crew.spec.js" time="10.873">
+</testcase>
+</testsuite>
+<testsuite name="fleet.spec.js" timestamp="2026-10-18T03:39:53.077Z" hostname="" tests="2" failures="0" skipped="0" time="12.408" errors="0">
+<testcase name="UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật" classname="fleet.spec.js" time="6.977">
+</testcase>
+<testcase name="UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp" classname="fleet.spec.js" time="5.431">
+</testcase>
+</testsuite>
+</testsuites>

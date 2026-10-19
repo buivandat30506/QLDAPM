@@ -1,0 +1,7 @@
+web: stopped.
+worker: stopped.
+scheduler: stopped.
+web: started hidden, PID 150240.
+worker: started hidden, PID 149664.
+scheduler: started hidden, PID 144484.
+Demo URL: http://127.0.0.1:8000/login. Logs: storage/logs/demo-*.log

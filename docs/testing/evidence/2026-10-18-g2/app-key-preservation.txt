@@ -1,0 +1,2 @@
+Existing APP_KEY preserved.
+Verified: .env bytes unchanged; key value not printed.

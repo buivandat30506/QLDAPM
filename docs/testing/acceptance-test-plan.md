@@ -1,0 +1,9 @@
+# Kế hoạch Acceptance / UAT
+
+Giữ 4 baseline W1 (`UAT-W1-01` auth, `02` flight/schedule, `03` passenger/booking/ticket/QR, `04` AI/IoT dashboard) và 15 baseline W2 (`UAT-W2-01`…`15`) đúng phạm vi phụ lục C.2. Các ô lệch W1 được diễn giải: thao tác là Input; hành vi theo role/CRUD/demo/cảnh báo là Expected, không nhận là nguyên văn bảng.
+
+Mỗi UC-01…48 có main flow, alternative và exception được trích từ phụ lục A vào `requirements-source.json`/`test-cases.csv`; thêm denied/ownership nhãn DERIVED. Chưa triển khai test không được coi là coverage acceptance đã đạt. UC-34–39/46–48 có case riêng, không chỉ dùng 15 happy paths. UAT browser phải kiểm UI/DB, lưu trace/screenshot không chứa PII/secret. Wokwi telemetry thực cần bằng chứng riêng, CLI replay không thay thế. Người phụ trách ký nghiệm thu: Pending.
+
+Checkpoint G2 thêm UAT-UC01-02 (airport tạo/sửa/duplicate, stand/tạm ngừng, role deny write), UAT-UC03 (CSV→draft→duyệt→công bố→revision2→history→export) và UAT-UC03-EX (sai header/mixed invalid reference không partial, role403). Hồi quy3 ca G1/M07 vẫn chạy, tổng6 browser tests. UAT-W2-02 được map đến airport case có kiểm unique thật. Source aliases giữ nguyên input/expected và nối thêm feature MySQL khi kiểm đủ nhánh required/quality/deny; không cộng aliases thành test thực thi mới, approval vẫn Pending.
+
+Checkpoint M02 bổ sung ba browser journeys UC04 CRUD mùa/hạn chế, UC05–06 lập lịch/ngày ngoại lệ/check/duyệt/công bố/revision2/mobile, UC06 thiếu nguồn lực/role403. Tổng suite hiện9journeys; kết quả từng lượt ở evidence/2026-10-18-planning, không lấy kế hoạch làm Passed. DOCX gốc bổ sung24flow bị trống ở master: requirements-docx-supplement.json và các case riêng khởi tạo Not Run. Chỉ map sang Passed khi đã có test thực chạy bao đúng nhánh; UAT human approval vẫn Pending. Các test W1/W2 giữ nguyên ID/phạm vi, M02 đạt không tự đóng UAT-W2-03 còn chứa M03.

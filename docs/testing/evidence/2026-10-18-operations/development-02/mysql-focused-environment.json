@@ -1,0 +1,12 @@
+{
+    "engine": {
+        "version": "8.0.46",
+        "product": "MySQL Community Server - GPL"
+    },
+    "database": "airline_test_20261018_104612_3ae00d",
+    "host": "127.0.0.1",
+    "port": "3318",
+    "php": "8.2.12",
+    "started_at_utc": "2026-10-18T10:46:12+00:00",
+    "profile": "isolated-synthetic-test"
+}

@@ -1,0 +1,39 @@
+<testsuites id="" name="" tests="1" failures="1" skipped="0" errors="0" time="11.49231">
+<testsuite name="maintenance.spec.js" timestamp="2026-10-18T05:32:53.592Z" hostname="" tests="1" failures="1" skipped="0" time="10.012" errors="0">
+<testcase name="UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng" classname="maintenance.spec.js" time="10.012">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\..\..\..\storage\app\browser-results\maintenance-UAT-UC12-14-lậ-23220-liệu-ký-duyệt-và-giải-phóng\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(locator).toContainText(expected) failed" type="expect.toContainText">
+<![CDATA[  maintenance.spec.js:5:1 › UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "Chưa hoàn tất mọi hạng mục"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <div role="alert" class="alert alert-danger alert-dismissible fade show shadow-sm">…</div> aka getByText('Đã xảy ra lỗi kiểm tra dữ liệu: Chưa hoàn tất mọi hạng mục; lệnh tiếp tục đang')
+        2) <div role="alert" class="alert alert-warning">Còn tối đa 24 giờ đến hạn lịch. Ngưỡng hiển thị l…</div> aka getByText('Còn tối đa 24 giờ đến hạn lị')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      52 |     const completion = page.getByRole('form', { name: 'Hoàn tất và ký kỹ thuật', exact: true });
+      53 |     await completion.getByLabel('Kết luận kỹ thuật', { exact: true }).fill('Thử chốt khi chưa đạt'); await completion.getByRole('checkbox').check(); await act('Hoàn tất và ký kỹ thuật');
+    > 54 |     await expect(page.getByRole('alert')).toContainText('Chưa hoàn tất mọi hạng mục');
+         |                                           ^
+      55 |     await task.getByLabel('Kết quả hạng mục', { exact: true }).fill('Đo đạt theo hồ sơ kiểm thử'); await task.getByLabel('Đánh giá', { exact: true }).selectOption('1'); await task.getByLabel('Căn cứ ghi kết quả', { exact: true }).fill('Phiếu đo UAT'); await task.getByRole('button', { name: 'Lưu kết quả hạng mục', exact: true }).click();
+      56 |     const file = Buffer.from('%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF');
+      57 |     await page.getByLabel('Tài liệu PDF, PNG hoặc JPEG (tối đa 10 MB)', { exact: true }).setInputFiles({ name: 'proof.pdf', mimeType: 'application/pdf', buffer: file });
+        at C:\Users\Admin\Desktop\airline-smart\tests\Acceptance\maintenance.spec.js:54:43
+
+    Error Context: ..\..\storage\app\browser-results\maintenance-UAT-UC12-14-lậ-23220-liệu-ký-duyệt-và-giải-phóng\error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>

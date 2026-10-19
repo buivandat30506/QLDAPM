@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="25" assertions="248" errors="0" failures="1" skipped="0" time="29.888386">
+    <testsuite name="Unit" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.164415">
+      <testsuite name="Tests\Unit\ScheduleOccurrenceTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Unit\ScheduleOccurrenceTest.php" tests="4" assertions="8" errors="0" failures="0" skipped="0" time="0.164415">
+        <testcase name="test_daily_local_recurrence_preserves_wall_time_across_dst" file="C:\Users\Admin\Desktop\airline-smart\tests\Unit\ScheduleOccurrenceTest.php" line="13" class="Tests\Unit\ScheduleOccurrenceTest" classname="Tests.Unit.ScheduleOccurrenceTest" assertions="2" time="0.123350"/>
+        <testcase name="test_nonexistent_spring_hour_is_rejected" file="C:\Users\Admin\Desktop\airline-smart\tests\Unit\ScheduleOccurrenceTest.php" line="23" class="Tests\Unit\ScheduleOccurrenceTest" classname="Tests.Unit.ScheduleOccurrenceTest" assertions="1" time="0.016599"/>
+        <testcase name="test_ambiguous_autumn_hour_is_rejected" file="C:\Users\Admin\Desktop\airline-smart\tests\Unit\ScheduleOccurrenceTest.php" line="29" class="Tests\Unit\ScheduleOccurrenceTest" classname="Tests.Unit.ScheduleOccurrenceTest" assertions="1" time="0.010216"/>
+        <testcase name="test_explicit_local_overnight_and_legacy_utc_overnight" file="C:\Users\Admin\Desktop\airline-smart\tests\Unit\ScheduleOccurrenceTest.php" line="35" class="Tests\Unit\ScheduleOccurrenceTest" classname="Tests.Unit.ScheduleOccurrenceTest" assertions="4" time="0.014250"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="Feature" tests="21" assertions="240" errors="0" failures="1" skipped="0" time="29.723971">
+      <testsuite name="Tests\Feature\FlightPlanningTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" tests="14" assertions="168" errors="0" failures="1" skipped="0" time="24.632475">
+        <testcase name="test_route_season_restrictions_validation_and_audit" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="49" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="14" time="13.193258"/>
+        <testcase name="test_airport_scoped_route_and_schedule_collections_objects_and_writes" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="68" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="13" time="0.981871"/>
+        <testcase name="test_full_schedule_workflow_records_actors_checks_and_immutable_snapshot" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="90" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="20" time="1.063249"/>
+        <testcase name="test_revision_keeps_published_schedule_until_new_publication" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="105" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="18" time="1.214037"/>
+        <testcase name="test_stale_edits_and_transitions_reject_without_overwriting" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="121" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="6" time="0.785241"/>
+        <testcase name="test_reject_and_cancel_require_reason_and_keep_audit" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="130" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="9" time="0.812148"/>
+        <testcase name="test_weekly_recurrence_exclusions_and_extra_only_dates" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="141" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="14" time="0.942866"/>
+        <testcase name="test_missing_resources_and_multiple_conflicts_return_persisted_diagnostics" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="154" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="13" time="0.866634"/>
+        <testcase name="test_publish_rechecks_route_season_restrictions_and_does_not_advance" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="169" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="9" time="0.901137"/>
+        <testcase name="test_airport_hours_use_airport_timezone_and_unknown_hours_fail_closed" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="181" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="8" time="0.860395"/>
+        <testcase name="test_changed_revision_lists_impacted_flights_and_blocks_silent_replan" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="192" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="16" time="0.862956"/>
+        <testcase name="test_local_schedule_materializes_previous_utc_date_and_preserves_source_date" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="204" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="6" time="0.733394">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\FlightPlanningTest::test_local_schedule_materializes_previous_utc_date_and_preserves_source_date&#13;
+Failed asserting that two strings are identical.
+--- Expected
++++ Actual
+@@ @@
+-'2026-11-08T00:00:00.000000Z'
++'2026-11-08'
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\AssertableJsonString.php:243
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:880
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php:210</failure>
+        </testcase>
+        <testcase name="test_repeated_publication_and_cancellation_do_not_duplicate_snapshots_or_cancel_flights" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="216" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="10" time="0.705955"/>
+        <testcase name="test_season_horizon_no_occurrences_and_restricted_model_are_rejected" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FlightPlanningTest.php" line="227" class="Tests\Feature\FlightPlanningTest" classname="Tests.Feature.FlightPlanningTest" assertions="12" time="0.709334"/>
+      </testsuite>
+      <testsuite name="Tests\Feature\Module1Test" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" tests="7" assertions="72" errors="0" failures="0" skipped="0" time="5.091496">
+        <testcase name="test_airport_crud_and_validation" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="27" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="11" time="0.659890"/>
+        <testcase name="test_route_crud_and_duplicate_constraints" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="39" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="8" time="0.672238"/>
+        <testcase name="test_aircraft_conflict_turnaround_boundary_and_maintenance" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="52" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="6" time="0.743029"/>
+        <testcase name="test_crew_assignment_rank_conflict_and_removal" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="65" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="9" time="0.704473"/>
+        <testcase name="test_all_admin_pages_and_read_apis_render" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="79" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="23" time="0.877994"/>
+        <testcase name="test_web_route_edit_and_validation_redirect" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="89" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="7" time="0.694859"/>
+        <testcase name="test_arrival_records_aircraft_usage_only_once" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\Module1Test.php" line="97" class="Tests\Feature\Module1Test" classname="Tests.Feature.Module1Test" assertions="8" time="0.739014"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

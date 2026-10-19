@@ -1,0 +1,336 @@
+openapi: 3.0.3
+info:
+  title: Airline Smart - M01 Foundation
+  version: 0.2.0
+  description: >-
+    API đã triển khai của UC-01/02/03. Lấy Sanctum token qua POST /api/v1/auth/login
+    với username/password; token 8 giờ, có revoke. Các module khác sẽ có đặc tả riêng.
+    DATA_ADMIN cần scope global hoặc airport cho sân bay; dữ liệu chủ cần global.
+    Quyền kiểm tại backend, ADMIN không tự có quyền nghiệp vụ. Thời gian UTC.
+servers:
+  - url: http://127.0.0.1:8000/api/v1/core
+security:
+  - bearerAuth: []
+paths:
+  /airports:
+    get:
+      operationId: listAirports
+      summary: Danh sách sân bay theo quyền và bộ lọc
+      parameters:
+        - { name: search, in: query, schema: { type: string, maxLength: 100 } }
+        - { name: status, in: query, schema: { type: string, enum: [ACTIVE, INACTIVE, CLOSED] } }
+        - { name: sort, in: query, schema: { type: string, enum: [iata_code, name, city, status], default: iata_code } }
+        - { name: direction, in: query, schema: { type: string, enum: [asc, desc], default: asc } }
+        - { $ref: '#/components/parameters/PerPage' }
+        - { $ref: '#/components/parameters/Page' }
+      responses:
+        '200': { $ref: '#/components/responses/Page' }
+        default: { $ref: '#/components/responses/Error' }
+    post:
+      operationId: createAirport
+      summary: Tạo sân bay (airport.write/global)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AirportInput' }
+      responses:
+        '201': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /airports/{iataCode}:
+    parameters:
+      - { $ref: '#/components/parameters/IataCode' }
+    get:
+      operationId: getAirport
+      summary: Thông tin sân bay và tài nguyên (airport.read theo sân bay)
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+    put:
+      operationId: updateAirport
+      summary: Sửa sân bay (airport.write theo sân bay), IATA không đổi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AirportPatch'
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+    delete:
+      operationId: deleteUnusedAirport
+      summary: Chỉ xóa sân bay không có tài nguyên/đường bay/tổ bay liên kết
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /airports/{iataCode}/resources:
+    parameters:
+      - { $ref: '#/components/parameters/IataCode' }
+    get:
+      operationId: listAirportResources
+      parameters:
+        - { name: resource_type, in: query, schema: { $ref: '#/components/schemas/ResourceType' } }
+        - { name: type, in: query, description: Alias cũ của resource_type, schema: { $ref: '#/components/schemas/ResourceType' } }
+        - { name: resource_status, in: query, schema: { $ref: '#/components/schemas/ResourceStatus' } }
+        - { name: resource_search, in: query, schema: { type: string, maxLength: 50 } }
+        - { $ref: '#/components/parameters/PerPage' }
+        - { $ref: '#/components/parameters/Page' }
+      responses:
+        '200': { $ref: '#/components/responses/Page' }
+        default: { $ref: '#/components/responses/Error' }
+    post:
+      operationId: createAirportResource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [resource_type, resource_code]
+              properties:
+                resource_type: { $ref: '#/components/schemas/ResourceType' }
+                resource_code: { type: string, minLength: 1, maxLength: 50 }
+                status: { $ref: '#/components/schemas/ResourceStatus' }
+      responses:
+        '201': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /airports/resources/{resourceId}:
+    parameters:
+      - { name: resourceId, in: path, required: true, schema: { type: integer, minimum: 1 } }
+    put:
+      operationId: updateAirportResource
+      summary: Sửa mã/trạng thái; không chuyển sân bay hoặc loại
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resource_code: { type: string, minLength: 1, maxLength: 50 }
+                status: { $ref: '#/components/schemas/ResourceStatus' }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+    delete:
+      operationId: deleteUnusedResource
+      summary: Không xóa tài nguyên có lịch/chuyến, trả422 và giữ lịch sử
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data:
+    get:
+      operationId: listMasterData
+      parameters:
+        - { name: search, in: query, schema: { type: string, maxLength: 100 } }
+        - { name: category, in: query, schema: { type: string, enum: [CABIN, SERVICE, CURRENCY] } }
+        - { name: status, in: query, schema: { type: string, enum: [DRAFT, PENDING, APPROVED, PUBLISHED] } }
+        - { name: sort, in: query, schema: { type: string, enum: [code, category, updated_at] } }
+        - { name: direction, in: query, schema: { type: string, enum: [asc, desc] } }
+        - { $ref: '#/components/parameters/PerPage' }
+        - { $ref: '#/components/parameters/Page' }
+      responses:
+        '200': { $ref: '#/components/responses/Page' }
+        default: { $ref: '#/components/responses/Error' }
+    post:
+      operationId: createMasterDraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/MasterInput' }
+      responses:
+        '201': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/{id}:
+    parameters:
+      - { $ref: '#/components/parameters/MasterId' }
+    get:
+      operationId: inspectMasterDraftQuality
+      responses:
+        '200': { description: 'data gồm record và quality_errors; payload trong record là JSON string tương thích API cũ.' }
+        default: { $ref: '#/components/responses/Error' }
+    put:
+      operationId: updateMasterDraft
+      description: Chỉ DRAFT. category/code bất biến; expected_revision bắt buộc, cũ trả409.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - { $ref: '#/components/schemas/MasterInput' }
+                - { type: object, required: [expected_revision] }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/{id}/published:
+    parameters:
+      - { $ref: '#/components/parameters/MasterId' }
+    get:
+      operationId: getEffectiveMasterSnapshot
+      description: Snapshot công bố mới nhất còn hiệu lực trong lúc bản sửa mới ở DRAFT/PENDING. Chưa công bố trả404.
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/{id}/{action}:
+    parameters:
+      - { $ref: '#/components/parameters/MasterId' }
+      - { name: action, in: path, required: true, schema: { type: string, enum: [submit, approve, publish, revise, reject] } }
+    post:
+      operationId: transitionMasterData
+      description: >-
+        submit/revise cần master.write; approve/publish/reject cần master.approve.
+        revise từ PUBLISHED, reject từ PENDING/APPROVED; reason bắt buộc 5–500 ký tự.
+        Các bước còn lại theo DRAFT→PENDING→APPROVED→PUBLISHED, revalidate quality.
+        expected_revision tùy chọn cho API tương thích; UI luôn gửi. State guard/row lock chống double publish.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string, minLength: 5, maxLength: 500 }
+                expected_revision: { type: integer, minimum: 0 }
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/imports:
+    post:
+      operationId: previewMasterCsv
+      description: >-
+        CSV UTF-8 tối đa 1 MiB/1000 records, header category,code,payload; payload JSON object.
+        READY/INVALID chỉ staging, không nhập danh mục. Sai format/encoding/quotes trả422 không staging.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: { type: string, format: binary }
+      responses:
+        '201': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/imports/{batch}:
+    parameters:
+      - { $ref: '#/components/parameters/BatchId' }
+    get:
+      operationId: inspectImportBatch
+      parameters:
+        - { $ref: '#/components/parameters/Page' }
+      responses:
+        '200': { description: 'data.batch có status/row_count/error_count/sha256; data.rows phân trang25, input/errors là JSON string, line là thứ tự record CSV tính cả header.' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/imports/{batch}/commit:
+    parameters:
+      - { $ref: '#/components/parameters/BatchId' }
+    post:
+      operationId: commitMasterImport
+      description: >-
+        READY được revalidate dưới mutex rồi tạo toàn bộ DRAFT trong cùng transaction.
+        Conflict làm INVALID, lưu diagnostics và trả422, không partial write.
+        COMMITTED retry trả cùng batch, không thêm bản ghi. Duyệt/công bố là bước riêng.
+      responses:
+        '200': { $ref: '#/components/responses/Success' }
+        default: { $ref: '#/components/responses/Error' }
+  /master-data/export:
+    get:
+      operationId: exportMasterReport
+      description: >-
+        Cần master.read và master.export/global. Nhận cùng search/category/status/sort/direction
+        như list. CSV report category,code,name,status,version,payload, bảo vệ formula injection.
+        Report không dùng trực tiếp làm template import; tải template qua UI.
+      responses:
+        '200':
+          description: CSV theo bộ lọc, có audit export
+          content:
+            text/csv:
+              schema: { type: string, format: binary }
+        default: { $ref: '#/components/responses/Error' }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, bearerFormat: Sanctum }
+  parameters:
+    IataCode: { name: iataCode, in: path, required: true, schema: { type: string, pattern: '^[A-Za-z]{3}$' } }
+    MasterId: { name: id, in: path, required: true, schema: { type: integer, minimum: 1 } }
+    BatchId: { name: batch, in: path, required: true, schema: { type: string, format: uuid } }
+    Page: { name: page, in: query, schema: { type: integer, minimum: 1, default: 1 } }
+    PerPage: { name: per_page, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 25 } }
+  responses:
+    Success:
+      description: success=true, message, data, errors=null; entity hoặc null với DELETE
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/SuccessEnvelope' }
+    Page:
+      description: success=true; data.data là items, data.current_page/per_page/total/last_page và links
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/SuccessEnvelope' }
+    Error:
+      description: '401 chưa login; 403 thiếu quyền/scope; 404 không tồn tại; 409 stale revision; 422 validation/workflow; 429 throttle; 5xx lỗi nội bộ. Không stack/secret.'
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ErrorEnvelope' }
+  schemas:
+    SuccessEnvelope:
+      type: object
+      required: [success, message, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        message: { type: string }
+        data: { description: Entity hoặc Laravel paginator tùy operation, nullable: true }
+        errors: { nullable: true }
+    ErrorEnvelope:
+      type: object
+      required: [success, code, message, errors, correlation_id]
+      properties:
+        success: { type: boolean, enum: [false] }
+        data: { nullable: true }
+        code: { type: string }
+        message: { type: string }
+        errors: { type: object, nullable: true, additionalProperties: { type: array, items: { type: string } } }
+        correlation_id: { type: string, format: uuid }
+    ResourceType: { type: string, enum: [TERMINAL, GATE, STAND, BAGGAGE_CAROUSEL, CHECKIN_COUNTER, RUNWAY] }
+    ResourceStatus: { type: string, enum: [AVAILABLE, MAINTENANCE, OCCUPIED], default: AVAILABLE }
+    AirportInput:
+      allOf:
+        - { $ref: '#/components/schemas/AirportPatch' }
+        - type: object
+          required: [iata_code, name, city]
+          properties:
+            iata_code: { type: string, pattern: '^[A-Za-z]{3}$', description: Chuẩn hóa uppercase/trim }
+    AirportPatch:
+      type: object
+      description: Tọa độ nhập cả latitude/longitude; null cặp được phép cho hồ sơ chưa biết tọa độ. DECIMAL trả về dạng chuỗi DB.
+      properties:
+        icao_code: { type: string, nullable: true, pattern: '^[A-Za-z]{4}$', description: Unique khi có giá trị }
+        name: { type: string, minLength: 1, maxLength: 150 }
+        city: { type: string, minLength: 1, maxLength: 100 }
+        country: { type: string, maxLength: 100, default: Vietnam }
+        timezone: { type: string, default: Asia/Ho_Chi_Minh, example: America/New_York }
+        operating_hours: { type: string, maxLength: 100, default: '24/7' }
+        status: { type: string, enum: [ACTIVE, INACTIVE, CLOSED], default: ACTIVE }
+        latitude: { type: number, nullable: true, minimum: -90, maximum: 90 }
+        longitude: { type: number, nullable: true, minimum: -180, maximum: 180 }
+    MasterInput:
+      type: object
+      required: [category, code, payload]
+      properties:
+        category: { type: string, enum: [CABIN, SERVICE, CURRENCY] }
+        code: { type: string, maxLength: 50, pattern: '^[A-Z0-9][A-Z0-9_.-]*$' }
+        expected_revision: { type: integer, minimum: 0 }
+        payload:
+          type: object
+          required: [name]
+          description: Thuộc tính ngoài schema nhóm bị từ chối. SERVICE.cabin_code cần CABIN có snapshot đã công bố. CURRENCY cần minor_units.
+          properties:
+            name: { type: string, minLength: 1, maxLength: 150 }
+            timezone: { type: string, description: IANA timezone tùy chọn }
+            cabin_code: { type: string, maxLength: 50, description: Chỉ SERVICE }
+            minor_units: { type: integer, minimum: 0, maximum: 4, description: Chỉ CURRENCY và bắt buộc }
+            demo: { type: boolean, description: Chỉ CABIN; tương thích fixture cũ }
+          additionalProperties: false

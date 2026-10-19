@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="8" assertions="99" errors="0" failures="2" skipped="0" time="12.542782">
+    <testsuite name="Feature" tests="8" assertions="99" errors="0" failures="2" skipped="0" time="12.542782">
+      <testsuite name="Tests\Feature\CrewWorkflowTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" tests="8" assertions="99" errors="0" failures="2" skipped="0" time="12.542782">
+        <testcase name="test_profile_updates_validate_qualifications_identity_and_revision" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="47" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="12" time="7.112624"/>
+        <testcase name="test_leave_blocks_assignment_and_cancellation_keeps_history" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="59" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="9" time="0.717594"/>
+        <testcase name="test_suggestions_include_qualified_standby_and_warn_when_none_are_eligible" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="70" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="12" time="0.793787">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\CrewWorkflowTest::test_suggestions_include_qualified_standby_and_warn_when_none_are_eligible&#13;
+Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+-Array &amp;0 []
++Array &amp;0 [
++    0 =&gt; Array &amp;1 [
++        'id' =&gt; '01a14d15-c2c3-731f-9674-7bcb87012ee0',
++        'crew_code' =&gt; 'CW-CAP',
++        'full_name' =&gt; 'Nhân sự kiểm thử CW-CAP',
++        'rank' =&gt; 'CAPTAIN',
++        'standby' =&gt; true,
++    ],
++]
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\AssertableJsonString.php:243
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:880
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php:78</failure>
+        </testcase>
+        <testcase name="test_approval_confirmation_and_replacement_have_actor_policy_and_immutable_events" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="80" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="17" time="0.800139">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">Tests\Feature\CrewWorkflowTest::test_approval_confirmation_and_replacement_have_actor_policy_and_immutable_events&#13;
+Failed asserting that a row in the table [crew_assignment_events] matches the attributes {
+    "id": 43,
+    "snapshot": "{\"id\": \"01a14d15-c5de-704d-8ac6-9ddb143db3e2\", \"notes\": null, \"status\": \"ASSIGNED\", \"crew_id\": \"01a14d15-c5c3-7376-ad96-861cea452d27\", \"revision\": 1, \"flight_id\": \"01a14d15-c5d2-721c-ac41-8e4baabfc124\", \"created_at\": \"2026-10-18T02:30:00.000000Z\", \"updated_at\": \"2026-10-18T02:30:00.000000Z\", \"approved_at\": null, \"approved_by\": null, \"confirmed_at\": null, \"confirmed_by\": null, \"duty_end_utc\": \"2026-11-15T14:30:00.000000Z\", \"duty_start_utc\": \"2026-11-15T11:00:00.000000Z\", \"assigned_position\": \"CAPTAIN\", \"confirmation_mode\": null, \"rule_version_code\": \"local-crew-v1\"}"
+}.
+
+Found similar results: [
+    {
+        "id": 43,
+        "snapshot": "{\"id\": \"01a14d15-c5de-704d-8ac6-9ddb143db3e2\", \"notes\": null, \"status\": \"ASSIGNED\", \"crew_id\": \"01a14d15-c5c3-7376-ad96-861cea452d27\", \"revision\": 1, \"flight_id\": \"01a14d15-c5d2-721c-ac41-8e4baabfc124\", \"created_at\": \"2026-10-18T02:30:00.000000Z\", \"updated_at\": \"2026-10-18T02:30:00.000000Z\", \"approved_at\": null, \"approved_by\": null, \"confirmed_at\": null, \"confirmed_by\": null, \"duty_end_utc\": \"2026-11-15T14:30:00.000000Z\", \"duty_start_utc\": \"2026-11-15T11:00:00.000000Z\", \"assigned_position\": \"CAPTAIN\", \"confirmation_mode\": null, \"rule_version_code\": \"local-crew-v1\"}"
+    }
+].
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase.php:43
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php:93</failure>
+        </testcase>
+        <testcase name="test_ineligible_replacement_rolls_back_original_assignment_and_events" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="98" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="7" time="0.697872"/>
+        <testcase name="test_leave_and_profile_changes_invalidate_prior_approval_before_departure" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="105" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="14" time="0.812731"/>
+        <testcase name="test_only_linked_member_or_scoped_operator_can_confirm" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="117" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="10" time="0.804520"/>
+        <testcase name="test_backend_airport_and_flight_scopes_on_profiles_plans_and_actions" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\CrewWorkflowTest.php" line="127" class="Tests\Feature\CrewWorkflowTest" classname="Tests.Feature.CrewWorkflowTest" assertions="18" time="0.803515"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
