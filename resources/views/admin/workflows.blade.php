@@ -15,7 +15,7 @@
 </div></div>
 <div class="card mb-3"><div class="card-header">M02 · Kiểm tra, phê duyệt và công bố lịch bay</div><div class="card-body table-responsive">
 <table class="table"><thead><tr><th>Số hiệu</th><th>Nguồn lực</th><th>Ngày hiệu lực</th><th>Trạng thái / phiên bản</th><th>Thao tác</th></tr></thead><tbody>
-@foreach($schedules as $item)<tr><td>{{ $item->flight_number }}<small class="d-block">{{ $item->route->route_code }}</small></td><td>{{ $item->aircraft_tail ?? 'Thiếu tàu bay' }} / {{ $item->resource_id ? 'Cửa #'.$item->resource_id : 'Thiếu cửa' }}</td><td>{{ $item->effective_from }} — {{ $item->effective_to }}</td><td>{{ $item->status }} / v{{ $item->version }}</td><td>
+@foreach($schedules as $item)<tr><td>{{ $item->flight_number }}<small class="d-block">{{ $item->route->route_code }}</small></td><td>{{ $item->aircraft_tail ?? 'Thiếu máy bay' }} / {{ $item->resource_id ? 'Cửa #'.$item->resource_id : 'Thiếu cửa' }}</td><td>{{ $item->effective_from }} — {{ $item->effective_to }}</td><td>{{ $item->status }} / v{{ $item->version }}</td><td>
 @foreach(['DRAFT'=>['submit','Kiểm tra & gửi duyệt'],'PENDING'=>['approve','Phê duyệt'],'APPROVED'=>['publish','Công bố']] as $status => [$action,$label])
 @if($item->status === $status) @include('admin.partials.workflow-action',['kind'=>'schedule','id'=>$item->id,'action'=>$action,'label'=>$label]) @endif
 @endforeach
@@ -23,8 +23,8 @@
 @include('admin.partials.edit-form', ['action'=>route('admin.schedules.update',$item->id),'record'=>$item,'fields'=>[
     'flight_number'=>['label'=>'Số hiệu'],
     'route_id'=>['label'=>'Đường bay','options'=>\App\Models\Route::pluck('route_code','id')],
-    'model_id'=>['label'=>'Dòng tàu bay','options'=>\App\Models\AircraftModel::pluck('model_code','id')],
-    'aircraft_tail'=>['label'=>'Tàu bay','options'=>\App\Models\Aircraft::pluck('tail_number','tail_number')],
+    'model_id'=>['label'=>'Dòng máy bay','options'=>\App\Models\AircraftModel::pluck('model_code','id')],
+    'aircraft_tail'=>['label'=>'Máy bay','options'=>\App\Models\Aircraft::pluck('tail_number','tail_number')],
     'resource_id'=>['label'=>'Cửa khởi hành','options'=>\App\Models\AirportResource::where('resource_type','GATE')->get()->mapWithKeys(fn($gate)=>[$gate->id=>$gate->airport_code.' / '.$gate->resource_code])],
     'departure_time_utc'=>['label'=>'Giờ cất cánh UTC','type'=>'time'], 'arrival_time_utc'=>['label'=>'Giờ hạ cánh UTC','type'=>'time'],
     'days_of_week'=>['label'=>'Ngày ISO (phân cách dấu phẩy)','format'=>'csv'],
@@ -42,11 +42,11 @@
 <label class="col">Lý do<input name="reason" class="form-control" required></label><div><button class="btn btn-primary">Nhận sự kiện</button></div></form></details>
 <details class="mt-3"><summary>Chọn phương án xử lý bất thường</summary><form method="POST" action="{{ route('admin.workflows.act') }}" class="row g-2 mt-2">@csrf
 <input type="hidden" name="kind" value="resolve"><label class="col-md-4">Chuyến bay<select name="id" class="form-select">@foreach($flights->whereIn('flight_status',['SCHEDULED','BOARDING','DELAYED']) as $flight)<option value="{{ $flight->id }}">{{ $flight->flight_number }} / {{ $flight->flight_date->format('Y-m-d') }}</option>@endforeach</select></label>
-<label class="col-md-4">Phương án<select name="action" class="form-select"><option value="DELAY">Đổi giờ</option><option value="CANCEL">Hủy chuyến</option><option value="REASSIGN">Đổi tàu bay và giờ</option></select></label>
-<label class="col-md-4">Tàu bay (khi đổi tàu)<input name="aircraft_tail" class="form-control" placeholder="VN-D104"></label>
+<label class="col-md-4">Phương án<select name="action" class="form-select"><option value="DELAY">Đổi giờ</option><option value="CANCEL">Hủy chuyến</option><option value="REASSIGN">Đổi máy bay và giờ</option></select></label>
+<label class="col-md-4">Máy bay (khi đổi máy bay)<input name="aircraft_tail" class="form-control" placeholder="VN-D104"></label>
 <label class="col-md-4">Cất cánh mới (UTC)<input type="datetime-local" name="scheduled_dep_utc" class="form-control"></label><label class="col-md-4">Hạ cánh mới (UTC)<input type="datetime-local" name="scheduled_arr_utc" class="form-control"></label><label class="col-md-4">Lý do<input name="reason" class="form-control" required></label><div><button class="btn btn-primary">Kiểm tra và áp dụng</button></div></form></details>
 </div></div>
-<div class="card mb-3"><div class="card-header">M04 · Đội tàu bay</div><div class="card-body"><a href="{{ route('admin.aircrafts') }}">Xem hồ sơ và cảnh báo đội bay</a><p class="mt-2 mb-0">Giờ bay/chu kỳ được ghi thành bản ghi sử dụng có khóa chuyến bay duy nhất khi ARRIVED; gửi lại không cộng trùng.</p></div></div>
+<div class="card mb-3"><div class="card-header">M04 · Đội máy bay</div><div class="card-body"><a href="{{ route('admin.aircrafts') }}">Xem hồ sơ và cảnh báo đội bay</a><p class="mt-2 mb-0">Giờ bay/chu kỳ được ghi thành bản ghi sử dụng có khóa chuyến bay duy nhất khi ARRIVED; gửi lại không cộng trùng.</p></div></div>
 <div class="card mb-3"><div class="card-header">M05 · Lệnh bảo dưỡng và giải phóng kỹ thuật</div><div class="card-body">
 @foreach($orders as $item)<details class="border rounded p-2 mb-2"><summary>{{ $item->order_code }} · {{ $item->aircraft_tail }} · {{ $item->status }}</summary><p class="mt-2">{{ $item->task }} · Hạn: {{ $item->due_at_utc }}</p>
 <form method="POST" action="{{ route('admin.workflows.act') }}" class="row g-2">@csrf<input type="hidden" name="kind" value="maintenance"><input type="hidden" name="id" value="{{ $item->id }}"><input type="hidden" name="action" value="start">
@@ -54,10 +54,10 @@
 <form method="POST" action="{{ route('admin.workflows.act') }}" class="row g-2 mt-2">@csrf<input type="hidden" name="kind" value="maintenance"><input type="hidden" name="id" value="{{ $item->id }}"><input type="hidden" name="action" value="complete">
 <label class="col">Kết quả<input name="result" class="form-control" required></label><label class="col">Mã hồ sơ/bằng chứng<input name="evidence" class="form-control" required></label><label class="col">Xác nhận kỹ thuật<input type="checkbox" name="technical_confirmed" value="1" required></label><div><button class="btn btn-sm btn-outline-primary">Hoàn tất công việc</button></div></form>
 @include('admin.partials.workflow-action',['kind'=>'maintenance','id'=>$item->id,'action'=>'approve','label'=>'Phê duyệt kỹ thuật'])
-@include('admin.partials.workflow-action',['kind'=>'maintenance','id'=>$item->id,'action'=>'release','label'=>'Giải phóng tàu bay'])
+@include('admin.partials.workflow-action',['kind'=>'maintenance','id'=>$item->id,'action'=>'release','label'=>'Giải phóng máy bay'])
 </details>@endforeach
 <details><summary>Lập lịch bảo dưỡng</summary><form method="POST" action="{{ route('admin.workflows.act') }}" class="row g-2 mt-2">@csrf<input type="hidden" name="kind" value="maintenance"><input type="hidden" name="action" value="plan">
-<label class="col-md-4">Mã lệnh<input name="order_code" class="form-control" required></label><label class="col-md-4">Tàu bay<input name="aircraft_tail" class="form-control" required></label><label class="col-md-4">Hạng mục<input name="task" class="form-control" required></label>
+<label class="col-md-4">Mã lệnh<input name="order_code" class="form-control" required></label><label class="col-md-4">Máy bay<input name="aircraft_tail" class="form-control" required></label><label class="col-md-4">Hạng mục<input name="task" class="form-control" required></label>
 <label class="col-md-4">Bắt đầu UTC<input name="starts_at_utc" type="datetime-local" class="form-control" required></label><label class="col-md-4">Kết thúc UTC<input name="ends_at_utc" type="datetime-local" class="form-control" required></label><label class="col-md-4">Hạn UTC<input name="due_at_utc" type="datetime-local" class="form-control" required></label><div><button class="btn btn-primary">Kiểm tra & lập lịch</button></div></form></details>
 </div></div>
 <div class="card mb-3"><div class="card-header">M06 · Phê duyệt, xác nhận và thay thế tổ bay</div><div class="card-body table-responsive">

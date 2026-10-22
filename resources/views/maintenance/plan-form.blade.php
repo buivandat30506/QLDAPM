@@ -1,7 +1,7 @@
 @php($p = $plan ?? null)
 <div class="row g-3">
 @if(!$p)
-<div class="col-md-6"><label for="aircraft_tail" class="form-label">Tàu bay / số liệu sử dụng</label><select id="aircraft_tail" name="aircraft_tail" class="form-select" required>
+<div class="col-md-6"><label for="aircraft_tail" class="form-label">Máy bay / số liệu sử dụng</label><select id="aircraft_tail" name="aircraft_tail" class="form-select" required>
 @foreach($aircrafts as $a)<option value="{{ $a->tail_number }}">{{ $a->tail_number }} — {{ $a->total_flight_hours }} giờ / {{ $a->total_flight_cycles }} chu kỳ — {{ $a->base_airport_code ?: 'chưa xác định cơ sở' }}</option>@endforeach</select></div>
 @endif
 <div class="col-md-6"><label for="plan_code" class="form-label">Mã kế hoạch</label><input id="plan_code" name="plan_code" class="form-control" value="{{ old('plan_code', $p?->plan_code) }}" pattern="[A-Za-z0-9_-]{1,50}" required maxlength="50"></div>

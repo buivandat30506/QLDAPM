@@ -35,7 +35,7 @@
             </div>
             <div class="col-md-3">
                 <select name="aircraft_tail" class="form-select form-select-sm">
-                    <option value="">-- Lọc theo tàu bay --</option>
+                    <option value="">-- Lọc theo máy bay --</option>
                     @foreach($aircrafts as $ac)
                         <option value="{{ $ac->tail_number }}" {{ request('aircraft_tail') === $ac->tail_number ? 'selected' : '' }}>{{ $ac->tail_number }}</option>
                     @endforeach
@@ -52,7 +52,7 @@
                     <tr>
                         <th>Số hiệu & Ngày bay</th>
                         <th>Hành trình</th>
-                        <th>Tàu bay</th>
+                        <th>Máy bay</th>
                         <th>Giờ cất cánh (UTC)</th>
                         <th>Giờ hạ cánh (UTC)</th>
                         <th>Cửa / Chậm</th>
@@ -190,7 +190,7 @@
     </div>
 </div>
 
-<!-- Modal Khởi Tạo Chuyến Bay (Kèm Kiểm Tra Xung Đột Tàu Bay) -->
+<!-- Modal Khởi Tạo Chuyến Bay (Kèm Kiểm Tra Xung Đột Máy Bay) -->
 <div class="modal fade" id="createFlightModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -245,7 +245,7 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-bold">Dòng tàu bay <span class="text-danger">*</span></label>
+                            <label class="form-label fw-bold">Dòng máy bay <span class="text-danger">*</span></label>
                             <select name="model_id" class="form-select" required>
                                 <option value="">-- Chọn model --</option>
                                 @foreach($models as $m)
@@ -265,7 +265,7 @@
                         </div>
                     </div>
                     <input type="hidden" name="status" value="DRAFT">
-                    <label class="form-label">Tàu bay</label><select name="aircraft_tail" class="form-select"><option value="">Chưa phân công</option>@foreach($aircrafts as $aircraft)<option value="{{ $aircraft->tail_number }}">{{ $aircraft->tail_number }}</option>@endforeach</select>
+                    <label class="form-label">Máy bay</label><select name="aircraft_tail" class="form-select"><option value="">Chưa phân công</option>@foreach($aircrafts as $aircraft)<option value="{{ $aircraft->tail_number }}">{{ $aircraft->tail_number }}</option>@endforeach</select>
                     <label class="form-label">Cửa khởi hành</label><select name="resource_id" class="form-select"><option value="">Chưa phân công</option>@foreach(\App\Models\AirportResource::where('resource_type','GATE')->get() as $gate)<option value="{{ $gate->id }}">{{ $gate->airport_code }} / {{ $gate->resource_code }}</option>@endforeach</select>
                     <label class="form-label">Hiệu lực từ (UTC)</label><input type="date" name="effective_from" class="form-control" required>
                     <label class="form-label">Hiệu lực đến (UTC)</label><input type="date" name="effective_to" class="form-control" required>

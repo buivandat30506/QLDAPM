@@ -38,6 +38,7 @@ class AdminController extends Controller
     public function dashboard(): View
     {
         $today = Carbon::now('UTC')->toDateString();
+        $alerts = $this->aircraftService->getMaintenanceAlerts();
 
         $stats = [
             'total_airports'   => Airport::count(),
@@ -45,8 +46,7 @@ class AdminController extends Controller
             'total_aircrafts'  => Aircraft::count(),
             'today_flights'    => OperationalFlight::whereDate('flight_date', $today)->count(),
             'total_crew'       => CrewMember::count(),
-            'maintenance_need' => Aircraft::where('operational_status', Aircraft::STATUS_MAINTENANCE)
-                                        ->orWhere('total_flight_hours', '>=', 3000)->count(),
+            'maintenance_need' => $alerts->count(),
         ];
 
         $todayFlights = OperationalFlight::with(['route.originAirport', 'route.destAirport', 'aircraft', 'crews'])
@@ -54,8 +54,6 @@ class AdminController extends Controller
             ->orderBy('scheduled_dep_utc')
             ->take(10)
             ->get();
-
-        $alerts = $this->aircraftService->getMaintenanceAlerts();
 
         return view('admin.dashboard', compact('stats', 'todayFlights', 'alerts'));
     }

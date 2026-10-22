@@ -1,21 +1,22 @@
 @extends('layouts.admin')
-@section('page_title', 'Bảo dưỡng kỹ thuật')
+@section('page_title', 'Bảo dưỡng máy bay')
 @section('content')
+<div class="sitemap-module-page maintenance-module-page">
 <p>Kế hoạch và lệnh bảo dưỡng lưu trong cơ sở dữ liệu. Thời gian nhập và hiển thị ở UTC.</p>
 <form method="GET" class="row g-2 mb-3" aria-label="Lọc kế hoạch">
-<div class="col-md-5"><label for="q" class="form-label">Mã kế hoạch / tàu bay</label><input id="q" name="q" value="{{ request('q') }}" class="form-control"></div>
+<div class="col-md-5"><label for="q" class="form-label">Mã kế hoạch / máy bay</label><input id="q" name="q" value="{{ request('q') }}" class="form-control"></div>
 <div class="col-md-4"><label for="status" class="form-label">Trạng thái kế hoạch</label><select id="status" name="status" class="form-select"><option value="">Tất cả</option><option value="ACTIVE" @selected(request('status')==='ACTIVE')>Đang theo dõi</option><option value="RESOLVED" @selected(request('status')==='RESOLVED')>Đã giải quyết</option></select></div><div class="col-md-3 align-self-end"><button class="btn btn-outline-primary">Lọc</button></div>
 </form>
-<div class="table-responsive"><table class="table" aria-label="Kế hoạch bảo dưỡng"><thead><tr><th>Mã</th><th>Tàu bay</th><th>Hạng mục</th><th>Lịch UTC</th><th>Hạn UTC</th><th>Trạng thái</th></tr></thead><tbody>
+<div class="table-responsive"><table class="table" aria-label="Kế hoạch bảo dưỡng"><thead><tr><th>Mã</th><th>Máy bay</th><th>Hạng mục</th><th>Lịch UTC</th><th>Hạn UTC</th><th>Trạng thái</th></tr></thead><tbody>
 @forelse($plans as $p)<tr><td><a href="{{ route('admin.maintenance.show', $p->id) }}">{{ $p->plan_code }}</a></td><td>{{ $p->aircraft_tail }}</td><td>{{ $p->task }}</td><td>{{ $p->starts_at_utc }} → {{ $p->ends_at_utc }}</td><td>{{ $p->due_at_utc }}</td><td>{{ $p->status==='ACTIVE' ? 'Đang theo dõi' : 'Đã giải quyết' }}</td></tr>@empty<tr><td colspan="6">Chưa có kế hoạch trong phạm vi tìm kiếm.</td></tr>@endforelse
 </tbody></table></div>{{ $plans->links() }}
 @if($aircrafts->contains(fn($a)=>Gate::allows('maintenance.write', $a->base_airport_code ? [['airport'=>$a->base_airport_code]] : [])))
-<section class="card mb-4"><h2 class="card-header h5">Lập kế hoạch bảo dưỡng</h2><form method="POST" action="{{ route('admin.maintenance.store') }}" class="card-body" aria-label="Kế hoạch bảo dưỡng">@csrf @include('maintenance.plan-form')</form></section>
+<section class="card mb-4"><h2 class="card-header h5">Lập kế hoạch bảo dưỡng máy bay</h2><form method="POST" action="{{ route('admin.maintenance.store') }}" class="card-body" aria-label="Kế hoạch bảo dưỡng">@csrf @include('maintenance.plan-form')</form></section>
 @endif
 <h2 class="h5">Vật tư theo kho sân bay</h2>
 @if($legacy->isNotEmpty())
 <section class="card mb-3"><h2 class="card-header h5">Hồ sơ tương thích cần rà soát</h2><div class="card-body"><p>Các lệnh cũ chưa có kế hoạch, chữ ký và tài liệu riêng tư. Nội dung văn bản cũ được giữ trong lịch sử; chưa được dùng để giải phóng.</p>
-@foreach($legacy as $o)<p>{{ $o->order_code }} — {{ $o->aircraft_tail }} — {{ $o->task }}. Cơ sở: {{ $o->base_airport_code ?: 'chưa có; bộ phận đội tàu cần bổ sung' }}.</p>
+@foreach($legacy as $o)<p>{{ $o->order_code }} — {{ $o->aircraft_tail }} — {{ $o->task }}. Cơ sở: {{ $o->base_airport_code ?: 'chưa có; bộ phận đội máy bay cần bổ sung' }}.</p>
 @if($o->base_airport_code && Gate::allows('maintenance.write', [['airport'=>$o->base_airport_code]]) && in_array($o->status,['PLANNED','WAITING_MATERIALS','IN_PROGRESS']))
 <form method="POST" action="{{ route('admin.maintenance.adopt', $o->id) }}" class="row g-2 mb-3" aria-label="Chuyển hồ sơ {{ $o->order_code }}">@csrf
 <div class="col-md-4"><label for="legacy_tech_{{ $o->id }}">Kỹ thuật viên phụ trách ban đầu</label><select id="legacy_tech_{{ $o->id }}" name="technician_id" class="form-select"><option value="{{ auth()->id() }}">{{ auth()->user()->username }}</option></select></div>
@@ -30,4 +31,5 @@
 @foreach(['code'=>'Mã vật tư','name'=>'Tên vật tư','unit'=>'Đơn vị nguyên (cái, bộ…)','quantity'=>'Số lượng nhập','reference'=>'Số phiếu nhập duy nhất','reason'=>'Căn cứ nhập kho'] as $field=>$label)<div class="col-md-4"><label for="stock_{{ $field }}" class="form-label">{{ $label }}</label><input id="stock_{{ $field }}" name="{{ $field }}" class="form-control" required @if($field==='quantity') type="number" min="1" @else maxlength="{{ $field==='reason' ? 2000 : ($field==='name' ? 200 : ($field==='unit' ? 30 : ($field==='reference' ? 100 : 50))) }}" @endif></div>@endforeach
 <div><button class="btn btn-primary">Ghi phiếu nhập</button></div></form></section>
 @endif
+</div>
 @endsection

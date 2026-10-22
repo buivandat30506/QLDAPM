@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Quản lý Đội tàu bay')
-@section('page_title', 'Quản Lý Đội Tàu Bay & Dòng Tàu Bay (UC-10, UC-11)')
+@section('title', 'Quản lý Đội máy bay')
+@section('page_title', 'Quản Lý Đội Máy Bay & Dòng Máy Bay (UC-10, UC-11)')
 
 @section('content')
 <div class="row g-4 mb-4">
@@ -24,7 +24,7 @@
                             </div>
                             <div class="text-end">
                                 <span class="badge bg-light text-dark border d-block mb-1">Quay đầu: {{ $model->turnaround_time_minutes }}p</span>
-                                <small class="text-primary fw-semibold">{{ $model->aircrafts_count ?? count($model->aircrafts) }} tàu bay</small>
+                                <small class="text-primary fw-semibold">{{ $model->aircrafts_count ?? count($model->aircrafts) }} máy bay</small>
                             </div>
                         </li>
                     @empty
@@ -35,13 +35,13 @@
         </div>
     </div>
 
-    <!-- Danh sách Đội tàu bay (Fleet) -->
+    <!-- Danh sách Đội máy bay (Fleet) -->
     <div class="col-lg-8">
         <div class="card h-100">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-airplane-fill me-2 text-success"></i> Đội Tàu Bay Khai Thác</span>
+                <span><i class="bi bi-airplane-fill me-2 text-success"></i> Đội Máy Bay Khai Thác</span>
                 <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#createAircraftModal">
-                    <i class="bi bi-plus-lg me-1"></i> Tiếp Nhận Tàu Bay Mới
+                    <i class="bi bi-plus-lg me-1"></i> Tiếp Nhận Máy Bay Mới
                 </button>
             </div>
             <div class="card-body">
@@ -92,14 +92,14 @@
                                         @include('admin.partials.edit-form', [
                                             'action' => route('admin.aircrafts.update', $aircraft->tail_number), 'record' => $aircraft,
                                             'fields' => [
-                                                'model_id' => ['label' => 'Dòng tàu bay', 'options' => $models->pluck('model_code', 'id')],
+                                                'model_id' => ['label' => 'Dòng máy bay', 'options' => $models->pluck('model_code', 'id')],
                                                 'manufacture_year' => ['label' => 'Năm sản xuất', 'type' => 'number', 'min' => 1970, 'max' => date('Y') + 1],
                                                 'total_flight_hours' => ['label' => 'Giờ bay (từ chuyến hoàn tất)', 'type' => 'number', 'min' => 0, 'step' => '0.01', 'readonly' => true],
                                                 'total_flight_cycles' => ['label' => 'Chu kỳ bay (từ chuyến hoàn tất)', 'type' => 'number', 'min' => 0, 'readonly' => true],
                                                 'operational_status' => ['label' => 'Trạng thái', 'options' => ['OPERATIONAL' => 'Khai thác', 'MAINTENANCE' => 'Bảo dưỡng', 'GROUNDED' => 'Cấm bay']],
                                             ],
                                         ])
-                                        <form action="{{ route('admin.aircrafts.destroy', $aircraft->tail_number) }}" method="POST" class="d-inline" onsubmit="return confirm('Xóa tàu bay {{ $aircraft->tail_number }} khỏi hệ thống?')">
+                                        <form action="{{ route('admin.aircrafts.destroy', $aircraft->tail_number) }}" method="POST" class="d-inline" onsubmit="return confirm('Xóa máy bay {{ $aircraft->tail_number }} khỏi hệ thống?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
@@ -108,7 +108,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-4 text-muted">Chưa có tàu bay nào trong đội bay.</td>
+                                    <td colspan="6" class="text-center py-4 text-muted">Chưa có máy bay nào trong đội bay.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -158,14 +158,14 @@
     </div>
 </div>
 
-<!-- Modal Thêm Tàu Bay Mới Vào Đội Bay -->
+<!-- Modal Thêm Máy Bay Mới Vào Đội Bay -->
 <div class="modal fade" id="createAircraftModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{ route('admin.aircrafts.store') }}" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title">Tiếp Nhận Tàu Bay Mới (UC-10)</h5>
+                    <h5 class="modal-title">Tiếp Nhận Máy Bay Mới (UC-10)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">

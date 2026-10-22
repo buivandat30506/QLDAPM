@@ -1,18 +1,60 @@
 @extends('layouts.admin')
-@section('title','Điều hành chuyến bay')
+@section('title', 'Quản lý chuyến bay')
+@section('page_title', 'Quản lý chuyến bay')
 @section('content')
-<h1>Điều hành chuyến bay</h1>
+@php
+    $moduleAccess = app(\App\Shared\Security\AccessControl::class);
+    $moduleCanReadRoutes = $moduleAccess->scopes(auth()->user(), 'route.read')->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport']));
+    $moduleCanReadSchedules = $moduleAccess->scopes(auth()->user(), 'schedule.read')->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport']));
+    $creationCrewAllowed = in_array(old('schedule_id', $schedules->first()?->id), $crewAssignableScheduleIds ?? [], true);
+@endphp
+<div class="sitemap-module-page flight-module-page">
+<h1 class="h3">Quản lý chuyến bay</h1>
+@if($moduleCanReadRoutes)
+<section class="card module-panel module-tone-info"><div class="card-body module-page-heading">
+<h2 class="module-section-title mb-0"><i class="bi bi-signpost-split module-icon" aria-hidden="true"></i>Tuyến đường bay</h2><a class="btn btn-sm btn-outline-primary" href="{{ route('admin.routes') }}">Xem tất cả</a>
+</div></section>
+@endif
+<section class="module-section" aria-labelledby="flight-search-title">
+<h2 id="flight-search-title" class="module-section-title">Tra cứu chuyến bay</h2>
 <form method="get" class="row g-2 mb-3">
 <div class="col-md-4"><label for="search" class="form-label">Số hiệu chuyến</label><input id="search" name="search" value="{{ request('search') }}" class="form-control"></div>
 <div class="col-md-3"><label for="date" class="form-label">Ngày UTC</label><input id="date" name="date" type="date" value="{{ request('date') }}" class="form-control"></div>
-<div class="col-md-3"><label for="filter_status" class="form-label">Trạng thái</label><select id="filter_status" name="flight_status" class="form-select"><option value="">Tất cả</option>@foreach(['SCHEDULED'=>'Theo lịch','BOARDING'=>'Đang lên tàu','DELAYED'=>'Chậm','DEPARTED'=>'Đã khởi hành','ARRIVED'=>'Đã hạ cánh','CANCELLED'=>'Đã hủy'] as $s=>$label)<option value="{{ $s }}" @selected(request('flight_status')===$s)>{{ $label }}</option>@endforeach</select></div>
+<div class="col-md-3"><label for="filter_status" class="form-label">Trạng thái</label><select id="filter_status" name="flight_status" class="form-select"><option value="">Tất cả</option>@foreach(['SCHEDULED'=>'Theo lịch','BOARDING'=>'Đang lên máy bay','DELAYED'=>'Chậm','DEPARTED'=>'Đã khởi hành','ARRIVED'=>'Đã hạ cánh','CANCELLED'=>'Đã hủy'] as $s=>$label)<option value="{{ $s }}" @selected(request('flight_status')===$s)>{{ $label }}</option>@endforeach</select></div>
 <div class="col-md-2 align-self-end"><button class="btn btn-primary">Lọc chuyến</button></div></form>
-<form id="bulk-form" method="post" action="{{ route('admin.flights.bulk','preview') }}" class="card p-3 mb-3">@csrf<h2 class="h5">Xử lý hàng loạt có xem trước</h2><p>Chọn tối đa 20 chuyến có cảnh báo mở trong bảng.</p><label for="bulk_action">Phương án lô</label><select id="bulk_action" name="action" class="form-select"><option value="DELAY">Lùi giờ</option><option value="CANCEL">Hủy chuyến</option></select><label for="bulk_minutes">Số phút lùi giờ</label><input id="bulk_minutes" name="delay_minutes" type="number" min="1" max="1440" value="30" class="form-control"><label for="bulk_reason">Lý do quyết định lô</label><input id="bulk_reason" name="reason" class="form-control" required maxlength="500"><button class="btn btn-outline-primary mt-2">Xem trước tác động lô</button></form>
-<div class="table-responsive"><table class="table table-striped"><thead><tr><th>Chọn</th><th>Chuyến</th><th>Tuyến</th><th>Tàu / cửa</th><th>Kế hoạch UTC</th><th>Dự kiến UTC</th><th>Trạng thái</th></tr></thead><tbody>
-@forelse($flights as $f)<tr><td>@can('flight.write',[['airport'=>$f->route->origin_airport_code,'flight'=>$f->id]])<input form="bulk-form" type="checkbox" name="flight_ids[]" value="{{ $f->id }}" aria-label="Chọn {{ $f->flight_number }}">@endcan</td><td><a href="{{ route('admin.flights.show',$f->id) }}">{{ $f->flight_number }}</a></td><td>{{ $f->route->origin_airport_code }} → {{ $f->route->dest_airport_code }}</td><td>{{ $f->aircraft_tail }} / {{ $f->gate_number ?: 'Thiếu cửa' }}</td><td>{{ $f->scheduled_dep_utc->format('d/m/Y H:i') }} → {{ $f->scheduled_arr_utc->format('H:i') }}</td><td>{{ $f->estimated_dep_utc?->format('d/m H:i') ?: 'Chưa nhận' }}</td><td>@include('operations.status',['status'=>$f->flight_status]) @if($f->closed_at_utc)<span class="badge bg-dark">Đã đóng</span>@endif</td></tr>@empty<tr><td colspan="7">Không có chuyến trong phạm vi/bộ lọc.</td></tr>@endforelse
-</tbody></table></div>{{ $flights->links() }}
-@can('flight.write')<section class="card p-3 mt-3"><h2 class="h4">Khởi tạo từ lịch đã công bố</h2><form method="post" action="{{ route('admin.flights.store') }}">@csrf
-<label for="schedule_id" class="form-label">Lịch công bố</label><select id="schedule_id" name="schedule_id" class="form-select" required>@foreach($schedules as $s)<option value="{{ $s->id }}">{{ $s->flight_number }} — {{ $s->route->origin_airport_code }} → {{ $s->route->dest_airport_code }} — phiên bản {{ $s->version }}</option>@endforeach</select>
-<label for="service_date" class="form-label mt-2">Ngày khai thác theo lịch nguồn</label><input id="service_date" type="date" name="service_date" value="{{ old('service_date',now('UTC')->toDateString()) }}" class="form-control" required><button class="btn btn-primary mt-2">Khởi tạo chuyến</button>
-@if($schedules->isEmpty())<p class="text-muted">Chưa có lịch công bố phù hợp. Hoàn thành M02 trước khi tạo chuyến.</p>@endif</form></section>@endcan
+</section>
+<section class="module-section" aria-labelledby="flight-list-title">
+<h2 id="flight-list-title" class="module-section-title">Danh sách chuyến bay</h2>
+<div class="card module-table-wrap">
+<div class="table-responsive"><table class="table table-striped"><thead><tr><th scope="col">Chuyến</th><th scope="col">Tuyến</th><th scope="col">Máy bay / cửa</th><th scope="col">Kế hoạch UTC</th><th scope="col">Dự kiến UTC</th><th scope="col">Trạng thái</th></tr></thead><tbody>
+@forelse($flights as $f)
+<tr>
+<td><a href="{{ route('admin.flights.show',$f->id) }}">{{ $f->flight_number }}</a></td>
+<td>{{ $f->route->origin_airport_code }} → {{ $f->route->dest_airport_code }}</td>
+<td>{{ $f->aircraft_tail }} / {{ $f->gate_number ?: 'Thiếu cửa' }}</td>
+<td>{{ $f->scheduled_dep_utc->format('d/m/Y H:i') }} → {{ $f->scheduled_arr_utc->format('H:i') }}</td>
+<td>{{ $f->estimated_dep_utc?->format('d/m H:i') ?: 'Chưa nhận' }}</td>
+<td>@include('operations.status',['status'=>$f->flight_status]) @if($f->closed_at_utc)<span class="badge bg-dark">Đã đóng</span>@endif</td>
+</tr>
+@empty<tr><td colspan="6">Không có chuyến trong phạm vi/bộ lọc.</td></tr>@endforelse
+</tbody></table></div>
+
+</div>{{ $flights->links() }}
+</section>
+@can('flight.write')<details id="flight-create-panel" class="card module-disclosure module-tone-info" @if($errors->any()) open @endif><summary><span><i class="bi bi-plus-lg module-icon" aria-hidden="true"></i>Khởi tạo chuyến bay</span></summary><div class="card-body"><h2 class="h5">Khởi tạo từ lịch đã công bố</h2><form method="post" action="{{ route('admin.flights.store') }}" data-flight-create-form>@csrf
+<label for="schedule_id" class="form-label">Lịch công bố</label><select id="schedule_id" name="schedule_id" class="form-select" required>@foreach($schedules as $s)<option value="{{ $s->id }}" data-crew-allowed="{{ in_array($s->id, $crewAssignableScheduleIds ?? [], true) ? 'true' : 'false' }}" @selected(old('schedule_id') === $s->id)>{{ $s->flight_number }} — {{ $s->route->origin_airport_code }} → {{ $s->route->dest_airport_code }} — phiên bản {{ $s->version }}</option>@endforeach</select>
+<label for="service_date" class="form-label mt-2">Ngày khai thác theo lịch nguồn</label><input id="service_date" type="date" name="service_date" value="{{ old('service_date',now('UTC')->toDateString()) }}" class="form-control" required>
+@if($canAssignCrewOnCreate ?? false)
+    @include('operations.create-crew-fields')
+@endif
+<button class="btn btn-primary mt-3">Khởi tạo chuyến</button>
+@if($schedules->isEmpty())<p class="text-muted">Chưa có lịch trình đã công bố phù hợp.</p>@endif</form></div></details>@endcan
+
+@if($moduleCanReadSchedules)
+<a class="card module-panel module-tone-info flight-schedule-link" href="{{ route('admin.schedules') }}">
+    <span class="module-section-title mb-0"><i class="bi bi-calendar3 module-icon" aria-hidden="true"></i>Lịch trình bay</span>
+    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+</a>
+@endif
+</div>
 @endsection

@@ -172,7 +172,7 @@
                 <div class="p-3 bg-light">
                     <label class="form-label">Hạn giấy phép<input type="date" name="license_expires_on" class="form-control" required></label>
                     <label class="form-label">Hạn đào tạo<input type="date" name="training_expires_on" class="form-control" required></label>
-                    <label class="form-label d-block">Năng định (chọn các dòng tàu bay)</label>
+                    <label class="form-label d-block">Năng định (chọn các dòng máy bay)</label>
                     @foreach(\App\Models\AircraftModel::all() as $model)
                         <label class="me-3"><input type="checkbox" name="qualified_model_ids[]" value="{{ $model->id }}"> {{ $model->model_code }}</label>
                     @endforeach

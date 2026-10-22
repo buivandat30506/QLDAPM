@@ -1,7 +1,21 @@
 @extends('layouts.admin')
-@section('title','Đường bay và mùa khai thác')
+@section('title','Tuyến đường bay')
+@section('page_title', 'Tuyến đường bay')
 @section('content')
-<h5>Đường bay và mùa khai thác</h5>
+@php
+    $routePageAccess = app(\App\Shared\Security\AccessControl::class);
+    $routePageCanReadFlights = $routePageAccess->scopes(auth()->user(), 'flight.read')
+        ->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport', 'flight']));
+    $routePageCanReadSchedules = $routePageAccess->scopes(auth()->user(), 'schedule.read')
+        ->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport']));
+@endphp
+<div class="sitemap-module-page flight-module-page">
+<div class="module-page-heading">
+    <h1 class="h3">Tuyến đường bay</h1>
+    @if($routePageCanReadFlights || $routePageCanReadSchedules)
+        <a class="btn btn-outline-primary" href="{{ route($routePageCanReadFlights ? 'admin.flights' : 'admin.schedules') }}"><i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Quay lại Quản lý chuyến bay</a>
+    @endif
+</div>
 <form class="row g-2 mb-3" method="GET">
     <div class="col-md-4"><label class="form-label" for="search">Tìm mã đường bay</label><input class="form-control" id="search" name="search" value="{{ request('search') }}"></div>
     <div class="col-md-3"><label class="form-label" for="status">Trạng thái</label><select class="form-select" name="status" id="status"><option value="">Tất cả</option><option value="ACTIVE" @selected(request('status')==='ACTIVE')>Hoạt động</option><option value="SUSPENDED" @selected(request('status')==='SUSPENDED')>Tạm ngừng</option></select></div>
@@ -14,4 +28,5 @@
 @if(app(\App\Shared\Security\AccessControl::class)->scopes(auth()->user(),'route.write')->isNotEmpty())
 <details class="card p-3"><summary>Thêm đường bay</summary><form method="POST" action="{{ route('admin.routes.store') }}" class="mt-3">@csrf @include('planning.route-fields',['route'=>null])<button class="btn btn-success mt-3">Tạo đường bay</button></form></details>
 @endif
+</div>
 @endsection

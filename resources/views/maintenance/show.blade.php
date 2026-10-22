@@ -1,9 +1,10 @@
 @extends('layouts.admin')
-@section('page_title', 'Hồ sơ bảo dưỡng '.$plan->plan_code)
+@section('page_title', 'Hồ sơ bảo dưỡng máy bay '.$plan->plan_code)
 @section('content')
+<div class="sitemap-module-page maintenance-module-page">
 @php($context = $aircraft->base_airport_code ? [['airport'=>$aircraft->base_airport_code]] : [])
 @php($labels = ['PLANNED'=>'Chờ thực hiện','WAITING_MATERIALS'=>'Chờ vật tư','IN_PROGRESS'=>'Đang thực hiện','COMPLETED'=>'Đã ký kỹ thuật','APPROVED'=>'Đã phê duyệt','RELEASED'=>'Đã giải phóng'])
-<a href="{{ route('admin.maintenance') }}">Danh sách bảo dưỡng</a>
+<a href="{{ route('admin.maintenance') }}">Lịch bảo dưỡng máy bay</a>
 <h1 class="h4 mt-3">{{ $plan->plan_code }} — {{ $aircraft->tail_number }}</h1>
 <p>{{ $plan->task }} · Phiên bản {{ $plan->revision }} · {{ $plan->status==='ACTIVE' ? 'Đang theo dõi' : 'Đã giải quyết' }}</p>
 <p>Sử dụng: {{ $aircraft->total_flight_hours }} giờ / {{ $aircraft->total_flight_cycles }} chu kỳ. Lịch UTC: {{ $plan->starts_at_utc }} → {{ $plan->ends_at_utc }}. Hạn: {{ $plan->due_at_utc }} UTC.</p>
@@ -16,7 +17,7 @@
 <section class="card"><h2 class="card-header h5">Tạo lệnh bảo dưỡng</h2><form method="POST" action="{{ route('admin.maintenance.order', $plan->id) }}" class="card-body row g-3" aria-label="Tạo lệnh bảo dưỡng">@csrf
 <div class="col-md-4"><label for="order_code" class="form-label">Mã lệnh</label><input id="order_code" name="order_code" class="form-control" required maxlength="50"></div>
 <div class="col-md-4"><label for="technician_id" class="form-label">Kỹ thuật viên phụ trách</label><select id="technician_id" name="technician_id" class="form-select" required>@foreach($technicians as $u)<option value="{{ $u->id }}">{{ $u->username }}</option>@endforeach</select></div>
-<div class="col-md-4"><label for="location_id" class="form-label">Vị trí bảo dưỡng</label><select id="location_id" name="location_id" class="form-select" required>@foreach($locations as $l)<option value="{{ $l->id }}">{{ $l->airport_code }} / {{ $l->resource_code }}</option>@endforeach</select></div>
+<div class="col-md-4"><label for="location_id" class="form-label">Vị trí đỗ bảo dưỡng máy bay</label><select id="location_id" name="location_id" class="form-select" required>@foreach($locations as $l)<option value="{{ $l->id }}">{{ $l->airport_code }} / {{ $l->resource_code }}</option>@endforeach</select></div>
 @if($locations->isEmpty())<p role="alert">Chưa có vị trí đỗ AVAILABLE tại sân bay cơ sở. Người quản lý tài nguyên cần bổ sung trước khi tạo lệnh.</p>@endif
 @foreach($stock as $i=>$m)<div class="col-md-4"><input type="hidden" name="materials[{{ $i }}][material_id]" value="{{ $m->id }}"><label for="material_{{ $m->id }}" class="form-label">{{ $m->code }} — tồn {{ $m->quantity }} {{ $m->unit }}</label><input id="material_{{ $m->id }}" name="materials[{{ $i }}][quantity]" type="number" min="0" value="0" class="form-control"></div>@endforeach
 <p>Nhập 0 nếu hạng mục không dùng vật tư đó. Tồn kho được kiểm tra và trừ nguyên tử khi bắt đầu.</p><div><button class="btn btn-primary">Tạo lệnh</button></div></form></section>
@@ -55,4 +56,5 @@
 @endif @endforeach
 @endif
 <h2 class="h5 mt-4">Lịch sử trách nhiệm</h2><div class="table-responsive"><table class="table" aria-label="Lịch sử bảo dưỡng"><thead><tr><th>UTC</th><th>Người thực hiện</th><th>Hành động</th><th>Căn cứ</th></tr></thead><tbody>@forelse($events as $e)<tr><td>{{ $e->created_at }}</td><td>{{ $e->username ?? 'Dịch vụ nội bộ' }}</td><td>{{ ['AUTHORIZE'=>'Duyệt cho phép thực hiện','LEGACY_REVIEW'=>'Rà soát hồ sơ cũ','ORDER_ADOPTED'=>'Chuyển hồ sơ đầy đủ','ASSIGN'=>'Điều chỉnh nguồn lực','RESOURCES_BEFORE_CHANGE'=>'Nguồn lực trước điều chỉnh','PLAN_CREATED'=>'Lập kế hoạch','PLAN_REVISED'=>'Điều chỉnh kế hoạch','ORDER_CREATED'=>'Tạo lệnh','START'=>'Bắt đầu / kiểm tra vật tư','TASK'=>'Ghi kết quả','EVIDENCE_UPLOADED'=>'Đính kèm tài liệu','COMPLETE'=>'Ký kỹ thuật','APPROVE'=>'Phê duyệt','RELEASE'=>'Giải phóng','KEEP_UNAVAILABLE'=>'Giữ không khả dụng'][$e->action] ?? $e->action }}</td><td class="text-break">{{ $e->reason }}</td></tr>@empty<tr><td colspan="4">Chưa có lịch sử.</td></tr>@endforelse</tbody></table></div>{{ $events->links() }}
+</div>
 @endsection

@@ -1,13 +1,15 @@
 @extends('layouts.admin')
-@section('title','Chi tiết lịch bay')
+@section('title','Chi tiết lịch trình')
+@section('page_title','Lịch trình bay')
 @section('content')
+<div class="sitemap-module-page schedule-module-page">
 @php($context=[['airport'=>$schedule->route->origin_airport_code]])
-<a href="{{ route('admin.schedules') }}">← Danh sách lịch bay</a>
-<h5 class="mt-3">Lịch {{ $schedule->flight_number }} — {{ $schedule->route->route_code }}</h5>
+<a href="{{ route('admin.schedules') }}">← Lịch trình bay</a>
+<h5 class="mt-3">Lịch trình {{ $schedule->flight_number }} — {{ $schedule->route->route_code }}</h5>
 <p>@include('planning.status',['status'=>$schedule->status]) <span class="ms-2">Phiên bản công bố {{ $schedule->version }} · Lần thay đổi {{ $schedule->revision }}</span></p>
 <div class="card p-3 mb-3"><dl class="row mb-0">
     <dt class="col-md-3">Mùa / hiệu lực</dt><dd class="col-md-9">{{ $schedule->season_code??'Không đặt mã mùa' }} / {{ $schedule->effective_from??'Chưa có' }} → {{ $schedule->effective_to??'Chưa có' }}</dd>
-    <dt class="col-md-3">Tàu bay / cửa</dt><dd class="col-md-9">{{ $schedule->aircraft_tail??'Chưa phân công' }} / {{ $options['gates']->firstWhere('id',$schedule->resource_id)?->resource_code??'Chưa phân công' }}</dd>
+    <dt class="col-md-3">Máy bay / cửa</dt><dd class="col-md-9">{{ $schedule->aircraft_tail??'Chưa phân công' }} / {{ $options['gates']->firstWhere('id',$schedule->resource_id)?->resource_code??'Chưa phân công' }}</dd>
     <dt class="col-md-3">Giờ nguồn</dt><dd class="col-md-9">{{ $schedule->departure_time_local??$schedule->departure_time_utc }} → {{ $schedule->arrival_time_local??$schedule->arrival_time_utc }} ({{ $schedule->source_timezone }}), {{ $schedule->departure_time_local?'ngày đến +'.$schedule->arrival_day_offset:'giờ đến ≤ giờ đi: sang ngày sau' }}</dd>
     <dt class="col-md-3">Thứ / ngày ngoại lệ</dt><dd class="col-md-9">{{ implode(', ',$schedule->days_of_week??[]) }}. Loại trừ: {{ implode(', ',$schedule->excluded_dates??[])?:'Không' }}. Bổ sung: {{ implode(', ',$schedule->extra_dates??[])?:'Không' }}.</dd>
     @foreach(['submitted'=>'Gửi duyệt','approved'=>'Phê duyệt','published'=>'Công bố'] as $step=>$label)<dt class="col-md-3">{{ $label }}</dt><dd class="col-md-9">{{ $actors->get($schedule->{$step.'_by'})?->full_name??'Chưa ghi nhận' }} · {{ $schedule->{$step.'_at'}?->format('Y-m-d H:i:s')??'—' }} UTC</dd>@endforeach
@@ -33,4 +35,5 @@
 <h6 class="mt-4">Các bản công bố được lưu</h6>@forelse($versions as $version)@php($snapshot=json_decode($version->snapshot,true))<div class="card p-3 mb-2">Phiên bản {{ $version->version }} · {{ $version->created_at }} UTC · {{ $snapshot['flight_number'] }} · {{ $snapshot['effective_from']??'Chưa xác định' }} → {{ $snapshot['effective_to']??'Chưa xác định' }} · {{ $snapshot['change_reason']??'Bản đầu tiên' }} · {{ count($snapshot['impacts']??[]) }} chuyến liên quan.</div>@empty<p>Chưa có bản công bố.</p>@endforelse
 <p class="mt-3">Các phương án trong cùng chuỗi: @foreach($family as $member)<a class="me-3" href="{{ route('admin.schedules.show',$member->id) }}">{{ $member->flight_number }} — {{ $member->status }} / v{{ $member->version }}</a>@endforeach</p>
 <h6>Lịch sử xử lý</h6><div class="table-responsive"><table class="table"><thead><tr><th>UTC</th><th>Hành động</th><th>Người thực hiện</th><th>Lý do</th></tr></thead><tbody>@forelse($history as $event)<tr><td>{{ $event->created_at }}</td><td>{{ $event->action }}</td><td>{{ $actors->get($event->actor_id)?->full_name??'Dữ liệu khởi tạo / chưa xác định' }}</td><td>{{ $event->reason??'—' }}</td></tr>@empty<tr><td colspan="4">Chưa có lịch sử.</td></tr>@endforelse</tbody></table></div>{{ $history->links() }}
+</div>
 @endsection

@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 @section('title','Chi tiết đường bay')
+@section('page_title', 'Tuyến đường bay')
 @section('content')
+<div class="sitemap-module-page flight-module-page">
 <a href="{{ route('admin.routes') }}">← Danh sách đường bay</a><h5 class="mt-3">{{ $route->route_code }}</h5>
 <p>{{ $route->originAirport->name }} → {{ $route->destAirport->name }}; {{ $route->distance_km }} km, {{ $route->standard_duration_minutes }} phút. {{ $route->restriction_notes }}</p>
 @can('route.write',[['airport'=>$route->origin_airport_code]])
@@ -8,4 +10,5 @@
 <form method="POST" action="{{ route('admin.routes.destroy',$route->id) }}" onsubmit="return confirm('Xóa đường bay chưa có lịch hoặc chuyến bay?')">@csrf @method('DELETE')<button class="btn btn-outline-danger">Xóa đường bay</button></form>
 @endcan
 <h6 class="mt-4">Lịch sử đường bay</h6><div class="table-responsive"><table class="table"><thead><tr><th>UTC</th><th>Hành động</th><th>Người thực hiện (ID)</th></tr></thead><tbody>@forelse($history as $event)<tr><td>{{ $event->created_at }}</td><td>{{ $event->action }}</td><td>{{ $event->actor_id??'Dữ liệu khởi tạo / chưa xác định' }}</td></tr>@empty<tr><td colspan="3">Chưa có lịch sử.</td></tr>@endforelse</tbody></table></div>{{ $history->links() }}
+</div>
 @endsection

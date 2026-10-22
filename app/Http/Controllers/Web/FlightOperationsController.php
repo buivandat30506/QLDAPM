@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Core\CreateFlightWithCrewRequest;
 use App\Models\Aircraft;
 use App\Models\AirportResource;
 use App\Services\Core\FlightEventService;
@@ -10,9 +11,13 @@ use App\Services\Core\FlightManagementService;
 use App\Services\Core\FlightOperations;
 use App\Services\Core\FlightOutbox;
 use App\Services\Core\FlightRecovery;
+use App\Services\Core\CrewService;
 use App\Services\Core\ScheduleService;
+use App\Shared\Security\AccessControl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
 
 class FlightOperationsController extends Controller
 {
@@ -28,8 +33,27 @@ class FlightOperationsController extends Controller
     }
     public function index(Request $r, FlightOperations $ops)
     {
+        $access = app(AccessControl::class);
+        $crewWriteScopes = $access->scopes($r->user(), 'crew.write');
+        $canAssignCrewOnCreate = Gate::allows('flight.write')
+            && $access->scopes($r->user(), 'crew.read')->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport']))
+            && $crewWriteScopes->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport']));
+        $creationCrew = $canAssignCrewOnCreate
+            ? app(CrewService::class)->query(['status' => 'AVAILABLE'])
+                ->when(! $crewWriteScopes->contains('scope_type', 'global'), fn ($query) => $query
+                    ->whereIn('base_airport_code', $crewWriteScopes->where('scope_type', 'airport')->pluck('scope_id')))
+                ->get(['crew_members.id', 'crew_code', 'full_name', 'rank', 'base_airport_code'])
+            : collect();
+        $schedules = app(ScheduleService::class)->query(['status' => 'PUBLISHED'])->get();
+        $crewAssignableScheduleIds = $schedules->filter(fn ($schedule) => $canAssignCrewOnCreate
+            && ($crewWriteScopes->contains('scope_type', 'global')
+                || $crewWriteScopes->contains(fn ($scope) => $scope->scope_type === 'airport'
+                    && $scope->scope_id === $schedule->route->origin_airport_code)))
+            ->pluck('id')->all();
+
         return view('operations.index',['flights'=>$ops->query($r->query())->paginate(20)->withQueryString(),
-            'schedules'=>app(ScheduleService::class)->query(['status'=>'PUBLISHED'])->get()]);
+            'schedules' => $schedules, 'crewAssignableScheduleIds' => $crewAssignableScheduleIds,
+            'creationCrew' => $creationCrew, 'canAssignCrewOnCreate' => $canAssignCrewOnCreate]);
     }
 
     public function show(string $id, FlightOperations $ops)
@@ -45,10 +69,36 @@ class FlightOperationsController extends Controller
             'aircrafts'=>Aircraft::where('operational_status','OPERATIONAL')->orderBy('tail_number')->get(['tail_number'])]);
     }
 
-    public function store(\App\Http\Requests\Core\CreateOperationalFlightRequest $r)
+    public function store(CreateFlightWithCrewRequest $r)
     {
-        $f=app(FlightManagementService::class)->createOperationalFlight($r->validated());
-        return redirect()->route('admin.flights.show',$f->id)->with('success','Đã tạo chuyến từ lịch công bố.');
+        $data = $r->validated();
+        $crew = $data['crew'] ?? [];
+        unset($data['crew']);
+
+        $f = DB::transaction(function () use ($data, $crew) {
+            $flight = app(FlightManagementService::class)->createOperationalFlight($data);
+            foreach ($crew as $position => $memberIds) {
+                foreach ($memberIds as $index => $memberId) {
+                    if (! $memberId) { continue; }
+                    try {
+                        app(CrewService::class)->assignCrewToFlight($flight->id, [
+                            'crew_id' => $memberId, 'assigned_position' => $position,
+                        ]);
+                    } catch (ValidationException $error) {
+                        throw ValidationException::withMessages([
+                            'crew.'.$position.'.'.$index => collect($error->errors())->flatten()->all(),
+                        ]);
+                    }
+                }
+            }
+
+            return $flight;
+        });
+
+        $hasCrew = collect($crew)->flatten()->filter()->isNotEmpty();
+        return redirect()->route('admin.flights.show',$f->id)->with('success', $hasCrew
+            ? 'Đã tạo chuyến và lưu phân công phi hành đoàn. Phân công cần được duyệt và xác nhận.'
+            : 'Đã tạo chuyến từ lịch công bố.');
     }
 
     public function act(Request $r, string $id, string $action)
