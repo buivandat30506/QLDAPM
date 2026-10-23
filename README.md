@@ -33,7 +33,7 @@
 Nếu chưa clone repository:
 
 ```powershell
-git clone --branch feature/toan https://github.com/buivandat30506/QLDAPM.git
+git clone --branch feature/frontend-work --single-branch https://github.com/buivandat30506/QLDAPM.git
 Set-Location QLDAPM
 ```
 
@@ -224,8 +224,8 @@ Trước khi cập nhật: backup database và file riêng tư, giữ nguyên .e
 
 ```powershell
 git status --short
-git switch feature/toan
-git pull --ff-only origin feature/toan
+git switch feature/frontend-work
+git pull --ff-only origin feature/frontend-work
 composer install
 npm ci
 npm run build
@@ -243,6 +243,7 @@ Backup và restore xem docs/runbooks/backup-restore.md. Thực hiện restore th
 - OpenAPI: docs/api/foundation.openapi.yaml, docs/api/flight-planning.openapi.yaml, docs/api/flight-operations.openapi.yaml, docs/api/fleet-crew.openapi.yaml.
 - Data dictionary: docs/data-dictionary.md; ERD: docs/erd-maintenance.md; permission matrix: docs/permissions-matrix.csv; hướng dẫn: docs/user-guides/.
 - Laravel endpoint authorization is enforced in backend; do not rely on hiding buttons/menu in the browser as access control.
+- Bố cục và ngôn ngữ giao diện: [bàn giao bố cục](docs/ui-layout-review.md), [bảng thuật ngữ và bàn giao ngôn ngữ](docs/ui-language-review.md). Bằng chứng chạy tự động trong storage là tài nguyên local, không đi kèm bản clone; dùng các lệnh trong mục Kiểm thử để tái chạy trên database test riêng.
 
 Asset watch mode during UI development:
 

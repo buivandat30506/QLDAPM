@@ -17,6 +17,6 @@
 {{ $a->flight->flight_number }}
 @endcan
 </td><td>{{ config('resource-labels.rank.'.$a->assigned_position,$a->assigned_position) }} / {{ config('resource-labels.crew_status.'.$a->status,$a->status) }}</td><td>{{ $a->duty_start_utc }} → {{ $a->duty_end_utc }}</td></tr>@empty<tr><td colspan="3">Chưa có phân công.</td></tr>@endforelse</tbody></table></div></div></section>
-<section class="card"><div class="card-body"><h2 class="h5">Nhật ký hồ sơ gần đây</h2><ul>@forelse($history as $h)<li>{{ $h->created_at }} UTC · {{ config('resource-labels.audit_action.'.$h->action,$h->action) }} · {{ $actors[$h->actor_id] ?? 'Dữ liệu cũ/khởi tạo local' }}</li>@empty<li>Chưa có nhật ký.</li>@endforelse</ul></div></section>
+<section class="card"><div class="card-body"><h2 class="h5">Nhật ký hồ sơ gần đây</h2><ul>@forelse($history as $h)<li>{{ $h->created_at }} UTC · {{ config('resource-labels.audit_action.'.$h->action,$h->action) }} · {{ $actors[$h->actor_id] ?? 'Dữ liệu cũ / khởi tạo mô phỏng' }}</li>@empty<li>Chưa có nhật ký.</li>@endforelse</ul></div></section>
 </div>
 @endsection

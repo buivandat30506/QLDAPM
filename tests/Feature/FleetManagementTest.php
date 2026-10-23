@@ -88,7 +88,7 @@ class FleetManagementTest extends TestCase
         $this->assertSame(auth()->id(), $old['created_by']);
         $this->getJson($url)->assertOk()->assertJsonPath('data.total', 2);
         $this->deleteJson('/api/v1/core/aircrafts/VN-FLEET1')->assertUnprocessable();
-        $this->get('/admin/aircrafts/VN-FLEET1')->assertOk()->assertSee('Sơ đồ ghế hiện tại')->assertSee('Lịch sử cấu hình bất biến')->assertSee('Bản 2');
+        $this->get('/admin/aircrafts/VN-FLEET1')->assertOk()->assertSee('Sơ đồ ghế hiện tại')->assertSee('Lịch sử cấu hình được lưu nguyên trạng')->assertSee('Bản 2');
         $this->assertDatabaseHas('audit_logs', ['entity_type' => 'aircraft_configurations', 'entity_id' => (string) $id, 'action' => 'PUBLISHED']);
     }
 

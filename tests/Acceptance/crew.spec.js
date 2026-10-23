@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openSidebar } from './ui.js';
 const evidence=process.env.TEST_EVIDENCE_DIR||'docs/testing/evidence/2026-10-18-fleet';
 async function login(page) {
     await page.goto('/login');await page.locator('[name="username"]').fill('crew_ops_demo');await page.locator('[name="password"]').fill('Demo@12345');
@@ -14,9 +15,9 @@ test('UAT-UC15: hồ sơ năng định, nghỉ phép, dự bị và hủy khoả
     await page.getByLabel('Email',{exact:true}).fill('cb-profile@example.test');await page.getByLabel('Điện thoại',{exact:true}).fill('SYNTHETIC');
     await page.getByLabel('Số giấy phép',{exact:true}).fill('UAT-CB-PROFILE');await page.getByLabel('Sân bay cơ sở',{exact:true}).selectOption('HAN');
     await page.getByLabel('Giấy phép hết hạn',{exact:true}).fill('2035-12-31');await page.getByLabel('Đào tạo hết hạn',{exact:true}).fill('2035-12-31');
-    const models=page.getByLabel('Năng định dòng tàu',{exact:true});await models.selectOption({label:'A321-200'});
-    await page.getByRole('button',{name:'Lưu nhân sự',exact:true}).click();await expect(page.getByRole('heading',{level:1})).toContainText('CB-PROFILE');
-    await page.getByLabel('Họ tên',{exact:true}).fill('Nhân sự tổng hợp UAT đã sửa');await page.getByRole('button',{name:'Lưu hồ sơ tổ bay',exact:true}).click();
+    const models=page.getByLabel('Năng định dòng máy bay',{exact:true});await models.selectOption({label:'A321-200'});
+    await page.getByRole('button',{name:'Lưu hồ sơ phi hành đoàn',exact:true}).click();await expect(page.getByRole('heading',{level:1})).toContainText('CB-PROFILE');
+    await page.getByLabel('Họ tên',{exact:true}).fill('Nhân sự tổng hợp UAT đã sửa');await page.getByRole('button',{name:'Lưu hồ sơ phi hành đoàn',exact:true}).click();
     await page.reload();await expect(page.getByLabel('Họ tên',{exact:true})).toHaveValue('Nhân sự tổng hợp UAT đã sửa');
     const form=page.getByRole('form',{name:'Lịch khả dụng',exact:true});
     await form.getByLabel('Loại khoảng thời gian',{exact:true}).selectOption('LEAVE');await form.getByLabel('Bắt đầu UTC',{exact:true}).fill('2026-12-10T00:00');
@@ -50,11 +51,11 @@ test('UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay th�
             expect((await page.request.post('/api/v1/core/crew-members/'+(await member.json()).data.id+'/availability',{headers,data:{type:'STANDBY',starts_at_utc:'2026-12-15 10:00:00',ends_at_utc:'2026-12-15 17:00:00',reason:'Dự bị tổng hợp UAT',expected_revision:1}})).status()).toBe(201);
         }
     }
-    await page.request.post('/api/v1/auth/logout',{headers});await page.getByRole('link',{name:'Phương án tổ bay',exact:true}).click();
+    await page.request.post('/api/v1/auth/logout',{headers});await openSidebar(page); await page.getByRole('button',{name:'Nhân sự phi hành đoàn',exact:true}).click(); await page.getByRole('link',{name:'Phân công phi hành đoàn',exact:true}).click();
     await page.getByLabel('Tìm chuyến',{exact:true}).fill('CB901');await page.getByRole('button',{name:'Tìm chuyến',exact:true}).click();await page.getByRole('link',{name:'CB901',exact:true}).click();
     await page.getByRole('button',{name:'Phân công CB-CAP',exact:true}).click();
     await page.getByLabel('Vị trí cần tìm',{exact:true}).selectOption('FIRST_OFFICER');await page.getByRole('button',{name:'Kiểm tra nhân sự',exact:true}).click();
-    await page.getByRole('button',{name:'Phân công CB-FO',exact:true}).click();await page.getByRole('button',{name:'Kiểm tra và duyệt phương án',exact:true}).click();
+    await page.getByRole('button',{name:'Phân công CB-FO',exact:true}).click();await page.getByRole('button',{name:'Kiểm tra và duyệt phân công',exact:true}).click();
     await expect(page.locator('[data-assignment-status="APPROVED"]')).toHaveCount(2);
     for(const code of ['CB-CAP','CB-FO']){await page.getByRole('button',{name:'Ghi nhận xác nhận '+code,exact:true}).click();}
     await expect(page.locator('[data-assignment-status="CONFIRMED"]')).toHaveCount(2);
@@ -63,7 +64,7 @@ test('UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay th�
     await expect(page.getByRole('table',{name:'Nhân sự hợp lệ',exact:true}).locator('tr').filter({hasText:'CB-RES'})).toContainText('Có');
     await page.getByLabel('Lý do thay thế CB-RES',{exact:true}).fill('Thay thế nhân sự theo UAT');await page.getByRole('button',{name:'Thay bằng CB-RES',exact:true}).click();
     await expect(page.locator('[data-assignment-status="REPLACED"]')).toHaveCount(1);await expect(page.locator('[data-assignment-status="ASSIGNED"]')).toHaveCount(1);
-    await page.getByRole('button',{name:'Kiểm tra và duyệt phương án',exact:true}).click();await page.getByRole('button',{name:'Ghi nhận xác nhận CB-RES',exact:true}).click();
+    await page.getByRole('button',{name:'Kiểm tra và duyệt phân công',exact:true}).click();await page.getByRole('button',{name:'Ghi nhận xác nhận CB-RES',exact:true}).click();
     await page.reload();await expect(page.locator('[data-assignment-status="CONFIRMED"]')).toHaveCount(2);await expect(page.locator('main')).toContainText('Thay thế nhân sự theo UAT');
     await expect(page.locator('[data-event-action="OPERATOR_RECORDED_CONFIRMATION"]')).toHaveCount(3);await expect(page.locator('[data-event-action="OPERATOR_RECORDED_CONFIRMATION"]').first()).toContainText('Điều hành ghi nhận xác nhận');await page.screenshot({path:evidence+'/uc16-17-approved-replacement.png',fullPage:true});
     const deniedHeaders=await token(page,'data_demo');expect((await page.request.post('/api/v1/core/flights/'+flightId+'/crew/approve',{headers:deniedHeaders})).status()).toBe(403);

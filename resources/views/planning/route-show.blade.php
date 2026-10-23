@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title','Chi tiết đường bay')
-@section('page_title', 'Tuyến đường bay')
+@section('page_title', 'Đường bay')
 @section('content')
 <div class="sitemap-module-page flight-module-page">
 <a href="{{ route('admin.routes') }}">← Danh sách đường bay</a><h5 class="mt-3">{{ $route->route_code }}</h5>

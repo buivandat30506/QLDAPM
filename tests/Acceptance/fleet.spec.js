@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openSidebar, openDetails } from './ui.js';
 
 const evidence = process.env.TEST_EVIDENCE_DIR || 'docs/testing/evidence/2026-10-18-fleet';
 async function login(page, username = 'fleet_demo') {
@@ -15,13 +16,14 @@ async function headers(page) {
 }
 test('UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật', async ({ page }) => {
     await login(page);
-    await page.getByRole('link', { name: 'Đội tàu bay', exact: true }).click();
+    await openSidebar(page); await page.getByRole('link', { name: 'Quản lý máy bay', exact: true }).click();
     await page.getByLabel('Số đăng ký', { exact: true }).last().fill('VN-BF01');
     await page.getByLabel('Năm sản xuất', { exact: true }).fill('2021');
     await page.getByLabel('Sân bay cơ sở', { exact: true }).selectOption('HAN');
-    await page.getByRole('button', { name: 'Lưu tàu bay', exact: true }).click();
-    await expect(page.getByRole('heading', { name: 'Tàu bay VN-BF01', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Lưu máy bay', exact: true }).click();
+    await expect(page.getByRole('heading', { level: 1, name: 'Máy bay VN-BF01', exact: true })).toBeVisible();
     const detail = page.url();
+    await openDetails(page, 'Công bố cấu hình ghế mới');
     const form = page.getByRole('form', { name: 'Cấu hình ghế', exact: true });
     await form.getByLabel('Tên cấu hình', { exact: true }).fill('Cấu hình thử nghiệm 1');
     await form.locator('#section_0_from').fill('1'); await form.locator('#section_0_to').fill('2');
@@ -34,18 +36,21 @@ test('UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao
     await expect(page.getByLabel('Sơ đồ ghế', { exact: true }).getByText('2B', { exact: true })).toHaveClass(/bg-secondary/);
     await page.reload();
     await expect(page.locator('main')).toContainText('4 ghế vật lý / 3 ghế sử dụng');
+    await openDetails(page, 'Công bố cấu hình ghế mới');
     await form.getByLabel('Tên cấu hình', { exact: true }).fill('Cấu hình thử nghiệm 2');
     await form.locator('#section_0_from').fill('1'); await form.locator('#section_0_to').fill('2');
     await form.locator('#section_0_columns').fill('AB');
     await form.getByLabel('Lý do / hồ sơ cấu hình', { exact: true }).fill('Mở lại ghế cho cấu hình mới');
     await form.getByRole('button', { name: 'Công bố cấu hình', exact: true }).click();
     await expect(page.locator('main')).toContainText('4 ghế vật lý / 4 ghế sử dụng');
+    await openDetails(page, 'Lịch sử cấu hình được lưu nguyên trạng');
     await expect(page.getByRole('table', { name: 'Lịch sử cấu hình', exact: true })).toContainText('Cấu hình thử nghiệm 1');
     await expect(page.getByRole('table', { name: 'Lịch sử cấu hình', exact: true })).toContainText('Cấu hình thử nghiệm 2');
+    await openDetails(page, 'Cập nhật hồ sơ');
     await page.getByLabel('Trạng thái khai thác', { exact: true }).selectOption('GROUNDED');
     await page.getByLabel('Lý do cập nhật (bắt buộc khi đổi trạng thái)', { exact: true }).fill('Ngừng khai thác trong UAT');
     await page.getByRole('button', { name: 'Lưu hồ sơ', exact: true }).click();
-    await page.reload(); await expect(page.getByLabel('Trạng thái khai thác', { exact: true })).toHaveValue('GROUNDED');
+    await page.reload(); await openDetails(page, 'Cập nhật hồ sơ'); await expect(page.getByLabel('Trạng thái khai thác', { exact: true })).toHaveValue('GROUNDED');
     const auth = await headers(page);
     const response = await page.request.get('/api/v1/core/aircrafts/VN-BF01/configurations', { headers: auth });
     expect(response.status()).toBe(200); const configs = (await response.json()).data.data;
@@ -67,7 +72,7 @@ test('UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao
     })).toEqual([]);
     await page.screenshot({ path: evidence + '/uc10-fleet-mobile.png', fullPage: true });
     await page.goto('/admin/aircrafts'); await page.getByLabel('Số đăng ký', { exact: true }).first().fill('VN-BF01');
-    await page.getByRole('button', { name: 'Lọc', exact: true }).click();
+    await page.getByRole('button', { name: 'Lọc máy bay', exact: true }).click();
     await expect(page.locator('tbody')).toContainText('Ngừng khai thác');
     await page.getByRole('link', { name: 'VN-BF01', exact: true }).click(); expect(page.url()).toBe(detail);
 });

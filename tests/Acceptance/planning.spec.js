@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openSidebar } from './ui.js';
 
 const evidence = process.env.TEST_EVIDENCE_DIR || 'docs/testing/evidence/2026-10-18-planning';
 async function login(page, username = 'toan_lead') {
@@ -60,7 +61,8 @@ test('UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên 
     const routes = (await (await page.request.get('/api/v1/core/routes?search=HAN-DAD', { headers })).json()).data.data;
     expect((await page.request.post('/api/v1/auth/logout', { headers })).status()).toBe(200);
     await page.goto('/admin/workflows');
-    await page.getByRole('link', { name: 'Lập và công bố lịch', exact: true }).click();
+    await openSidebar(page); await page.getByRole('link', { name: 'Quản lý chuyến bay', exact: true }).click();
+    await expect(page).toHaveURL(/\/admin\/schedules$/);
     expect(await page.locator('[id]').evaluateAll(elements => {
         const ids = elements.map(element => element.id);
         return ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -69,9 +71,9 @@ test('UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên 
     await page.getByLabel('Số hiệu', { exact: true }).fill('BP901');
     await page.getByLabel('Mã mùa lịch', { exact: true }).fill('UAT-W26');
     await page.getByLabel('Đường bay', { exact: true }).selectOption(String(routes[0].id));
-    await page.getByLabel('Dòng tàu bay', { exact: true }).selectOption(String(aircraft.model_id));
-    await page.getByLabel('Tàu bay', { exact: true }).selectOption('VN-BP01');
-    await page.getByLabel('Cửa khởi hành', { exact: true }).selectOption(String(gateId));
+    await page.getByLabel('Dòng máy bay', { exact: true }).selectOption(String(aircraft.model_id));
+    await page.getByLabel('Máy bay', { exact: true }).selectOption('VN-BP01');
+    await page.getByLabel('Cổng ra máy bay', { exact: true }).selectOption(String(gateId));
     await page.getByLabel('Hiệu lực từ ngày', { exact: true }).fill('2026-12-14');
     await page.getByLabel('Hiệu lực đến ngày', { exact: true }).fill('2026-12-28');
     await page.getByLabel('Giờ đi UTC', { exact: true }).fill('11:00:00');
@@ -101,7 +103,7 @@ test('UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên 
     await expect(page.getByText('Phiên bản 2', { exact: false })).toBeVisible();
     await page.screenshot({ path: evidence + '/uc05-06-published-v2.png', fullPage: true });
     await page.setViewportSize({ width: 390, height: 844 });
-    await expect(page.getByRole('heading', { name: 'Lịch BP901 — HAN-DAD' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Lịch bay BP901 — HAN-DAD' })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: evidence + '/uc05-mobile.png', fullPage: true });
     await page.goto(original); await expect(page.locator('[data-status="SUPERSEDED"]')).toBeVisible();
@@ -116,7 +118,7 @@ test('UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn tha
     await page.getByRole('button', { name: 'Kiểm tra xung đột', exact: true }).click();
     await expect(page.getByText('Có lỗi / chưa kiểm tra đầy đủ', { exact: false })).toBeVisible();
     await page.getByRole('button', { name: 'Gửi duyệt', exact: true }).click();
-    await expect(page.getByRole('alert')).toContainText('Thiếu tàu bay');
+    await expect(page.getByRole('alert')).toContainText('Thiếu máy bay');
     await expect(page.locator('[data-status="DRAFT"]')).toBeVisible();
     await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click();
     await login(page, 'data_demo');

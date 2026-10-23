@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { openSidebar } from './ui.js';
 
 const evidence = process.env.TEST_EVIDENCE_DIR || 'docs/testing/evidence/2026-10-18-maintenance';
 const stamp = date => date.toISOString().slice(0, 16);
@@ -16,13 +17,15 @@ test('UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài l
     await page.request.post('/api/v1/auth/logout', { headers: fleet }); await page.request.post('/api/v1/auth/logout', { headers: data });
     await page.goto('/login'); await page.locator('[name=username]').fill('tech_demo'); await page.locator('[name=password]').fill('Demo@12345');
     await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
-    await page.getByRole('link', { name: 'Bảo dưỡng kỹ thuật', exact: true }).click();
+    await openSidebar(page); await page.getByRole('link', { name: 'Quản lý máy bay', exact: true }).click();
+    if (page.url().includes('/aircrafts')) await page.getByRole('link', { name: 'Lịch bảo dưỡng máy bay', exact: true }).click();
+    await expect(page).toHaveURL(/\/admin\/maintenance\/plans$/);
     const receipt = page.getByRole('form', { name: 'Nhập vật tư', exact: true });
     await receipt.getByLabel('Kho sân bay', { exact: true }).selectOption('HAN');
     for (const [label, value] of [['Mã vật tư', 'BM-BOLT'], ['Tên vật tư', 'Bộ đầu nối thử nghiệm'], ['Đơn vị nguyên (cái, bộ…)', 'bộ'], ['Số lượng nhập', '1'], ['Số phiếu nhập duy nhất', 'BM-R01'], ['Căn cứ nhập kho', 'Phiếu vật tư tổng hợp UAT']]) { await receipt.getByLabel(label, { exact: true }).fill(value); }
     await receipt.getByRole('button', { name: 'Ghi phiếu nhập', exact: true }).click(); await expect(page.getByRole('alert')).toContainText('Đã ghi nhận phiếu');
     const form = page.getByRole('form', { name: 'Kế hoạch bảo dưỡng', exact: true });
-    await form.getByLabel('Tàu bay / số liệu sử dụng', { exact: true }).selectOption('VN-BMX01');
+    await form.getByLabel('Máy bay / số liệu sử dụng', { exact: true }).selectOption('VN-BMX01');
     await form.getByLabel('Mã kế hoạch', { exact: true }).fill('BM-P01'); await form.getByLabel('Hạng mục bảo dưỡng', { exact: true }).fill('Kiểm tra đầu nối UAT');
     const now = Date.now(); await form.getByLabel('Bắt đầu (UTC)', { exact: true }).fill(stamp(new Date(now - 3600000)));
     await form.getByLabel('Kết thúc dự kiến (UTC)', { exact: true }).fill(stamp(new Date(now + 3600000)));
@@ -36,14 +39,14 @@ test('UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài l
     await expect(page.getByRole('table', { name: 'Lịch sử bảo dưỡng', exact: true })).toContainText('Điều chỉnh sau thay đổi khai thác');
     const order = page.getByRole('form', { name: 'Tạo lệnh bảo dưỡng', exact: true });
     await order.getByLabel('Mã lệnh', { exact: true }).fill('BM-O01'); await order.getByLabel('Kỹ thuật viên phụ trách', { exact: true }).selectOption({ label: 'tech_demo' });
-    await order.getByLabel('Vị trí bảo dưỡng', { exact: true }).selectOption({ label: 'HAN / BROWSER-MX' }); await order.getByLabel(/BM-BOLT — tồn/).fill('2');
+    await order.getByLabel('Vị trí đỗ bảo dưỡng máy bay', { exact: true }).selectOption({ label: 'HAN / BROWSER-MX' }); await order.getByLabel(/BM-BOLT — tồn/).fill('2');
     await order.getByRole('button', { name: 'Tạo lệnh', exact: true }).click();
     const act = async title => {
         const f = page.getByRole('form', { name: title, exact: true }); await f.getByLabel('Lý do / căn cứ quyết định', { exact: true }).fill('Quyết định kỹ thuật dùng cho UAT'); await f.getByRole('button', { name: title, exact: true }).click();
     };
     await act('Duyệt cho phép thực hiện');
     await act('Bắt đầu / kiểm tra lại vật tư'); await expect(page.getByRole('heading', { name: 'Lệnh BM-O01: Chờ vật tư', exact: true })).toBeVisible();
-    await page.getByRole('link', { name: 'Danh sách bảo dưỡng', exact: true }).click();
+    await page.getByRole('link', { name: 'Lịch bảo dưỡng máy bay', exact: true }).click();
     await receipt.getByLabel('Kho sân bay', { exact: true }).selectOption('HAN');
     for (const [label, value] of [['Mã vật tư', 'BM-BOLT'], ['Tên vật tư', 'Bộ đầu nối thử nghiệm'], ['Đơn vị nguyên (cái, bộ…)', 'bộ'], ['Số lượng nhập', '1'], ['Số phiếu nhập duy nhất', 'BM-R02'], ['Căn cứ nhập kho', 'Phiếu vật tư tổng hợp UAT']]) { await receipt.getByLabel(label, { exact: true }).fill(value); }
     await receipt.getByRole('button', { name: 'Ghi phiếu nhập', exact: true }).click(); await page.goto(detailUrl);

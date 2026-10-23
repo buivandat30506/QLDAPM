@@ -8,7 +8,7 @@
 <h1 class="h4 mt-3">{{ $plan->plan_code }} — {{ $aircraft->tail_number }}</h1>
 <p>{{ $plan->task }} · Phiên bản {{ $plan->revision }} · {{ $plan->status==='ACTIVE' ? 'Đang theo dõi' : 'Đã giải quyết' }}</p>
 <p>Sử dụng: {{ $aircraft->total_flight_hours }} giờ / {{ $aircraft->total_flight_cycles }} chu kỳ. Lịch UTC: {{ $plan->starts_at_utc }} → {{ $plan->ends_at_utc }}. Hạn: {{ $plan->due_at_utc }} UTC.</p>
-<p>Cơ sở hạn: {{ ['DATE'=>'Ngày giờ','HOURS'=>'Giờ bay','CYCLES'=>'Chu kỳ','CONDITION'=>'Điều kiện'][$plan->trigger_type] }} {{ $plan->due_hours }} {{ $plan->due_cycles }} {{ $plan->condition }}.</p>
+<p>Căn cứ xác định hạn: {{ ['DATE'=>'Ngày giờ','HOURS'=>'Giờ bay','CYCLES'=>'Chu kỳ','CONDITION'=>'Điều kiện'][$plan->trigger_type] }} {{ $plan->due_hours }} {{ $plan->due_cycles }} {{ $plan->condition }}.</p>
 @if($due)<div class="alert alert-danger" role="alert">Đến/quá hạn hoặc điều kiện đang kích hoạt: chặn khai thác cho đến khi giải quyết bảo dưỡng.</div>@endif
 @foreach($alerts as $alert)<div class="alert alert-warning" role="alert">{{ $alert->message }} ({{ $alert->observed_at }} UTC)</div>@endforeach
 @if(!$order)
@@ -18,9 +18,9 @@
 <div class="col-md-4"><label for="order_code" class="form-label">Mã lệnh</label><input id="order_code" name="order_code" class="form-control" required maxlength="50"></div>
 <div class="col-md-4"><label for="technician_id" class="form-label">Kỹ thuật viên phụ trách</label><select id="technician_id" name="technician_id" class="form-select" required>@foreach($technicians as $u)<option value="{{ $u->id }}">{{ $u->username }}</option>@endforeach</select></div>
 <div class="col-md-4"><label for="location_id" class="form-label">Vị trí đỗ bảo dưỡng máy bay</label><select id="location_id" name="location_id" class="form-select" required>@foreach($locations as $l)<option value="{{ $l->id }}">{{ $l->airport_code }} / {{ $l->resource_code }}</option>@endforeach</select></div>
-@if($locations->isEmpty())<p role="alert">Chưa có vị trí đỗ AVAILABLE tại sân bay cơ sở. Người quản lý tài nguyên cần bổ sung trước khi tạo lệnh.</p>@endif
+@if($locations->isEmpty())<p role="alert">Không có vị trí đỗ khả dụng tại sân bay cơ sở. Liên hệ người quản lý tài nguyên để bổ sung trước khi tạo lệnh.</p>@endif
 @foreach($stock as $i=>$m)<div class="col-md-4"><input type="hidden" name="materials[{{ $i }}][material_id]" value="{{ $m->id }}"><label for="material_{{ $m->id }}" class="form-label">{{ $m->code }} — tồn {{ $m->quantity }} {{ $m->unit }}</label><input id="material_{{ $m->id }}" name="materials[{{ $i }}][quantity]" type="number" min="0" value="0" class="form-control"></div>@endforeach
-<p>Nhập 0 nếu hạng mục không dùng vật tư đó. Tồn kho được kiểm tra và trừ nguyên tử khi bắt đầu.</p><div><button class="btn btn-primary">Tạo lệnh</button></div></form></section>
+<p>Nhập 0 nếu hạng mục không dùng vật tư đó. Khi bắt đầu, hệ thống kiểm tra và xuất kho trong cùng một lần xử lý.</p><div><button class="btn btn-primary">Tạo lệnh</button></div></form></section>
 @endcan
 @else
 <p>Phê duyệt trước thực hiện: {{ $order->authorized_at ? $order->authorized_at.' UTC (người duyệt trong lịch sử)' : 'Chưa duyệt nguồn lực hiện tại' }}.</p>

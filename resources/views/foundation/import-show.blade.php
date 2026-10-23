@@ -3,7 +3,7 @@
 @section('page_title', 'Kiểm tra lô nhập dữ liệu chủ')
 @section('content')
 <a class="btn btn-outline-secondary mb-3" href="{{ route('admin.master.index') }}">Dữ liệu chủ</a>
-<div class="card mb-4"><div class="card-body"><p><strong>{{ $batch->filename }}</strong> · {{ $batch->status }} · {{ $batch->row_count }} bản ghi / {{ $batch->error_count }} lỗi</p><p class="small text-break">SHA256: {{ $batch->sha256 }}</p>
+<div class="card mb-4"><div class="card-body"><p><strong>{{ $batch->filename }}</strong> · @include('partials.ui-label', ['uiGroup'=>'import_status', 'uiCode'=>$batch->status]) · {{ $batch->row_count }} bản ghi / {{ $batch->error_count }} lỗi</p><p class="small text-break">Mã kiểm tra tính toàn vẹn (SHA-256): {{ $batch->sha256 }}</p>
 @if($batch->status==='READY')@can('master.write')<form method="POST" action="{{ route('admin.master.commit',$batch->id) }}">@csrf<button class="btn btn-primary">Xác nhận nhập toàn bộ bản nháp</button></form>@endcan
 @elseif($batch->status==='INVALID')<div class="alert alert-danger">Lô chưa đạt chất lượng. Không nhập bất kỳ dòng nào. Sửa tệp theo thông báo rồi kiểm tra lại.</div>
 @else<div class="alert alert-success">Đã nhập toàn bộ bản nháp. Tiếp tục duyệt và công bố từng bản ghi.</div>@endif

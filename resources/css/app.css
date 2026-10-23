@@ -1,5 +1,6 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+@import './operations-layout.css';
 
 :root {
     --sa-navy: #0b2545;
@@ -460,6 +461,14 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     gap: 1rem;
 }
 
+.dashboard-page .dashboard-section-description {
+    margin: 0.375rem 0 0;
+    color: var(--sa-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
 .dashboard-stat-card {
     position: relative;
     display: grid;
@@ -467,7 +476,7 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     align-items: center;
     gap: 0.625rem;
     overflow: hidden;
-    padding: 1.25rem;
+    padding: 1rem;
     transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
 
@@ -532,6 +541,23 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     color: var(--sa-text-muted);
     font-size: 0.8125rem;
     line-height: 1.4;
+}
+
+.dashboard-page .dashboard-workspace {
+    display: grid;
+    grid-template-areas: 'attention' 'operations';
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 1.25rem;
+    min-width: 0;
+}
+
+.dashboard-page .dashboard-attention {
+    grid-area: attention;
+}
+
+.dashboard-page .dashboard-workspace > .dashboard-operations {
+    grid-area: operations;
 }
 
 .dashboard-stat-value {
@@ -761,6 +787,39 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     min-height: 150px;
 }
 
+.dashboard-page .dashboard-attention .dashboard-panel-header {
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
+}
+
+.dashboard-page .dashboard-attention .dashboard-panel-header > .bi {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+}
+
+.dashboard-page .dashboard-attention .dashboard-panel-header h2 {
+    font-size: 1rem;
+}
+
+.dashboard-page .dashboard-panel-empty {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    min-height: 0;
+    padding: 1rem;
+    text-align: left;
+}
+
+.dashboard-page .dashboard-panel-empty .dashboard-empty-icon {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    font-size: 1.125rem;
+}
+
 .dashboard-alert-list {
     flex: 1;
     max-height: 280px;
@@ -840,7 +899,7 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
 }
 
 .admin-layout .dashboard-operations-table th {
-    padding: 0.875rem 1.25rem;
+    padding: 0.875rem 1rem;
     border-bottom-color: var(--sa-border);
     color: var(--sa-text-muted);
     background: #edf2f9;
@@ -850,7 +909,7 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
 }
 
 .dashboard-operations-table td {
-    padding: 1rem 1.25rem;
+    padding: 0.875rem 1rem;
     font-size: 0.8125rem;
     border-bottom-color: var(--sa-divider);
     color: var(--sa-text);
@@ -859,6 +918,7 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
 
 .dashboard-operations-table {
     --bs-table-hover-bg: transparent;
+    font-variant-numeric: tabular-nums;
 }
 
 .dashboard-flight-row-link {
@@ -1848,7 +1908,7 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     }
 }
 
-@container dashboard (min-width: 400px) {
+@container dashboard (min-width: 280px) {
     .dashboard-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1864,23 +1924,22 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     .dashboard-panels {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    .dashboard-tasks {
-        grid-column: 1 / -1;
-    }
 }
 
 @container dashboard (min-width: 1040px) {
     .dashboard-stats {
         grid-template-columns: repeat(6, minmax(0, 1fr));
     }
+}
 
-    .dashboard-panels {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+@container dashboard (min-width: 1200px) {
+    .dashboard-page .dashboard-workspace {
+        grid-template-areas: 'operations attention';
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.36fr);
     }
 
-    .dashboard-tasks {
-        grid-column: auto;
+    .dashboard-page .dashboard-attention {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
@@ -1891,12 +1950,19 @@ body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
 }
 
 @media (max-width: 767.98px) {
-    .dashboard-stats {
-        grid-template-columns: minmax(0, 1fr);
+    .dashboard-page .dashboard-stats {
+        gap: 0.75rem;
     }
 
-    .dashboard-stat-label {
-        min-height: 0;
+    .dashboard-page .dashboard-stat-card {
+        grid-template-columns: minmax(0, 1fr) 32px;
+        padding: 0.875rem;
+    }
+
+    .dashboard-page .dashboard-stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
     }
 
     .dashboard-page {

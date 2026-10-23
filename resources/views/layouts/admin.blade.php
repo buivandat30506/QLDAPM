@@ -30,7 +30,7 @@
     $sidebarVisible['crew.plans'] = $sidebarCrewScopes->contains(fn ($scope) => in_array($scope->scope_type, ['global', 'airport', 'flight']));
     $sidebarVisible['assistance.read'] = $sidebarAccess->scopes(auth()->user(), 'assistance.read')->isNotEmpty();
 @endphp
-        <aside class="sidebar" id="sidebarMenu" aria-label="Điều hướng Admin" aria-hidden="true" inert>
+        <aside class="sidebar" id="sidebarMenu" aria-label="Điều hướng quản trị" aria-hidden="true" inert>
             <div class="brand">
                 <i class="bi bi-airplane-engines-fill text-warning fs-4"></i>
                 <div>
@@ -56,7 +56,7 @@
                     @endif
                     @if($sidebarVisible['flight.read'] || $sidebarVisible['route.read'] || $sidebarVisible['schedule.read'])
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.flights*', 'admin.events*', 'admin.routes*', 'admin.schedules*') ? 'active' : '' }}" href="{{ route($sidebarVisible['flight.read'] ? 'admin.flights' : ($sidebarVisible['schedule.read'] ? 'admin.schedules' : 'admin.routes')) }}">
+                        <a class="nav-link {{ request()->routeIs('admin.flights*', 'admin.events*', 'admin.routes*', 'admin.schedules*') ? 'active' : '' }}" href="{{ route($sidebarVisible['schedule.read'] ? 'admin.schedules' : ($sidebarVisible['flight.read'] ? 'admin.flights' : 'admin.routes')) }}">
                             <i class="bi bi-calendar-check" aria-hidden="true"></i><span>Quản lý chuyến bay</span>
                         </a>
                     </li>
@@ -135,7 +135,7 @@
         <!-- Main Content -->
         <div class="admin-main">
             <!-- Top Navbar -->
-            <nav class="top-navbar" aria-label="Thanh công cụ Admin" data-admin-topbar>
+            <nav class="top-navbar" aria-label="Thanh công cụ quản trị" data-admin-topbar>
                 <div class="topbar-leading">
                     <button class="sidebar-toggle" type="button" aria-label="Mở hoặc đóng menu điều hướng" aria-controls="sidebarMenu" aria-expanded="false" data-sidebar-toggle>
                         <i class="bi bi-list" aria-hidden="true"></i>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="topbar-actions">
                     <span class="badge bg-light text-dark border px-3 py-2">
-                        <i class="bi bi-clock me-1 text-primary"></i> <span id="utcTime"></span> UTC
+                        <i class="bi bi-clock me-1 text-primary" title="Giờ phối hợp quốc tế (UTC)"></i> <span id="utcTime"></span> <abbr title="Giờ phối hợp quốc tế">UTC</abbr>
                     </span>
                     <div class="topbar-user-actions">
                         <a class="btn btn-sm btn-outline-primary" href="{{ route('account') }}"><i class="bi bi-person-circle me-1"></i>{{ auth()->user()?->full_name }}</a>
@@ -154,7 +154,7 @@
             </nav>
 
             <!-- Alerts Container -->
-            <main class="content-wrapper" data-sidebar-dismiss>
+            <main class="content-wrapper workspace-page" data-sidebar-dismiss>
                 @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i> {{ str_replace(['Tàu bay', 'tàu bay'], ['Máy bay', 'máy bay'], session('success')) }}

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="vi">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@yield('title', 'Smart Airline')</title>@vite(['resources/css/app.css', 'resources/js/app.js'])</head>
-<body class="bg-light">
+<body class="bg-light portal-layout">
 <nav class="navbar bg-dark navbar-dark px-4"><a class="navbar-brand" href="/account">Smart Airline</a><div class="d-flex flex-wrap gap-3 align-items-center">
 @auth
 @can('passenger.read', [['self' => auth()->id()]])<a class="text-white" href="{{ route('passenger.profiles') }}">Hồ sơ hành khách</a>@endcan
@@ -12,7 +12,7 @@
 <form method="post" action="{{ route('logout') }}">@csrf<button class="btn btn-sm btn-outline-light">Đăng xuất</button></form>
 @endauth
 </div></nav>
-<main class="container py-4"><h1 class="h3 mb-4">@yield('title', 'Smart Airline')</h1>
+<main class="container py-4 workspace-page"><h1 class="h3 mb-4">@yield('title', 'Smart Airline')</h1>
 @if(session('status'))<div role="status" class="alert alert-success">{{ session('status') }}</div>@endif
 @if($errors->any())<div role="alert" class="alert alert-danger"><ul class="mb-0">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
 @yield('content')</main>

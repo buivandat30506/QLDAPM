@@ -30,12 +30,15 @@ test('UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị tr�
     await page.getByLabel('Thành phố', { exact: true }).fill('Thành phố mô phỏng');
     await page.getByRole('button', { name: 'Tạo sân bay', exact: true }).click();
     await expect(page.getByRole('alert')).toContainText('Đã xảy ra lỗi kiểm tra dữ liệu');
+    await expect(page.getByLabel('Mã IATA', { exact: true })).toBeVisible();
+    await expect(page.getByLabel('Tên sân bay', { exact: true })).toHaveValue('Bản trùng không được lưu');
     await page.goto('/admin/airports');
     await page.locator('tr').filter({ hasText: 'TXA' }).getByRole('link', { name: 'Chi tiết' }).click();
     await page.getByLabel('Trạng thái sân bay').selectOption('INACTIVE');
     await page.getByRole('button', { name: 'Lưu sân bay', exact: true }).click();
     await page.goto('/admin/airports/TXA');
     await expect(page.getByLabel('Trạng thái sân bay')).toHaveValue('INACTIVE');
+    await page.getByRole('button', { name: 'Thêm cơ sở hạ tầng', exact: true }).click();
     await page.getByLabel('Loại tài nguyên', { exact: true }).selectOption('STAND');
     await page.getByLabel('Mã tài nguyên', { exact: true }).fill('UAT-STAND-1');
     await page.getByRole('button', { name: 'Thêm tài nguyên', exact: true }).click();
@@ -63,9 +66,9 @@ test('UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử 
         { category: 'CURRENCY', code: 'UAT_CURRENCY', payload: { name: 'Tiền tệ mô phỏng', minor_units: 0 } },
     ]) });
     await page.getByRole('button', { name: 'Kiểm tra tệp', exact: true }).click();
-    await expect(page.locator('main, .content-wrapper').last()).toContainText('READY');
+    await expect(page.locator('main, .content-wrapper').last()).toContainText('Sẵn sàng nhập');
     await page.getByRole('button', { name: 'Xác nhận nhập toàn bộ bản nháp', exact: true }).click();
-    await expect(page.locator('.content-wrapper')).toContainText('COMMITTED');
+    await expect(page.locator('.content-wrapper')).toContainText('Đã nhập');
     await page.locator('tr').filter({ hasText: 'UAT_CABIN' }).getByRole('link', { name: 'Mở bản nháp đã nhập' }).click();
     for (const name of ['Gửi phê duyệt', 'Phê duyệt', 'Công bố']) {
         await page.getByRole('button', { name, exact: true }).click();
@@ -73,8 +76,8 @@ test('UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử 
     await expect(page.locator('.content-wrapper')).toContainText('Phiên bản 1');
     await page.getByLabel('Lý do tạo bản sửa đổi', { exact: true }).fill('Cập nhật tên hạng khoang UAT');
     await page.getByRole('button', { name: 'Tạo bản sửa đổi', exact: true }).click();
-    await page.getByLabel('Thuộc tính JSON', { exact: true }).fill('{"name":"Hạng khoang UAT đã sửa"}');
-    await page.getByRole('button', { name: 'Lưu thay đổi', exact: true }).click();
+    await page.getByLabel('Thuộc tính dữ liệu (JSON)', { exact: true }).fill('{"name":"Hạng khoang UAT đã sửa"}');
+    await page.getByRole('button', { name: 'Lưu dữ liệu chủ', exact: true }).click();
     for (const name of ['Gửi phê duyệt', 'Phê duyệt', 'Công bố']) {
         await page.getByRole('button', { name, exact: true }).click();
     }
@@ -99,7 +102,7 @@ test('UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác b�
         { category: 'SERVICE', code: 'UAT_BAD_REF', payload: { name: 'Quan hệ lỗi', cabin_code: 'MISSING' } },
     ]) });
     await page.getByRole('button', { name: 'Kiểm tra tệp', exact: true }).click();
-    await expect(page.locator('.content-wrapper')).toContainText('INVALID');
+    await expect(page.locator('.content-wrapper')).toContainText('Có lỗi cần sửa');
     await expect(page.locator('.content-wrapper')).toContainText('Hạng khoang tham chiếu');
     await expect(page.getByRole('button', { name: 'Xác nhận nhập toàn bộ bản nháp' })).toHaveCount(0);
     await page.screenshot({ path: evidence + '/uc03-import-errors.png', fullPage: true });

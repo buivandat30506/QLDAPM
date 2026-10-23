@@ -52,10 +52,167 @@
         </div>
     </section>
 
+    <div class="dashboard-workspace">
+    <div class="dashboard-panels dashboard-attention">
+        <section class="card dashboard-panel dashboard-alerts dashboard-tone-danger" aria-labelledby="featured-alerts-title">
+            <div class="card-header dashboard-panel-header">
+                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i><h2 id="featured-alerts-title">Cảnh báo nổi bật</h2>
+            </div>
+            <ul class="list-unstyled dashboard-alert-list mb-0">
+                @forelse($alerts as $al)
+                @php
+                    $canViewAircraft = !empty($al->tail_number) && Gate::allows('aircraft.read',
+                        $al->base_airport_code ? [['airport' => $al->base_airport_code]] : []);
+                @endphp
+                <li class="dashboard-alert-item">
+                    @if($canViewAircraft)
+                    <a href="{{ route('admin.aircrafts.show', ['tailNumber' => $al->tail_number]) }}" class="dashboard-content-link dashboard-alert-link">
+                    @endif
+                    <div class="dashboard-alert-heading">
+                        <strong><i class="bi bi-airplane" aria-hidden="true"></i>{{ $al->tail_number }}</strong>
+                        <span class="dashboard-status {{ match ($al->operational_status) { 'OPERATIONAL' => 'is-positive', 'MAINTENANCE' => 'is-attention', 'GROUNDED' => 'is-danger', default => 'is-neutral' } }}">{{ ['OPERATIONAL' => 'Khả dụng', 'MAINTENANCE' => 'Bảo dưỡng', 'GROUNDED' => 'Ngừng khai thác'][$al->operational_status] ?? $al->operational_status }}</span>
+                    </div>
+                    <p class="dashboard-alert-model">{{ $al->model?->model_code ?? 'Chưa có dữ liệu' }}@if($al->model?->manufacturer) · {{ $al->model->manufacturer }}@endif</p>
+                    <div class="dashboard-alert-usage">
+                        <span><i class="bi bi-clock" aria-hidden="true"></i>{{ $al->total_flight_hours !== null ? number_format($al->total_flight_hours, 1).' giờ' : 'Chưa có dữ liệu' }}</span>
+                        <span><i class="bi bi-arrow-repeat" aria-hidden="true"></i>{{ $al->total_flight_cycles !== null ? number_format($al->total_flight_cycles).' chu kỳ' : 'Chưa có dữ liệu' }}</span>
+                    </div>
+                    @if($canViewAircraft)
+                    </a>
+                    @endif
+                </li>
+                @empty
+                <li class="dashboard-empty dashboard-panel-empty">
+                    <span class="dashboard-empty-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
+                    <p>Không có cảnh báo nổi bật trong dữ liệu đang hiển thị.</p>
+                </li>
+                @endforelse
+            </ul>
+        </section>
+
+        <section class="card dashboard-panel dashboard-tasks dashboard-tone-warning" aria-labelledby="pending-tasks-title">
+            @php
+                $canViewWorkflows = Gate::allows('operations.read')
+                    || Gate::allows('crew.confirm', [['self' => auth()->id()]]);
+            @endphp
+            @if($canViewWorkflows)
+            <a href="{{ route('admin.workflows') }}" class="dashboard-content-link dashboard-panel-link" aria-labelledby="pending-tasks-title">
+            @endif
+            <div class="card-header dashboard-panel-header">
+                <i class="bi bi-list-check" aria-hidden="true"></i><h2 id="pending-tasks-title">Công việc cần xử lý</h2>
+            </div>
+            <div class="dashboard-empty dashboard-panel-empty">
+                <span class="dashboard-empty-icon"><i class="bi bi-clipboard-check" aria-hidden="true"></i></span>
+                <p>Chưa có danh sách công việc hiển thị tại đây.</p>
+            </div>
+            @if($canViewWorkflows)
+            </a>
+            @endif
+        </section>
+    </div>
+
+    <section class="card dashboard-operations" aria-labelledby="operations-board-title" aria-describedby="operations-board-scope">
+        <div class="card-header dashboard-section-heading">
+            <div>
+                <h2 id="operations-board-title">Bảng chuyến bay trong ngày</h2>
+                <p id="operations-board-scope" class="dashboard-section-description">Tối đa 10 chuyến bay trong ngày UTC, theo giờ khởi hành.</p>
+            </div>
+            @if($dashboardNavigation['admin.flights'])
+            <a href="{{ route('admin.flights') }}" class="btn btn-sm btn-outline-primary dashboard-view-all">Xem tất cả<i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+            @endif
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 dashboard-operations-table">
+                <caption class="visually-hidden">Danh sách tối đa 10 chuyến bay trong ngày UTC theo giờ khởi hành.</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Chuyến bay</th>
+                        <th scope="col">Hành trình</th>
+                        <th scope="col">Máy bay</th>
+                        <th scope="col">Cất cánh (UTC)</th>
+                        <th scope="col">Hạ cánh (UTC)</th>
+                        <th scope="col">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($todayFlights as $flight)
+                    @php
+                        $canViewFlight = !empty($flight->id) && $flight->route && Gate::allows('flight.read', [[
+                            'airport' => $flight->route->origin_airport_code,
+                            'flight' => $flight->id,
+                        ]]);
+                    @endphp
+                    <tr class="{{ $canViewFlight ? 'dashboard-flight-row-link' : '' }}">
+                        <td>
+                            @if($canViewFlight)
+                            <a href="{{ route('admin.flights.show', ['id' => $flight->id]) }}" class="dashboard-content-link dashboard-flight-link stretched-link">
+                            @endif
+                            <strong class="dashboard-flight-number">{{ $flight->flight_number }}</strong>
+                            @if($canViewFlight)
+                            </a>
+                            @endif
+                            @if($flight->gate_number)
+                            <small class="dashboard-flight-gate">Tài nguyên {{ $flight->gate_number }}</small>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="dashboard-flight-route">
+                                <span>{{ $flight->route?->origin_airport_code ?? '—' }}</span>
+                                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                <span>{{ $flight->route?->dest_airport_code ?? '—' }}</span>
+                            </div>
+                        </td>
+                        <td><code>{{ $flight->aircraft_tail }}</code></td>
+                        <td>{{ $flight->scheduled_dep_utc ? \Carbon\Carbon::parse($flight->scheduled_dep_utc)->format('H:i d/m') : 'Chưa có dữ liệu' }}</td>
+                        <td>{{ $flight->scheduled_arr_utc ? \Carbon\Carbon::parse($flight->scheduled_arr_utc)->format('H:i d/m') : 'Chưa có dữ liệu' }}</td>
+                        <td>
+                            @switch($flight->flight_status)
+                                @case('SCHEDULED')
+                                    <span class="dashboard-status is-info">Đã lên lịch</span>
+                                    @break
+                                @case('BOARDING')
+                                    <span class="dashboard-status is-boarding">Đang đón khách</span>
+                                    @break
+                                @case('DEPARTED')
+                                    <span class="dashboard-status is-departed">Đã cất cánh</span>
+                                    @break
+                                @case('ARRIVED')
+                                    <span class="dashboard-status is-positive">Đã hạ cánh</span>
+                                    @break
+                                @case('DELAYED')
+                                    <span class="dashboard-status is-attention">Chậm chuyến</span>
+                                    @break
+                                @case('CANCELLED')
+                                    <span class="dashboard-status is-danger">Đã hủy</span>
+                                    @break
+                                @default
+                                    <span class="dashboard-status is-neutral">{{ $flight->flight_status }}</span>
+                            @endswitch
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6">
+                            <div class="dashboard-empty dashboard-flight-empty">
+                                <span class="dashboard-empty-icon"><i class="bi bi-airplane-engines" aria-hidden="true"></i></span>
+                                <p>Không có chuyến bay trong ngày UTC đang hiển thị</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="dashboard-operations-footer">
+            <span>Đang hiển thị {{ $todayFlights->count() }} / {{ number_format($stats['today_flights']) }} chuyến trong ngày UTC</span>
+        </div>
+    </section>
+    </div>
+
     <section aria-labelledby="airport-overview-title">
         <div class="dashboard-section-heading">
             <div>
-                <h2 id="airport-overview-title">Tổng quan theo từng sân bay</h2>
+                <h2 id="airport-overview-title">Sân bay trong bảng chuyến bay</h2>
             </div>
         </div>
         <div class="dashboard-airports">
@@ -105,167 +262,13 @@
         </div>
     </section>
 
-    <div class="dashboard-panels">
-        <section class="card dashboard-panel dashboard-notices dashboard-tone-purple" aria-labelledby="internal-notices-title">
-            <div class="card-header dashboard-panel-header">
-                <i class="bi bi-bell" aria-hidden="true"></i><h2 id="internal-notices-title">Thông báo nội bộ</h2>
-            </div>
-            <div class="dashboard-empty dashboard-panel-empty">
-                <span class="dashboard-empty-icon"><i class="bi bi-inbox" aria-hidden="true"></i></span>
-                <p>Chưa có thông báo nội bộ</p>
-            </div>
-        </section>
-
-        <section class="card dashboard-panel dashboard-alerts dashboard-tone-danger" aria-labelledby="featured-alerts-title">
-            <div class="card-header dashboard-panel-header">
-                <i class="bi bi-exclamation-triangle" aria-hidden="true"></i><h2 id="featured-alerts-title">Cảnh báo nổi bật</h2>
-            </div>
-            <ul class="list-unstyled dashboard-alert-list mb-0">
-                @forelse($alerts as $al)
-                @php
-                    $canViewAircraft = !empty($al->tail_number) && Gate::allows('aircraft.read',
-                        $al->base_airport_code ? [['airport' => $al->base_airport_code]] : []);
-                @endphp
-                <li class="dashboard-alert-item">
-                    @if($canViewAircraft)
-                    <a href="{{ route('admin.aircrafts.show', ['tailNumber' => $al->tail_number]) }}" class="dashboard-content-link dashboard-alert-link">
-                    @endif
-                    <div class="dashboard-alert-heading">
-                        <strong><i class="bi bi-airplane" aria-hidden="true"></i>{{ $al->tail_number }}</strong>
-                        <span class="dashboard-status {{ match ($al->operational_status) { 'OPERATIONAL' => 'is-positive', 'MAINTENANCE' => 'is-attention', 'GROUNDED' => 'is-danger', default => 'is-neutral' } }}">{{ ['OPERATIONAL' => 'Khai thác', 'MAINTENANCE' => 'Bảo dưỡng', 'GROUNDED' => 'Ngừng khai thác'][$al->operational_status] ?? $al->operational_status }}</span>
-                    </div>
-                    <p class="dashboard-alert-model">{{ $al->model?->model_code ?? 'Chưa có dữ liệu' }}@if($al->model?->manufacturer) · {{ $al->model->manufacturer }}@endif</p>
-                    <div class="dashboard-alert-usage">
-                        <span><i class="bi bi-clock" aria-hidden="true"></i>{{ $al->total_flight_hours !== null ? number_format($al->total_flight_hours, 1).' giờ' : 'Chưa có dữ liệu' }}</span>
-                        <span><i class="bi bi-arrow-repeat" aria-hidden="true"></i>{{ $al->total_flight_cycles !== null ? number_format($al->total_flight_cycles).' chu kỳ' : 'Chưa có dữ liệu' }}</span>
-                    </div>
-                    @if($canViewAircraft)
-                    </a>
-                    @endif
-                </li>
-                @empty
-                <li class="dashboard-empty dashboard-panel-empty">
-                    <span class="dashboard-empty-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
-                    <p>Chưa có cảnh báo nổi bật</p>
-                </li>
-                @endforelse
-            </ul>
-        </section>
-
-        <section class="card dashboard-panel dashboard-tasks dashboard-tone-warning" aria-labelledby="pending-tasks-title">
-            @php
-                $canViewWorkflows = Gate::allows('operations.read')
-                    || Gate::allows('crew.confirm', [['self' => auth()->id()]]);
-            @endphp
-            @if($canViewWorkflows)
-            <a href="{{ route('admin.workflows') }}" class="dashboard-content-link dashboard-panel-link" aria-labelledby="pending-tasks-title">
-            @endif
-            <div class="card-header dashboard-panel-header">
-                <i class="bi bi-list-check" aria-hidden="true"></i><h2 id="pending-tasks-title">Công việc cần xử lý</h2>
-            </div>
-            <div class="dashboard-empty dashboard-panel-empty">
-                <span class="dashboard-empty-icon"><i class="bi bi-clipboard-check" aria-hidden="true"></i></span>
-                <p>Chưa có công việc cần xử lý</p>
-            </div>
-            @if($canViewWorkflows)
-            </a>
-            @endif
-        </section>
-    </div>
-
-    <section class="card dashboard-operations" aria-labelledby="operations-board-title">
-        <div class="card-header dashboard-section-heading">
-            <div>
-                <h2 id="operations-board-title">Bảng điều hành vận hành theo thời gian thực</h2>
-            </div>
-            @if($dashboardNavigation['admin.flights'])
-            <a href="{{ route('admin.flights') }}" class="btn btn-sm btn-outline-primary dashboard-view-all">Xem tất cả<i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
-            @endif
+    <section class="card dashboard-panel dashboard-notices dashboard-tone-purple" aria-labelledby="internal-notices-title">
+        <div class="card-header dashboard-panel-header">
+            <i class="bi bi-bell" aria-hidden="true"></i><h2 id="internal-notices-title">Thông báo nội bộ</h2>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0 dashboard-operations-table">
-                <caption class="visually-hidden">Danh sách tối đa 10 chuyến bay trong ngày UTC theo giờ khởi hành.</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Chuyến bay</th>
-                        <th scope="col">Hành trình</th>
-                        <th scope="col">Máy bay</th>
-                        <th scope="col">Cất cánh (UTC)</th>
-                        <th scope="col">Hạ cánh (UTC)</th>
-                        <th scope="col">Trạng thái</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($todayFlights as $flight)
-                    @php
-                        $canViewFlight = !empty($flight->id) && $flight->route && Gate::allows('flight.read', [[
-                            'airport' => $flight->route->origin_airport_code,
-                            'flight' => $flight->id,
-                        ]]);
-                    @endphp
-                    <tr class="{{ $canViewFlight ? 'dashboard-flight-row-link' : '' }}">
-                        <td>
-                            @if($canViewFlight)
-                            <a href="{{ route('admin.flights.show', ['id' => $flight->id]) }}" class="dashboard-content-link dashboard-flight-link stretched-link">
-                            @endif
-                            <strong class="dashboard-flight-number">{{ $flight->flight_number }}</strong>
-                            @if($canViewFlight)
-                            </a>
-                            @endif
-                            @if($flight->gate_number)
-                            <small class="dashboard-flight-gate">Cửa {{ $flight->gate_number }}</small>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="dashboard-flight-route">
-                                <span>{{ $flight->route?->origin_airport_code ?? '—' }}</span>
-                                <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                                <span>{{ $flight->route?->dest_airport_code ?? '—' }}</span>
-                            </div>
-                        </td>
-                        <td><code>{{ $flight->aircraft_tail }}</code></td>
-                        <td>{{ $flight->scheduled_dep_utc ? \Carbon\Carbon::parse($flight->scheduled_dep_utc)->format('H:i d/m') : 'Chưa có dữ liệu' }}</td>
-                        <td>{{ $flight->scheduled_arr_utc ? \Carbon\Carbon::parse($flight->scheduled_arr_utc)->format('H:i d/m') : 'Chưa có dữ liệu' }}</td>
-                        <td>
-                            @switch($flight->flight_status)
-                                @case('SCHEDULED')
-                                    <span class="dashboard-status is-info">Lên lịch</span>
-                                    @break
-                                @case('BOARDING')
-                                    <span class="dashboard-status is-boarding">Đón khách</span>
-                                    @break
-                                @case('DEPARTED')
-                                    <span class="dashboard-status is-departed">Đã cất cánh</span>
-                                    @break
-                                @case('ARRIVED')
-                                    <span class="dashboard-status is-positive">Đã hạ cánh</span>
-                                    @break
-                                @case('DELAYED')
-                                    <span class="dashboard-status is-attention">Chậm chuyến</span>
-                                    @break
-                                @case('CANCELLED')
-                                    <span class="dashboard-status is-danger">Hủy chuyến</span>
-                                    @break
-                                @default
-                                    <span class="dashboard-status is-neutral">{{ $flight->flight_status }}</span>
-                            @endswitch
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="6">
-                            <div class="dashboard-empty dashboard-flight-empty">
-                                <span class="dashboard-empty-icon"><i class="bi bi-airplane-engines" aria-hidden="true"></i></span>
-                                <p>Chưa có chuyến bay nào được lên lịch cho ngày hôm nay</p>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="dashboard-operations-footer">
-            <span>Đang hiển thị {{ $todayFlights->count() }} / {{ number_format($stats['today_flights']) }} chuyến trong ngày UTC</span>
+        <div class="dashboard-empty dashboard-panel-empty">
+            <span class="dashboard-empty-icon"><i class="bi bi-inbox" aria-hidden="true"></i></span>
+            <p>Chưa có thông báo nội bộ hiển thị.</p>
         </div>
     </section>
 </div>

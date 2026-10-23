@@ -1,4 +1,4 @@
-<details class="d-inline-block text-start">
+<details class="d-inline-block text-start" @if($errors->any()) open @endif>
     <summary class="btn btn-sm btn-outline-primary">Sửa</summary>
     <form action="{{ $action }}" method="POST" class="border rounded p-3 mt-2 bg-light" style="min-width:260px">
         @csrf

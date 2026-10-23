@@ -1,5 +1,5 @@
 <!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Đăng nhập Smart Airline</title><body style="font-family:system-ui;max-width:440px;margin:80px auto;padding:20px;background:#f1f5f9">
+<title>Đăng nhập Smart Airline</title>@vite(['resources/css/app.css', 'resources/js/app.js'])<body class="login-page"><main>
 <h1>Smart Airline</h1><p>Đăng nhập để thao tác theo vai trò.</p>
 @foreach($errors->all() as $error)<p role="alert" style="color:#b91c1c">{{ $error }}</p>@endforeach
 <form method="POST" action="{{ route('login.store') }}">@csrf
@@ -8,4 +8,4 @@
 <p><label>Mật khẩu <input type="password" name="password" required autocomplete="current-password"></label></p>
 <button type="submit">Đăng nhập</button></form><p><a href="{{ route('password.request') }}">Quên mật khẩu</a></p>
 @if(session('status'))<p role="status">{{ session('status') }}</p>@endif
-</body></html>
+</main></body></html>

@@ -37,7 +37,7 @@
             <dl class="airport-status-totals">
                 <div class="airport-tone-success"><dt>Khả dụng</dt><dd>{{ $resourcePageStatuses->get('AVAILABLE', 0) }}</dd></div>
                 <div class="airport-tone-warning"><dt>Bảo trì</dt><dd>{{ $resourcePageStatuses->get('MAINTENANCE', 0) }}</dd></div>
-                <div class="airport-tone-info"><dt>Đang bận</dt><dd>{{ $resourcePageStatuses->get('OCCUPIED', 0) }}</dd></div>
+                <div class="airport-tone-info"><dt>Đang sử dụng</dt><dd>{{ $resourcePageStatuses->get('OCCUPIED', 0) }}</dd></div>
                 @if($resourceOtherStatusCount > 0)
                 <div class="airport-status-other"><dt>Khác</dt><dd>{{ $resourceOtherStatusCount }}</dd></div>
                 @endif
@@ -64,8 +64,8 @@
                         <div id="airportResourceFilters" class="collapse {{ $resourceFiltersActive || $infrastructureHasErrors ? 'show' : '' }}">
                             <div class="airport-disclosure-body">
 <form method="GET" class="row g-2 airport-resource-form"><div class="col-md-3"><label class="form-label" for="resource_search">Tìm mã tài nguyên</label><input id="resource_search" name="resource_search" class="form-control" value="{{ request('resource_search') }}"></div>
-<div class="col-md-3"><label class="form-label" for="filter-resource-type">Lọc loại tài nguyên</label><select id="filter-resource-type" name="resource_type" class="form-select"><option value="">Tất cả</option>@foreach(\App\Models\AirportResource::TYPES as $v=>$label)<option value="{{ $v }}" @selected(request('resource_type')===$v)>{{ str_replace('tàu bay', 'máy bay', $label) }}</option>@endforeach</select></div>
-<div class="col-md-4"><label class="form-label" for="resource_status">Lọc trạng thái tài nguyên</label><select id="resource_status" name="resource_status" class="form-select"><option value="">Tất cả</option>@foreach(\App\Models\AirportResource::STATUSES as $v=>$label)<option value="{{ $v }}" @selected(request('resource_status')===$v)>{{ str_replace('tàu bay', 'máy bay', $label) }}</option>@endforeach</select></div><div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-primary">Lọc tài nguyên</button></div></form>
+<div class="col-md-3"><label class="form-label" for="filter-resource-type">Lọc loại tài nguyên</label><select id="filter-resource-type" name="resource_type" class="form-select"><option value="">Tất cả</option>@foreach(\App\Models\AirportResource::TYPES as $v=>$label)<option value="{{ $v }}" @selected(request('resource_type')===$v)>@include('partials.ui-label', ['uiGroup'=>'resource_type', 'uiCode'=>$v, 'uiFallback'=>$label])</option>@endforeach</select></div>
+<div class="col-md-4"><label class="form-label" for="resource_status">Lọc trạng thái tài nguyên</label><select id="resource_status" name="resource_status" class="form-select"><option value="">Tất cả</option>@foreach(\App\Models\AirportResource::STATUSES as $v=>$label)<option value="{{ $v }}" @selected(request('resource_status')===$v)>@include('partials.ui-label', ['uiGroup'=>'resource_status', 'uiCode'=>$v, 'uiFallback'=>$label])</option>@endforeach</select></div><div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-primary">Lọc tài nguyên</button></div></form>
                             </div>
                         </div>
                     </section>
@@ -79,9 +79,9 @@
                         <div id="airportResourceCreate" class="collapse {{ $infrastructureHasErrors ? 'show' : '' }}">
                             <div class="airport-disclosure-body">
 <form action="{{ route('admin.airports.resources.store', $airport->iata_code) }}" method="POST" class="row g-2 airport-resource-form">@csrf
-<div class="col-md-4"><label class="form-label" for="resource_type">Loại tài nguyên</label><select id="resource_type" name="resource_type" class="form-select">@foreach(\App\Models\AirportResource::TYPES as $v=>$label)<option value="{{ $v }}" @selected(old('resource_type') === $v)>{{ str_replace('tàu bay', 'máy bay', $label) }}</option>@endforeach</select></div>
+<div class="col-md-4"><label class="form-label" for="resource_type">Loại tài nguyên</label><select id="resource_type" name="resource_type" class="form-select">@foreach(\App\Models\AirportResource::TYPES as $v=>$label)<option value="{{ $v }}" @selected(old('resource_type') === $v)>@include('partials.ui-label', ['uiGroup'=>'resource_type', 'uiCode'=>$v, 'uiFallback'=>$label])</option>@endforeach</select></div>
 <div class="col-md-3"><label class="form-label" for="resource_code">Mã tài nguyên</label><input id="resource_code" name="resource_code" value="{{ old('resource_code') }}" class="form-control" maxlength="50" required></div>
-<div class="col-md-3"><label class="form-label" for="resource-status">Trạng thái tài nguyên</label><select id="resource-status" name="status" class="form-select">@foreach(\App\Models\AirportResource::STATUSES as $v=>$label)<option value="{{ $v }}" @selected(old('status', 'AVAILABLE') === $v)>{{ str_replace('tàu bay', 'máy bay', $label) }}</option>@endforeach</select></div>
+<div class="col-md-3"><label class="form-label" for="resource-status">Trạng thái tài nguyên</label><select id="resource-status" name="status" class="form-select">@foreach(\App\Models\AirportResource::STATUSES as $v=>$label)<option value="{{ $v }}" @selected(old('status', 'AVAILABLE') === $v)>@include('partials.ui-label', ['uiGroup'=>'resource_status', 'uiCode'=>$v, 'uiFallback'=>$label])</option>@endforeach</select></div>
 <div class="col-md-2 d-flex align-items-end"><button class="btn btn-primary">Thêm tài nguyên</button></div></form>
                             </div>
                         </div>
@@ -91,11 +91,11 @@
                         <h4 id="airport-resource-list-title">Danh sách cơ sở hạ tầng</h4>
 <div class="table-responsive airport-resource-table-wrap"><table class="table align-middle airport-resource-table mb-0"><thead><tr><th>Loại</th><th>Mã</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>
 @forelse($resources as $resource)
-<tr data-resource="{{ $resource->id }}"><td>{{ str_replace('tàu bay', 'máy bay', \App\Models\AirportResource::TYPES[$resource->resource_type] ?? $resource->resource_type) }}</td><td>{{ $resource->resource_code }}</td><td><span class="dashboard-status {{ match ($resource->status) { 'AVAILABLE' => 'is-positive', 'MAINTENANCE' => 'is-attention', 'OCCUPIED' => 'is-boarding', default => 'is-neutral' } }}">{{ \App\Models\AirportResource::STATUSES[$resource->status] ?? $resource->status }}</span></td><td>
+<tr data-resource="{{ $resource->id }}"><td>@include('partials.ui-label', ['uiGroup'=>'resource_type', 'uiCode'=>$resource->resource_type, 'uiFallback'=>\App\Models\AirportResource::TYPES[$resource->resource_type] ?? $resource->resource_type])</td><td>{{ $resource->resource_code }}</td><td><span class="dashboard-status {{ match ($resource->status) { 'AVAILABLE' => 'is-positive', 'MAINTENANCE' => 'is-attention', 'OCCUPIED' => 'is-boarding', default => 'is-neutral' } }}">@include('partials.ui-label', ['uiGroup'=>'resource_status', 'uiCode'=>$resource->status])</span></td><td>
 @can('airport.write', [['airport'=>$airport->iata_code]])
-<details><summary>Sửa tài nguyên</summary><form action="{{ route('admin.airports.resources.update', $resource->id) }}" method="POST" class="d-flex flex-wrap gap-2 mt-2">@csrf @method('PUT')
+<details @if($errors->any()) open @endif><summary>Sửa tài nguyên</summary><form action="{{ route('admin.airports.resources.update', $resource->id) }}" method="POST" class="d-flex flex-wrap gap-2 mt-2">@csrf @method('PUT')
 <input aria-label="Mã tài nguyên {{ $resource->id }}" name="resource_code" value="{{ $resource->resource_code }}" class="form-control" maxlength="50" required>
-<select aria-label="Trạng thái tài nguyên {{ $resource->id }}" name="status" class="form-select">@foreach(\App\Models\AirportResource::STATUSES as $v=>$label)<option value="{{ $v }}" @selected($resource->status===$v)>{{ str_replace('tàu bay', 'máy bay', $label) }}</option>@endforeach</select><button class="btn btn-sm btn-primary">Lưu tài nguyên</button></form>
+<select aria-label="Trạng thái tài nguyên {{ $resource->id }}" name="status" class="form-select">@foreach(\App\Models\AirportResource::STATUSES as $v=>$label)<option value="{{ $v }}" @selected($resource->status===$v)>@include('partials.ui-label', ['uiGroup'=>'resource_status', 'uiCode'=>$v, 'uiFallback'=>$label])</option>@endforeach</select><button class="btn btn-sm btn-primary">Lưu tài nguyên</button></form>
 <form class="mt-2" action="{{ route('admin.airports.resources.destroy', $resource->id) }}" method="POST" onsubmit="return confirm('Xóa tài nguyên chưa được sử dụng?')">@csrf @method('DELETE')<button class="btn btn-sm btn-outline-danger">Xóa tài nguyên</button></form></details>
 @endcan
 </td></tr>
@@ -109,14 +109,14 @@
                         <span class="airport-card-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
                         <h3>Lịch bảo trì cơ sở hạ tầng</h3>
                     </div>
-                    <p class="airport-quick-empty">Chưa có dữ liệu</p>
+                    <p class="airport-quick-empty">Chưa có dữ liệu hiển thị cho mục này.</p>
                 </article>
                 <article class="airport-quick-card airport-tone-danger">
                     <div class="airport-quick-heading">
                         <span class="airport-card-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
                         <h3>Ghi nhận sự cố cơ sở hạ tầng</h3>
                     </div>
-                    <p class="airport-quick-empty">Chưa có dữ liệu</p>
+                    <p class="airport-quick-empty">Chưa có dữ liệu hiển thị cho mục này.</p>
                 </article>
             </div>
         </div>
@@ -138,7 +138,7 @@
                 <li>Danh sách nhân viên mặt đất</li>
                 <li>Thông tin nhân viên mặt đất</li>
             </ul>
-            <p class="airport-ground-empty">Chưa có dữ liệu</p>
+            <p class="airport-ground-empty">Chưa có dữ liệu hiển thị cho mục này.</p>
         </article>
         <article class="card airport-ground-card airport-tone-info">
             <div class="airport-ground-heading">
@@ -149,7 +149,7 @@
                 <li>Phân công nhiệm vụ</li>
                 <li>Phân công khu vực làm việc</li>
             </ul>
-            <p class="airport-ground-empty">Chưa có dữ liệu</p>
+            <p class="airport-ground-empty">Chưa có dữ liệu hiển thị cho mục này.</p>
         </article>
         <article class="card airport-ground-card airport-tone-success">
             <div class="airport-ground-heading">
@@ -161,7 +161,7 @@
                 <li>Theo dõi ca trực</li>
                 <li>Theo dõi trạng thái công việc</li>
             </ul>
-            <p class="airport-ground-empty">Chưa có dữ liệu</p>
+            <p class="airport-ground-empty">Chưa có dữ liệu hiển thị cho mục này.</p>
         </article>
         <article class="card airport-ground-card airport-tone-warning">
             <div class="airport-ground-heading">
@@ -171,7 +171,7 @@
             <ul class="airport-ground-functions">
                 <li>Quản lý phương tiện mặt đất</li>
             </ul>
-            <p class="airport-ground-empty">Chưa có dữ liệu</p>
+            <p class="airport-ground-empty">Chưa có dữ liệu hiển thị cho mục này.</p>
         </article>
     </div>
 </section>
