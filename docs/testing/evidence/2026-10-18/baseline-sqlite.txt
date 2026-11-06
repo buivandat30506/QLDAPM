@@ -1,0 +1,35 @@
+
+   PASS  Tests\Unit\ExampleTest
+  ✓ that true is true                                                                                            0.01s  
+
+   PASS  Tests\Feature\DiagramWorkflowTest
+  ✓ authentication and roles stop writes before validation                                                       0.44s  
+  ✓ master data approval versions and audit                                                                      0.15s  
+  ✓ schedule missing resources and conflicts keep draft                                                          0.14s  
+  ✓ schedule rechecks resources before publication and flights require source                                    0.16s  
+  ✓ gate conflict and wrong aircraft model are rejected                                                          0.15s  
+  ✓ event unknown flight is logged and alert waits for operator                                                  0.15s  
+  ✓ invalid disruption plan rolls back flight and crew                                                           0.14s  
+  ✓ usage history is idempotent and maintenance cannot be bypassed                                               0.14s  
+  ✓ maintenance requires resources completion approval and non overdue release                                   0.15s  
+  ✓ crew license availability rest and replacement rollback                                                      0.15s  
+  ✓ crew plan needs approval member acknowledgement and ownership                                                0.16s  
+  ✓ demo seeder is repeatable without duplicate usage or events                                                  0.16s  
+  ✓ crew profile from form has usable qualifications and checks training and availability                        0.16s  
+  ✓ long duty and maintenance overlap are rejected                                                               0.15s  
+
+   PASS  Tests\Feature\ExampleTest
+  ✓ the application returns a successful response                                                                0.02s  
+
+   PASS  Tests\Feature\Module1Test
+  ✓ airport crud and validation                                                                                  0.15s  
+  ✓ route crud and duplicate constraints                                                                         0.15s  
+  ✓ aircraft conflict turnaround boundary and maintenance                                                        0.16s  
+  ✓ crew assignment rank conflict and removal                                                                    0.15s  
+  ✓ all admin pages and read apis render                                                                         0.22s  
+  ✓ web route edit and validation redirect                                                                       0.14s  
+  ✓ arrival records aircraft usage only once                                                                     0.16s  
+
+  Tests:    23 passed (180 assertions)
+  Duration: 3.68s
+

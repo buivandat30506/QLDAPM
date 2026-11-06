@@ -1,0 +1,27 @@
+@extends('layouts.portal')
+@section('title', 'Quyền của '.$user->username)
+@section('content')
+<p>Mỗi dòng là một vai trò và phạm vi được cấp. Không có dòng cấp quyền sẽ bị từ chối mặc định. Thời gian ủy quyền nhập theo UTC.</p>
+<form method="post" action="{{ route('administration.users.update', $user->id) }}" class="card p-4 mb-4">@csrf @method('PUT')
+<label for="full_name">Họ tên</label><input class="form-control mb-3" id="full_name" name="full_name" value="{{ old('full_name', $user->full_name) }}" required>
+<label for="status">Trạng thái</label><select class="form-select mb-3" id="status" name="status">@foreach(['ACTIVE' => 'Hoạt động', 'INACTIVE' => 'Ngừng hoạt động', 'SUSPENDED' => 'Tạm khóa'] as $value => $label)<option value="{{ $value }}" @selected($user->status === $value)>{{ $label }}</option>@endforeach</select>
+<div id="scope-rows">
+@foreach($scopes as $index => $scope)
+<div class="row g-2 mb-2 scope-row">
+<div class="col-md-4"><select aria-label="Vai trò" class="form-select" name="assignments[{{ $index }}][role_id]">@foreach($roles as $role)<option value="{{ $role->id }}" @selected($scope->role_id === $role->id)>{{ $role->role_name }}</option>@endforeach</select></div>
+<div class="col-md-3"><select aria-label="Loại phạm vi" class="form-select" name="assignments[{{ $index }}][scope_type]">@foreach(['global' => 'Toàn hệ thống', 'self' => 'Của mình', 'airport' => 'Sân bay', 'flight' => 'Chuyến bay'] as $value => $label)<option value="{{ $value }}" @selected($scope->scope_type === $value)>{{ $label }}</option>@endforeach</select></div>
+<div class="col-md-4"><input aria-label="Mã phạm vi" class="form-control" name="assignments[{{ $index }}][scope_id]" value="{{ $scope->scope_id }}" placeholder="IATA / UUID chuyến; * với toàn hệ thống"></div>
+<div class="col-md-1"><button type="button" class="btn btn-outline-danger" onclick="this.closest('.scope-row').remove()">Bỏ</button></div></div>
+@endforeach
+</div><button id="add-scope" class="btn btn-outline-secondary my-2" type="button">Thêm vai trò và phạm vi</button><button class="btn btn-primary">Xác nhận lưu quyền</button></form>
+<template id="scope-template"><div class="row g-2 mb-2 scope-row"><div class="col-md-4"><select aria-label="Vai trò" class="form-select" data-name="role_id">@foreach($roles as $role)<option value="{{ $role->id }}">{{ $role->role_name }}</option>@endforeach</select></div><div class="col-md-3"><select aria-label="Loại phạm vi" class="form-select" data-name="scope_type"><option value="global">Toàn hệ thống</option><option value="self">Của mình</option><option value="airport">Sân bay</option><option value="flight">Chuyến bay</option></select></div><div class="col-md-4"><input aria-label="Mã phạm vi" class="form-control" data-name="scope_id" value="*"></div><div class="col-md-1"><button type="button" class="btn btn-outline-danger" onclick="this.closest('.scope-row').remove()">Bỏ</button></div></div></template>
+<h2 class="h5">Ủy quyền cho tài khoản này</h2><form method="post" action="{{ route('administration.delegations.store') }}" class="card p-4 mb-4">@csrf
+<input type="hidden" name="grantee_id" value="{{ $user->id }}"><label for="grantor_id">UUID người cấp (phải có quyền trực tiếp)</label><input class="form-control mb-2" id="grantor_id" name="grantor_id" required>
+<label for="permission_id">Quyền</label><select class="form-select mb-2" id="permission_id" name="permission_id">@foreach($permissions as $permission)<option value="{{ $permission->id }}">{{ $permission->code }}</option>@endforeach</select>
+<label for="scope_type">Loại phạm vi</label><select class="form-select mb-2" id="scope_type" name="scope_type"><option value="airport">Sân bay</option><option value="flight">Chuyến bay</option><option value="global">Toàn hệ thống</option></select>
+<label for="scope_id">Mã phạm vi (IATA / UUID / *)</label><input class="form-control mb-2" id="scope_id" name="scope_id" required>
+@foreach(['starts_at' => 'Bắt đầu UTC', 'ends_at' => 'Kết thúc UTC'] as $field => $label)<label for="{{ $field }}">{{ $label }}</label><input class="form-control mb-2" id="{{ $field }}" name="{{ $field }}" type="datetime-local" required>@endforeach
+<label for="reason">Lý do</label><input class="form-control mb-3" id="reason" name="reason" maxlength="500" required><button class="btn btn-primary">Xác nhận cấp ủy quyền</button></form>
+<h2 class="h5">Lịch sử ủy quyền nhận</h2><table class="table bg-white"><thead><tr><th>ID</th><th>Bắt đầu UTC</th><th>Kết thúc UTC</th><th>Thu hồi</th></tr></thead><tbody>@forelse($delegations as $delegation)<tr><td>{{ $delegation->id }}</td><td>{{ $delegation->starts_at }}</td><td>{{ $delegation->ends_at }}</td><td>@if($delegation->revoked_at){{ $delegation->revoked_at }}@else<form method="post" action="{{ route('administration.delegations.revoke', $delegation->id) }}">@csrf<button class="btn btn-sm btn-outline-danger">Thu hồi ngay</button></form>@endif</td></tr>@empty<tr><td colspan="4">Chưa có ủy quyền.</td></tr>@endforelse</tbody></table>
+<script>let scopeIndex = {{ $scopes->count() }}; document.getElementById('add-scope').addEventListener('click', () => { const row = document.getElementById('scope-template').content.cloneNode(true); row.querySelectorAll('[data-name]').forEach(input => input.name = `assignments[${scopeIndex}][${input.dataset.name}]`); scopeIndex++; document.getElementById('scope-rows').append(row); });</script>
+@endsection

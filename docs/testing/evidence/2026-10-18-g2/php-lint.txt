@@ -1,0 +1,1 @@
+PHP syntax: 177 files checked, 0 failed.

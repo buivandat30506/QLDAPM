@@ -1,0 +1,86 @@
+[
+  {
+    "source": "docs/source/Acceptance_Test_Plan_Template.docx",
+    "sha256": "32ae612bebd3c024cc4d91945955b9cc6856cb861c9898fc2dc984a01d9b8e79",
+    "nonempty_paragraphs": 108,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Bao_cao_Activity_Sequence_6_module_dau (1).docx",
+    "sha256": "d1d61b935264fe6639cb9f9a9d45688f15ec7bf862fbbc217b28fb0acf5a5207",
+    "nonempty_paragraphs": 54,
+    "embedded_media": 12,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Bao_cao_kien_truc_tong_the_QL_Hang_Khong_Thong_Minh (1).docx",
+    "sha256": "91379ff1d294c8e42fa3de18a251b11e71b800af4750d06891112fc014d18dc2",
+    "nonempty_paragraphs": 370,
+    "embedded_media": 1,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Biên bản thu thập thông tin.docx",
+    "sha256": "1464d07962765be00f696b6bb1992ad49e59f880894342ed0cea24e060adc63b",
+    "nonempty_paragraphs": 156,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Business_Analysis_QL_Hang_Khong.docx",
+    "sha256": "d97a5248e1a82b91d1bf66018763f04548a63c4a0f9bad7b525f5124d9e75b46",
+    "nonempty_paragraphs": 1634,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Form_Phan_tich_bieu_mau_bao_cao_du_lieu_log.docx",
+    "sha256": "6ae66f2aa76be81f34a7d5f1cc87c5042171c068b1f1c0cc01147f5c85a1cd7d",
+    "nonempty_paragraphs": 107,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Form_Phong_van_theo_tung_vai_tro.docx",
+    "sha256": "051edc1b0db52c1a2260735ea3299d9282a7d25a3e4dbc90cfc65e305e1c96b1",
+    "nonempty_paragraphs": 107,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Form_Quan_sat_quy_trinh_tai_hien_truong.docx",
+    "sha256": "29a62215af51261b734881faf13f19dfe8b2ad562cdcc3b2b0d879ea7d7edcee",
+    "nonempty_paragraphs": 107,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Form_Workshop_lien_phong_ban.docx",
+    "sha256": "36c3f4ab12acc8b8b28e81e7cd93e74896e6646f045482b7391034d9d4393e37",
+    "nonempty_paragraphs": 107,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Unit_Test_Plan_Template.docx",
+    "sha256": "e66b51fdf5f8f17611f7e16f4f19589ef9a227d7c2cc5b31986b7724f2d83f52",
+    "nonempty_paragraphs": 176,
+    "embedded_media": 0,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/UseCase_va_DacTa.docx",
+    "sha256": "8697267aedee914ed020a03703a5223c4281e9aa35a531e4539c5a23ae75d15e",
+    "nonempty_paragraphs": 1486,
+    "embedded_media": 18,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  },
+  {
+    "source": "docs/source/Đề xuất công nghệ - ERD.docx",
+    "sha256": "e85fa38eec105467426048f8c4f8954d712a88ae6380f0f7451f0fc03ff2a15d",
+    "nonempty_paragraphs": 75,
+    "embedded_media": 1,
+    "review": "Text inventoried; implementation review is tracked by module in implementation-progress.md"
+  }
+]

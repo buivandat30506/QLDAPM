@@ -1,0 +1,35 @@
+<testsuites id="" name="" tests="3" failures="1" skipped="0" errors="0" time="25.486733">
+<testsuite name="planning.spec.js" timestamp="2026-10-18T02:21:22.138Z" hostname="" tests="3" failures="1" skipped="0" time="22.47" errors="0">
+<testcase name="UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện" classname="planning.spec.js" time="4.717">
+</testcase>
+<testcase name="UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi" classname="planning.spec.js" time="11.286">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\..\..\..\storage\app\browser-results\planning-UAT-UC05-06-lịch--5ba38-ông-bố-và-phiên-bản-sửa-đổi\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  planning.spec.js:52:1 › UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi ──
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       96 |     await page.setViewportSize({ width: 390, height: 844 });
+       97 |     await expect(page.getByRole('heading', { name: 'Lịch BP901 — HAN-DAD' })).toBeVisible();
+    >  98 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+          |                                                                                           ^
+       99 |     await page.screenshot({ path: evidence + '/uc05-mobile.png', fullPage: true });
+      100 |     await page.goto(original); await expect(page.locator('[data-status="SUPERSEDED"]')).toBeVisible();
+      101 | });
+        at C:\Users\Admin\Desktop\airline-smart\tests\Acceptance\planning.spec.js:98:91
+
+    Error Context: ..\..\storage\app\browser-results\planning-UAT-UC05-06-lịch--5ba38-ông-bố-và-phiên-bản-sửa-đổi\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch" classname="planning.spec.js" time="6.467">
+</testcase>
+</testsuite>
+</testsuites>

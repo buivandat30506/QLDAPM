@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="10" assertions="125" errors="0" failures="0" skipped="0" time="26.623429">
+    <testsuite name="Feature" tests="10" assertions="125" errors="0" failures="0" skipped="0" time="26.623429">
+      <testsuite name="Tests\Feature\FleetManagementTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" tests="10" assertions="125" errors="0" failures="0" skipped="0" time="26.623429">
+        <testcase name="test_aircraft_crud_normalization_revision_and_noneditable_usage" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="52" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="15" time="19.954778"/>
+        <testcase name="test_opening_balances_require_provenance_and_overdue_aircraft_is_unavailable" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="68" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="11" time="0.702871"/>
+        <testcase name="test_configuration_versions_are_immutable_with_actual_seats_and_actor" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="77" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="19" time="0.749354"/>
+        <testcase name="test_invalid_or_stale_configuration_never_replaces_published_version" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="92" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="14" time="0.814477"/>
+        <testcase name="test_materialized_flight_pins_capacity_and_blocks_reconfiguration" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="108" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="8" time="0.741139"/>
+        <testcase name="test_booking_and_checkin_use_sellable_seats_and_reject_missing_or_blocked_seat" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="125" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="8" time="0.714435"/>
+        <testcase name="test_usage_from_completed_facts_is_idempotent_with_durable_alias_receipts" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="148" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="18" time="0.759611"/>
+        <testcase name="test_usage_rejects_wrong_aircraft_unfinished_flight_and_client_totals" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="165" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="7" time="0.660087"/>
+        <testcase name="test_threshold_alert_blocks_operations_and_reconciliation_exposes_discrepancy" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="176" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="11" time="0.697396"/>
+        <testcase name="test_airport_scopes_filter_collections_and_protect_objects_and_configuration_history" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php" line="187" class="Tests\Feature\FleetManagementTest" classname="Tests.Feature.FleetManagementTest" assertions="14" time="0.829280"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

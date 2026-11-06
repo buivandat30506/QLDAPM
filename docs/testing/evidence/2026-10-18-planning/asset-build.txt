@@ -1,0 +1,13 @@
+npm notice run build
+npm notice run vite build
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 60 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                            0.73 kB │ gzip:  0.24 kB
+public/build/assets/bootstrap-icons-BtvjY1KL.woff2  130.40 kB
+public/build/assets/bootstrap-icons-BOrJxbIo.woff   176.03 kB
+public/build/assets/app-Bjlgbb-O.css                310.48 kB │ gzip: 44.10 kB
+public/build/assets/app-naJBZJY2.js                  82.31 kB │ gzip: 24.89 kB
+✓ built in 397ms

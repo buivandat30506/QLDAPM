@@ -1,0 +1,199 @@
+{
+  "master_sha256": "e098ebc94fc172b14cce7c484702f312ce79f44f62f8be5cb17e5e986a72d4c1",
+  "use_case_source": "docs/source/UseCase_va_DacTa.docx",
+  "business_analysis_source": "docs/source/Business_Analysis_QL_Hang_Khong.docx",
+  "use_case_count": 48,
+  "flow_overrides": {
+    "UC-02": {
+      "Exception Flow": "E1. Mã tài nguyên bị trùng → từ chối lưu. E2. Dữ liệu không hợp lệ → yêu cầu sửa."
+    },
+    "UC-04": {
+      "Exception Flow": "E1. Sân bay không tồn tại → từ chối. E2. Dữ liệu không hợp lệ → yêu cầu sửa."
+    },
+    "UC-07": {
+      "Exception Flow": "E1. Lịch không hợp lệ → không tạo chuyến. E2. Thiếu nguồn lực → cảnh báo."
+    },
+    "UC-08": {
+      "Alternative Flow": "Không có bất thường → chỉ cập nhật trạng thái."
+    },
+    "UC-09": {
+      "Exception Flow": "E1. Phương án vi phạm ràng buộc → không cho áp dụng."
+    },
+    "UC-11": {
+      "Exception Flow": "E1. Bản ghi bị trùng → không cộng lại."
+    },
+    "UC-12": {
+      "Exception Flow": "E1. Thiếu số liệu sử dụng → cảnh báo."
+    },
+    "UC-14": {
+      "Exception Flow": "E1. Bảo dưỡng quá hạn → không cho khai thác. E2. Thiếu phê duyệt → không giải phóng kỹ thuật."
+    },
+    "UC-18": {
+      "Exception Flow": "E1. Thiếu dữ liệu → yêu cầu bổ sung. E2. Truy cập trái quyền → từ chối."
+    },
+    "UC-19": {
+      "Exception Flow": "E1. Không có chuyến liên quan → cảnh báo."
+    },
+    "UC-20": {
+      "Exception Flow": "E1. Không có chuyến → thông báo."
+    },
+    "UC-21": {
+      "Exception Flow": "E1. Hết thời gian giữ chỗ → tự giải phóng."
+    },
+    "UC-22": {
+      "Exception Flow": "E1. Thanh toán thất bại → không phát hành. E2. Giao dịch trùng → không xử lý lần hai."
+    },
+    "UC-24": {
+      "Exception Flow": "E1. Ngoài thời gian cho phép → từ chối."
+    },
+    "UC-29": {
+      "Exception Flow": "E1. Mã không tồn tại → báo lỗi. E2. Sự kiện trùng → không xử lý lại."
+    },
+    "UC-30": {
+      "Exception Flow": "E1. Thiếu dữ liệu truy vết → xử lý thủ công."
+    },
+    "UC-32": {
+      "Exception Flow": "E1. Thiếu bằng chứng bắt buộc → không hoàn tất."
+    },
+    "UC-34": {
+      "Exception Flow": "E1. Giao dịch trùng → không tạo thêm."
+    },
+    "UC-36": {
+      "Exception Flow": "E1. Vượt hạn mức → chuyển cấp có thẩm quyền."
+    },
+    "UC-38": {
+      "Exception Flow": "E1. Thiếu thông tin → yêu cầu bổ sung."
+    },
+    "UC-40": {
+      "Exception Flow": "E1. Dữ liệu thiếu → hiển thị cảnh báo chất lượng dữ liệu."
+    },
+    "UC-43": {
+      "Exception Flow": "E1. Mất kết nối → ghi nhận lỗi/kịch bản mất kết nối."
+    },
+    "UC-45": {
+      "Exception Flow": "E1. Quyền vượt phạm vi của actor → từ chối."
+    },
+    "UC-47": {
+      "Exception Flow": "E1. Mất kết nối → thử lại/cảnh báo. E2. Dữ liệu sai cấu trúc → chuyển xử lý lỗi."
+    }
+  },
+  "business_rules": {
+    "BR-001": "Mỗi sân bay, đường bay, chuyến bay, tàu bay, nhân sự, đơn hàng và hành lý phải có định danh duy nhất trong phạm vi hệ thống.",
+    "BR-002": "Mọi thời gian khai thác phải lưu múi giờ nguồn và có giá trị chuẩn để đối chiếu xuyên múi giờ.",
+    "BR-003": "Một chuyến bay không được công bố khi thiếu sân bay đi, sân bay đến, ngày khai thác, thời gian và loại tàu bay dự kiến.",
+    "BR-004": "Thay đổi lịch đã công bố phải lưu phiên bản, lý do, người phê duyệt và danh sách đối tượng bị ảnh hưởng.",
+    "BR-005": "Một tàu bay không được phân cho hai chuyến có khoảng thời gian khai thác xung đột và không đủ thời gian quay đầu.",
+    "BR-006": "Tàu bay ở trạng thái không khả dụng hoặc chưa được giải phóng kỹ thuật không được phân công khai thác.",
+    "BR-007": "Công việc bảo dưỡng đến hạn phải được cảnh báo trước ngưỡng và chặn khai thác khi vượt giới hạn được phê duyệt.",
+    "BR-008": "Nhân sự tổ bay chỉ được phân công khi năng định, giấy phép và đào tạo còn hiệu lực cho nhiệm vụ tương ứng.",
+    "BR-009": "Việc tính thời gian làm nhiệm vụ và nghỉ ngơi phải dùng bộ quy tắc đã phiên bản hóa và được đơn vị chuyên môn phê duyệt.",
+    "BR-010": "Mọi ngoại lệ đối với quy tắc tổ bay hoặc bảo dưỡng phải có thẩm quyền, lý do và dấu vết kiểm toán.",
+    "BR-011": "Tồn chỗ chỉ bị trừ chính thức khi điều kiện giữ chỗ hoặc phát hành được đáp ứng; giao dịch hết hạn phải tự giải phóng.",
+    "BR-012": "Không phát hành trùng khi kết quả thanh toán chưa xác định; hệ thống phải kiểm tra idempotency và đối soát.",
+    "BR-013": "Hoàn đổi phải áp dụng điều kiện giá, thời điểm, dịch vụ đã sử dụng và quyền phê duyệt có hiệu lực tại thời điểm xử lý.",
+    "BR-014": "QR không được chứa dữ liệu cá nhân nhạy cảm ở dạng rõ; token phải có phạm vi, thời hạn và khả năng thu hồi.",
+    "BR-015": "Một lượt boarding hợp lệ chỉ được ghi nhận một lần; quét lặp phải cảnh báo và không thay đổi kết quả trước đó.",
+    "BR-016": "Hành lý ký gửi phải liên kết với hành khách và hành trình; thay đổi chuyến phải tạo lịch sử chuyển giao.",
+    "BR-017": "Sự kiện hành lý phải ghi điểm quét, thời gian, nguồn thiết bị hoặc người thực hiện và trạng thái xác thực.",
+    "BR-018": "Hành lý không đồng hành hoặc hành lý có ngoại lệ an ninh phải đi theo quy trình kiểm soát được phê duyệt.",
+    "BR-019": "Nhiệm vụ mặt đất phải có thời hạn, người hoặc đơn vị chịu trách nhiệm, trạng thái và bằng chứng hoàn thành khi cần.",
+    "BR-020": "Không đóng chuyến khi còn mốc bắt buộc chưa hoàn tất, trừ khi có quyết định ghi nhận ngoại lệ.",
+    "BR-021": "Doanh thu, phí, hoàn tiền và điều chỉnh phải truy vết về đơn hàng, dịch vụ, thanh toán và người phê duyệt.",
+    "BR-022": "Dữ liệu cá nhân chỉ được hiển thị theo nhu cầu công việc; truy cập dữ liệu nhạy cảm phải được ghi log.",
+    "BR-023": "Xóa hoặc ẩn danh dữ liệu phải tuân theo lịch lưu giữ và nghĩa vụ pháp lý, không làm mất bằng chứng kiểm toán bắt buộc.",
+    "BR-024": "Kết quả AI không tự động ghi đè dữ liệu nguồn; người dùng phải thấy độ tin cậy, thời điểm và phiên bản mô hình.",
+    "BR-025": "Khuyến nghị AI liên quan đến an toàn, bảo dưỡng, tổ bay, hoàn tiền hoặc gián đoạn phải được người có thẩm quyền xác nhận."
+  },
+  "nonfunctional_requirements": {
+    "NFR-001": {
+      "name": "Tính sẵn sàng",
+      "requirement": "Các chức năng khai thác trọng yếu phải có mục tiêu sẵn sàng, cửa sổ bảo trì và cơ chế failover được phê duyệt.",
+      "verification": "SLA vận hành"
+    },
+    "NFR-002": {
+      "name": "Hiệu năng",
+      "requirement": "Các giao dịch phổ biến phải phản hồi trong ngưỡng đã thỏa thuận ở tải bình thường và cao điểm.",
+      "verification": "P50 P90 P95"
+    },
+    "NFR-003": {
+      "name": "Khả năng mở rộng",
+      "requirement": "Hệ thống mở rộng theo số sân bay, chuyến bay, khách, hành lý, sự kiện và người dùng.",
+      "verification": "Kiểm thử tải"
+    },
+    "NFR-004": {
+      "name": "Tính nhất quán",
+      "requirement": "Giao dịch đặt chỗ, thanh toán, boarding và đối soát phải chống xử lý trùng.",
+      "verification": "Idempotency và đối chiếu"
+    },
+    "NFR-005": {
+      "name": "Bảo mật",
+      "requirement": "Áp dụng xác thực mạnh, phân quyền tối thiểu, mã hóa, quản lý bí mật và kiểm thử bảo mật.",
+      "verification": "Kiểm thử và audit"
+    },
+    "NFR-006": {
+      "name": "Riêng tư",
+      "requirement": "Thu thập tối thiểu, quản lý mục đích, quyền chủ thể dữ liệu và lưu giữ theo quy định.",
+      "verification": "DPIA và hồ sơ xử lý"
+    },
+    "NFR-007": {
+      "name": "Nhật ký",
+      "requirement": "Sự kiện kiểm toán phải bất biến phù hợp, có thời gian chuẩn, chủ thể, hành động và kết quả.",
+      "verification": "Tỷ lệ log đầy đủ"
+    },
+    "NFR-008": {
+      "name": "Khả năng phục hồi",
+      "requirement": "Xác định RTO và RPO theo phân hạng dịch vụ; kiểm thử khôi phục định kỳ.",
+      "verification": "Bài kiểm tra DR"
+    },
+    "NFR-009": {
+      "name": "Giám sát",
+      "requirement": "Theo dõi ứng dụng, tích hợp, hàng đợi, dữ liệu và mô hình AI; cảnh báo có người chịu trách nhiệm.",
+      "verification": "MTTD và MTTR"
+    },
+    "NFR-010": {
+      "name": "Khả dụng",
+      "requirement": "Giao diện phù hợp vai trò, giảm bước, hỗ trợ bàn phím và thiết bị nghiệp vụ.",
+      "verification": "Usability test"
+    },
+    "NFR-011": {
+      "name": "Khả năng truy cập",
+      "requirement": "Kênh hành khách hướng tới chuẩn truy cập số phù hợp và hỗ trợ công nghệ trợ năng.",
+      "verification": "Audit accessibility"
+    },
+    "NFR-012": {
+      "name": "Đa ngôn ngữ",
+      "requirement": "Tách nội dung khỏi mã, hỗ trợ Unicode, định dạng ngày giờ, tiền tệ và múi giờ.",
+      "verification": "Kiểm thử locale"
+    },
+    "NFR-013": {
+      "name": "Tương thích",
+      "requirement": "Hỗ trợ trình duyệt, thiết bị quét và độ phân giải nằm trong danh mục được phê duyệt.",
+      "verification": "Compatibility matrix"
+    },
+    "NFR-014": {
+      "name": "Bảo trì",
+      "requirement": "Mô đun hóa, tài liệu hóa, quản lý cấu hình và có kiểm thử hồi quy tự động.",
+      "verification": "Chỉ số chất lượng"
+    },
+    "NFR-015": {
+      "name": "Dữ liệu",
+      "requirement": "Có kiểm tra schema, chất lượng, lineage, đối soát và cơ chế xử lý bản ghi lỗi.",
+      "verification": "DQ score"
+    },
+    "NFR-016": {
+      "name": "AI",
+      "requirement": "Mô hình được phiên bản hóa, giám sát drift, có baseline, rollback và human in the loop.",
+      "verification": "Model governance"
+    },
+    "NFR-017": {
+      "name": "IoT",
+      "requirement": "Chịu được mất kết nối, gửi lặp, trễ, sai thứ tự và dữ liệu vượt ngưỡng.",
+      "verification": "Scenario test"
+    },
+    "NFR-018": {
+      "name": "Tuân thủ",
+      "requirement": "Lưu bằng chứng phê duyệt và hỗ trợ trích xuất phục vụ kiểm toán.",
+      "verification": "Audit evidence"
+    }
+  }
+}

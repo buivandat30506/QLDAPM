@@ -1,0 +1,205 @@
+{
+    "test_id": "IT-RESTORE-01",
+    "status": "Passed",
+    "source_database": "airline_test_browser_20261018_023148_59b4ee",
+    "target_database": "airline_test_restore_20261018_023328_a4af9a",
+    "engine": {
+        "version": "8.0.46",
+        "product": "MySQL Community Server - GPL"
+    },
+    "started_at_utc": "2026-10-18T02:33:28+00:00",
+    "finished_at_utc": "2026-10-18T02:33:35+00:00",
+    "duration_seconds": 7.041,
+    "tables": {
+        "aircraft_models": {
+            "count": 2,
+            "sha256": "810a9e954a08f52564eb4e029dbedfb200c7df7e7cda0cf0c6aaa4d3bf26a6b9"
+        },
+        "aircraft_usage_records": {
+            "count": 1,
+            "sha256": "fa65dc79edc3bb7f2f01ee959982e4a56c059818c767874acdeae664cd960cb1"
+        },
+        "aircrafts": {
+            "count": 12,
+            "sha256": "f102d3c79116ee552a12e46c2b5ae9a8089f53bb823f5f1745d89f152351d3a7"
+        },
+        "airport_resources": {
+            "count": 30,
+            "sha256": "2844b354e2f954133aafba8bde1073dfefc20b49addf1b61027f67fa0e41e9ca"
+        },
+        "airports": {
+            "count": 6,
+            "sha256": "5c7261a4c97f37c17ddb1e0a93b94c74a40af4fec3b971ab6bda460cdb8dc053"
+        },
+        "assistance_requests": {
+            "count": 1,
+            "sha256": "d568cc40e30a53c6a1266ea2e1d38d2e68106c10beb6c021d4af8f604cbac7b2"
+        },
+        "audit_logs": {
+            "count": 275,
+            "sha256": "85d4400f946e5390e24f074ad9c05ef1c062cdd9a22e0d3e864569ef1a3d3aff"
+        },
+        "baggage_tags": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "baggage_tracking_events": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "boarding_pass_tokens": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "cache": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "cache_locks": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "checkin_records": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "crew_members": {
+            "count": 18,
+            "sha256": "8ed3bd04138ff87e6b14468abceb8b3e72c1f0fa013dff866825f8d029b33a48"
+        },
+        "crew_notifications": {
+            "count": 4,
+            "sha256": "9b084fcb426db6b04dba75fa5ce179e496d4463e2af88a32afdaf711db60a5de"
+        },
+        "delegations": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "domain_locks": {
+            "count": 2,
+            "sha256": "dfa56f9950a4fc4c03905cae5b17f19807bf099c2b67ffeb65887c96dc935af2"
+        },
+        "entity_versions": {
+            "count": 15,
+            "sha256": "3f40111d9b2771f77b5cfa7144f615295c9934e663a880553be94683baca0d6c"
+        },
+        "failed_jobs": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "flight_crew_assignments": {
+            "count": 9,
+            "sha256": "5b57bfb5beb580c15245101309ec5d008d2399a9fd7dfb7dc3054c7f48f4fef0"
+        },
+        "flight_events": {
+            "count": 1,
+            "sha256": "ac8a59601a8ee9cc3200cac38917bfad4a8179c993122d8015f2e18ac9cce749"
+        },
+        "flight_schedule_checks": {
+            "count": 24,
+            "sha256": "c4fc1ba26f355f7eb974f37fb9b2bc0d0ac1b67cb060cc207e8ec39d1260102c"
+        },
+        "flight_schedules": {
+            "count": 14,
+            "sha256": "997df229a6700d84b4b3c0643fa6a973ea7f4f74e51756f688ea349590b323ac"
+        },
+        "job_batches": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "jobs": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "maintenance_orders": {
+            "count": 2,
+            "sha256": "9b9bef1a21b07f23a7f09442a3933b5364f702ee9e07af67e6d78fbaf1614f7b"
+        },
+        "master_data_records": {
+            "count": 4,
+            "sha256": "adbc32fbeec38189c3273df5cf3f3458eae910e11f8cb3529687b17c77c071cd"
+        },
+        "master_import_batches": {
+            "count": 2,
+            "sha256": "8d1686958fbc9cbc27ce5a26eb44e6e9df611abecf8d93c7a0114ca31c0affbf"
+        },
+        "master_import_rows": {
+            "count": 4,
+            "sha256": "c630bc46b4d75b00aee8b8edd170be7f09134eb077a01621744320cc8eb0cb77"
+        },
+        "migrations": {
+            "count": 16,
+            "sha256": "a0877fb621a63f5f6a418505f4f0a3c35fd969c8f6737677dc187ab4b47be020"
+        },
+        "operational_flights": {
+            "count": 10,
+            "sha256": "90b04ec4da7b6202f24f832da44343067b2a56d7851abb4da680e52e1e2bdf23"
+        },
+        "order_bookings": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "order_items": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "passenger_consents": {
+            "count": 2,
+            "sha256": "d71a811dd08e78e11ab9b3dc6202ac27fa95741cba3edaa760eaac843ca9440d"
+        },
+        "passenger_profiles": {
+            "count": 1,
+            "sha256": "1d07e91ea5e64e260dd3a7b1dd0540ce6b82b0392c39e3a69477ba4829555adc"
+        },
+        "password_reset_tokens": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "permissions": {
+            "count": 37,
+            "sha256": "f98ebc5261329f29a02de1b096c7735c844fadf86556831eb26ef363021bc492"
+        },
+        "personal_access_tokens": {
+            "count": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "role_permissions": {
+            "count": 80,
+            "sha256": "e03fac3c0de5a8b75eb42a52b0754905708c70d9da24584e403822163c512168"
+        },
+        "roles": {
+            "count": 13,
+            "sha256": "001905d64ebaf2eeb111fcd413f34c8a6f24c87e38dd526e40e70d155d811dc2"
+        },
+        "routes": {
+            "count": 4,
+            "sha256": "51eb79cef68ff5f2d602f9b52f1f15d4f333df809db922622674bc13f006705c"
+        },
+        "sessions": {
+            "count": 10,
+            "sha256": "2e75cfc127eaa815fbabe82bacd7b58452419078ffa871c178f404bfa4f1d073"
+        },
+        "user_data_scopes": {
+            "count": 14,
+            "sha256": "b572eb1a28775f3ec5f9dcc835173fbc7486fbdeb484544bed4d3c36b43e4fc1"
+        },
+        "user_roles": {
+            "count": 14,
+            "sha256": "6f2d632dfefa9a9700fffd15dd3b8c295a0e4ff5b4816d97da60f50ad1ac2be0"
+        },
+        "users": {
+            "count": 9,
+            "sha256": "d52a62f1136609d94c3c83f077e3cad7a00855b0497bd604f4aeafad92a68b62"
+        }
+    },
+    "foreign_key_relationships_checked": 59,
+    "orphaned_relationships": 0,
+    "encrypted_assistance_decrypted": true,
+    "upload_fixture_sha256": "f73c6f4d1e01d817cb0f5d5762a552b7bbeb5f8a51613caff7911260c332c884",
+    "archive_sha256": "66ea1d64d626a94db1fec83e1501f16bda4639a8ace30525ffaaaaa7b2265fd6",
+    "private_archive": "storage/app/private/restore-20261018-023328-a4f1b5/backup.tar",
+    "limitations": [
+        "Synthetic fixture only; application-specific attachment workflows remain unimplemented.",
+        "RPO/RTO and production restore were not measured."
+    ]
+}

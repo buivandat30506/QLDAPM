@@ -1,0 +1,19 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Admin\Desktop\airline-smart\phpunit.xml
+
+..................................................F               51 / 51 (100%)
+
+Time: 00:39.212, Memory: 58.00 MB
+
+There was 1 failure:
+
+1) Tests\Feature\MySqlBookingRaceTest::test_two_connections_compete_for_last_seat_without_overbooking
+Both separate MySQL sessions must be observed waiting on the same row.
+Failed asserting that 0 matches expected 2.
+
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MySqlBookingRaceTest.php:44
+
+FAILURES!
+Tests: 51, Assertions: 289, Failures: 1.

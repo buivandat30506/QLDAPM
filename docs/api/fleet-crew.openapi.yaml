@@ -1,0 +1,1603 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "M04 Fleet & M06 Crew",
+    "version": "2026-10-18",
+    "description": "Laravel/MySQL. Bearer token. ADMIN không bypass. Scope aircraft theo cơ sở, crew profile theo cơ sở; plan theo sân bay đi/flight; phân công cần cả phạm vi nhân sự và chuyến. Giới hạn giờ/chu kỳ local và local-crew-v1 chưa được chuyên gia duyệt. Nguồn DEMO là mô phỏng; receiveUsage là API phục hồi nội bộ được phân quyền, không phải bằng chứng tích hợp AODB/FIDS thật."
+  },
+  "servers": [
+    {
+      "url": "/api/v1/core"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/aircraft-models": {
+      "parameters": [],
+      "get": {
+        "operationId": "fleetModels",
+        "summary": "Danh mục dòng tàu bay",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      },
+      "post": {
+        "operationId": "fleetCreateModel",
+        "summary": "Tạo dòng; yêu cầu global aircraft.write",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Model"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aircrafts": {
+      "parameters": [],
+      "get": {
+        "operationId": "fleetList",
+        "summary": "Paging data.data; lọc theo cơ sở được cấp quyền",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "model_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "base",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "alert",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "fleetCreate",
+        "summary": "Tiếp nhận tàu và số dư có nguồn",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AircraftCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aircrafts/maintenance-alerts": {
+      "parameters": [],
+      "get": {
+        "operationId": "fleetAlerts",
+        "summary": "Đạt 90% ngưỡng local hoặc quá hạn",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    },
+    "/aircrafts/{tailNumber}": {
+      "parameters": [
+        {
+          "name": "tailNumber",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "fleetDetail",
+        "summary": "Hồ sơ, cấu hình hiện tại và reconciliation",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      },
+      "put": {
+        "operationId": "fleetUpdate",
+        "summary": "Cập nhật hồ sơ; giờ/chu kỳ chỉ đọc; phục hồi khai thác qua kỹ thuật",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AircraftUpdate"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "fleetDelete",
+        "summary": "Chỉ xóa tàu chưa có tham chiếu/lịch sử",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    },
+    "/aircrafts/{tailNumber}/configurations": {
+      "parameters": [
+        {
+          "name": "tailNumber",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "fleetConfigurations",
+        "summary": "Lịch sử cấu hình bất biến, paging data.data",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "fleetConfigure",
+        "summary": "Tạo phiên bản; chặn nếu còn chuyến chưa kết thúc",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Configuration"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aircrafts/{tailNumber}/usage": {
+      "parameters": [
+        {
+          "name": "tailNumber",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "fleetUsage",
+        "summary": "Sổ usage; hours là decimal string, lọc ngày nhận UTC",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "fleetReceiveUsage",
+        "summary": "Nhận lại sự kiện/chuyến đã ARRIVED; tự tính từ actual timestamps, không nhận hours/cycles",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsageReceipt"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crew-members": {
+      "parameters": [],
+      "get": {
+        "operationId": "crewProfiles",
+        "summary": "Danh sách hồ sơ theo cơ sở được cấp quyền",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rank",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "base_airport",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "crewCreate",
+        "summary": "Tạo hồ sơ nhân sự tổ bay",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrewCreate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crew-members/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "crewProfile",
+        "summary": "Hồ sơ và lịch sử phân công trong phạm vi cơ sở",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      },
+      "put": {
+        "operationId": "crewUpdate",
+        "summary": "Thay đổi điều kiện làm mất duyệt/xác nhận của phân công trước cất cánh",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrewUpdate"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "crewDelete",
+        "summary": "Chỉ xóa hồ sơ chưa có lịch sử",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    },
+    "/crew-members/{id}/availability": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "crewCalendar",
+        "summary": "Lịch khả dụng có paging data.data; giữ khoảng đã hủy",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "crewAddWindow",
+        "summary": "Ghi LEAVE/UNAVAILABLE/STANDBY; kiểm tra lại phân công",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityWindow"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/crew-members/{id}/availability/{window}/cancel": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "window",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "crewCancelWindow",
+        "summary": "Hủy có lý do; không xóa lịch sử",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Reason"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flights/{flightId}/crew/suggestions": {
+      "parameters": [
+        {
+          "name": "flightId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "crewSuggestions",
+        "summary": "Lọc theo local-crew-v1; ưu tiên dự bị; không tự phân công",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        },
+        "parameters": [
+          {
+            "name": "position",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "replace_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/flights/{flightId}/crew": {
+      "parameters": [
+        {
+          "name": "flightId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "operationId": "crewFlightPlan",
+        "summary": "Phương án và minimum compliance; hồ sơ người chỉ trả trường tối thiểu",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    },
+    "/flights/{flightId}/crew/assign": {
+      "parameters": [
+        {
+          "name": "flightId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "crewAssign",
+        "summary": "Ghi phương án và kiểm tra lại tại commit",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Assignment"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flights/{id}/crew/approve": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "crewApprove",
+        "summary": "Kiểm tra lại mọi người, ghi actor và rule version; thông báo nội bộ",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    },
+    "/crew-assignments/{id}/confirm": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "crewConfirm",
+        "summary": "Thành viên được liên kết hoặc điều hành trong phạm vi; ghi SELF/OPERATOR",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    },
+    "/crew-assignments/{id}/replace": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "crewReplace",
+        "summary": "Thay thế nguyên tử; bản mới cần duyệt/xác nhận lại",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          },
+          "201": {
+            "description": "Đã tạo/công bố"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Replacement"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/flights/crew-assignments/{assignmentId}": {
+      "parameters": [
+        {
+          "name": "assignmentId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "delete": {
+        "operationId": "crewRemove",
+        "summary": "Đánh dấu REPLACED, giữ lịch sử; không được sau cất cánh",
+        "responses": {
+          "200": {
+            "description": "Thành công; data là kết quả"
+          },
+          "401": {
+            "description": "Chưa xác thực"
+          },
+          "403": {
+            "description": "Thiếu quyền hoặc phạm vi"
+          },
+          "404": {
+            "description": "Không tìm thấy"
+          },
+          "409": {
+            "description": "Revision hoặc mã sự kiện xung đột"
+          },
+          "422": {
+            "description": "Vi phạm dữ liệu/quy tắc; không ghi thay đổi một phần"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Model": {
+        "type": "object",
+        "properties": {
+          "model_code": {
+            "type": "string",
+            "maxLength": 30
+          },
+          "manufacturer": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "seat_capacity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "turnaround_time_minutes": {
+            "type": "integer",
+            "minimum": 15,
+            "maximum": 1440
+          }
+        },
+        "required": [
+          "model_code",
+          "manufacturer",
+          "seat_capacity",
+          "turnaround_time_minutes"
+        ]
+      },
+      "AircraftCreate": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "manufacture_year": {
+            "type": "integer",
+            "minimum": 1970
+          },
+          "base_airport_code": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "operational_status": {
+            "enum": [
+              "OPERATIONAL",
+              "MAINTENANCE",
+              "GROUNDED"
+            ]
+          },
+          "tail_number": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "total_flight_hours": {
+            "type": [
+              "string",
+              "number"
+            ],
+            "description": "Số dư tiếp nhận, max 2 chữ số thập phân"
+          },
+          "total_flight_cycles": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "opening_reason": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "tail_number",
+          "model_id",
+          "manufacture_year"
+        ]
+      },
+      "AircraftUpdate": {
+        "type": "object",
+        "properties": {
+          "model_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "manufacture_year": {
+            "type": "integer",
+            "minimum": 1970
+          },
+          "base_airport_code": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 3,
+            "maxLength": 3
+          },
+          "operational_status": {
+            "enum": [
+              "OPERATIONAL",
+              "MAINTENANCE",
+              "GROUNDED"
+            ]
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": []
+      },
+      "Configuration": {
+        "type": "object",
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "sections": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 200
+                },
+                "to": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 200
+                },
+                "columns": {
+                  "type": "string",
+                  "pattern": "^[A-HJ-Z]{1,12}$"
+                },
+                "cabin": {
+                  "enum": [
+                    "ECONOMY",
+                    "PREMIUM_ECONOMY",
+                    "BUSINESS",
+                    "FIRST"
+                  ]
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "columns",
+                "cabin"
+              ]
+            }
+          },
+          "blocked_seats": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 4
+            }
+          }
+        },
+        "required": [
+          "expected_revision",
+          "name",
+          "reason",
+          "sections"
+        ]
+      },
+      "UsageReceipt": {
+        "type": "object",
+        "properties": {
+          "flight_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source": {
+            "enum": [
+              "OPERATIONS",
+              "AODB",
+              "FIDS",
+              "DEMO"
+            ]
+          },
+          "external_id": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "flight_id",
+          "source",
+          "external_id"
+        ]
+      },
+      "CrewCreate": {
+        "type": "object",
+        "properties": {
+          "crew_code": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "full_name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "rank": {
+            "enum": [
+              "CAPTAIN",
+              "FIRST_OFFICER",
+              "PURSER",
+              "FLIGHT_ATTENDANT"
+            ]
+          },
+          "base_airport_code": {
+            "type": "string",
+            "maxLength": 3
+          },
+          "license_number": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "license_expires_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "training_expires_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "qualified_model_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "status": {
+            "enum": [
+              "AVAILABLE",
+              "ON_DUTY",
+              "RESTING",
+              "LEAVE"
+            ]
+          },
+          "available_from_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "UTC date-time"
+          },
+          "available_until_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "UTC date-time, sau available_from_utc"
+          }
+        },
+        "required": [
+          "crew_code",
+          "full_name",
+          "email",
+          "phone",
+          "rank",
+          "base_airport_code",
+          "license_number",
+          "license_expires_on",
+          "training_expires_on",
+          "qualified_model_ids"
+        ]
+      },
+      "CrewUpdate": {
+        "type": "object",
+        "properties": {
+          "full_name": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "rank": {
+            "enum": [
+              "CAPTAIN",
+              "FIRST_OFFICER",
+              "PURSER",
+              "FLIGHT_ATTENDANT"
+            ]
+          },
+          "base_airport_code": {
+            "type": "string",
+            "maxLength": 3
+          },
+          "license_number": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "license_expires_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "training_expires_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "qualified_model_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "status": {
+            "enum": [
+              "AVAILABLE",
+              "ON_DUTY",
+              "RESTING",
+              "LEAVE"
+            ]
+          },
+          "available_from_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "UTC date-time"
+          },
+          "available_until_utc": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "UTC date-time, sau available_from_utc"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": []
+      },
+      "AvailabilityWindow": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "LEAVE",
+              "UNAVAILABLE",
+              "STANDBY"
+            ]
+          },
+          "starts_at_utc": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "ends_at_utc": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "type",
+          "starts_at_utc",
+          "ends_at_utc",
+          "reason",
+          "expected_revision"
+        ]
+      },
+      "Reason": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "Assignment": {
+        "type": "object",
+        "properties": {
+          "crew_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "assigned_position": {
+            "enum": [
+              "CAPTAIN",
+              "FIRST_OFFICER",
+              "PURSER",
+              "FLIGHT_ATTENDANT"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "crew_id",
+          "assigned_position"
+        ]
+      },
+      "Replacement": {
+        "type": "object",
+        "properties": {
+          "crew_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "crew_id",
+          "reason"
+        ]
+      }
+    }
+  }
+}

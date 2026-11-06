@@ -1,0 +1,88 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Admin\Desktop\airline-smart\phpunit.xml
+
+.............................F.....E..........                    46 / 46 (100%)
+
+Time: 00:17.170, Memory: 58.00 MB
+
+There was 1 error:
+
+1) Tests\Feature\DiagramWorkflowTest::test_demo_seeder_is_repeatable_without_duplicate_usage_or_events
+Illuminate\Validation\ValidationException: Mã sự kiện đã dùng với nội dung khác.
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Validation\ValidationException.php:70
+C:\Users\Admin\Desktop\airline-smart\app\Services\Core\FlightEventService.php:27
+C:\Users\Admin\Desktop\airline-smart\database\seeders\DiagramDemoSeeder.php:165
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Concerns\ManagesTransactions.php:35
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\DatabaseManager.php:491
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+C:\Users\Admin\Desktop\airline-smart\database\seeders\DiagramDemoSeeder.php:34
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\Util.php:43
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:96
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:35
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\Container.php:799
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Seeder.php:184
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Seeder.php:193
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Seeder.php:59
+C:\Users\Admin\Desktop\airline-smart\database\seeders\DatabaseSeeder.php:576
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\Util.php:43
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:96
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:35
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\Container.php:799
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Seeder.php:184
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Seeder.php:193
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Console\Seeds\SeedCommand.php:71
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Concerns\GuardsAttributes.php:157
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Console\Seeds\SeedCommand.php:70
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\Util.php:43
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:96
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:35
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Container\Container.php:799
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Console\Command.php:211
+C:\Users\Admin\Desktop\airline-smart\vendor\symfony\console\Command\Command.php:341
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Console\Command.php:180
+C:\Users\Admin\Desktop\airline-smart\vendor\symfony\console\Application.php:1094
+C:\Users\Admin\Desktop\airline-smart\vendor\symfony\console\Application.php:356
+C:\Users\Admin\Desktop\airline-smart\vendor\symfony\console\Application.php:195
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Console\Application.php:165
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php:447
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\PendingCommand.php:451
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\PendingCommand.php:675
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\InteractsWithConsole.php:87
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase.php:362
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\DiagramWorkflowTest.php:212
+
+--
+
+There was 1 failure:
+
+1) Tests\Feature\DiagramWorkflowTest::test_event_unknown_flight_is_logged_and_alert_waits_for_operator
+Expected response status code [202] but received 422.
+Failed asserting that 422 is identical to 202.
+
+The following errors occurred during the last request:
+
+{
+    "success": false,
+    "message": "Dữ liệu yêu cầu không hợp lệ.",
+    "data": null,
+    "errors": {
+        "external_id": [
+            "Mã sự kiện đã dùng với nội dung khác."
+        ]
+    },
+    "correlation_id": "355747e6-abdc-4d6a-999b-459296d895a1",
+    "code": "HTTP_422"
+}
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:175
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\DiagramWorkflowTest.php:119
+
+ERRORS!
+Tests: 46, Assertions: 262, Errors: 1, Failures: 1.

@@ -1,0 +1,16 @@
+{
+    "recorded_at_utc": "2026-10-18T02:41:48+00:00",
+    "findings": [
+        {
+            "id": "PLAN-UI-001",
+            "status": "Failed manual verification",
+            "actual": "Original BP901 season_code was NULL after initial UI create; revision had UAT-W26-V2. Duplicate id=season_code resolved label to the filter input.",
+            "automated_limitation": "Initial automated journey omitted initial season assertion; its Passed result did not prove this field."
+        },
+        {
+            "id": "PLAN-NAV-001",
+            "status": "Failed accessible-name smoke",
+            "actual": "Exact accessible name click timed out although link existed. Subsequent inspection confirmed link and aria labeling was corrected."
+        }
+    ]
+}

@@ -1,0 +1,545 @@
+id,source_id,uc_id,actor,objective,preconditions,input_steps,expected_result,status,implementation,approval,actual_result,evidence_path,profile,build_sha256,tester,executed_at_utc
+UAT-UC01-MAIN,"Appendix A Basic Flow",UC-01,"Quản trị dữ liệu","Quản lý sân bay / MAIN","Actor đã đăng nhập và có quyền quản lý dữ liệu nền.","1. Actor mở danh sách sân bay.
+
+2. Hệ thống hiển thị dữ liệu hiện có.
+3. Actor chọn thêm mới hoặc chỉnh sửa.
+4. Actor nhập thông tin sân bay.
+5. Hệ thống kiểm tra dữ liệu.
+6. Actor xác nhận lưu.
+7. Hệ thống cập nhật dữ liệu.","Thông tin sân bay hợp lệ được lưu vào hệ thống.",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC01-ALT,"Appendix A Alternative Flow",UC-01,"Quản trị dữ liệu","Quản lý sân bay / ALT","Actor đã đăng nhập và có quyền quản lý dữ liệu nền.","Actor thay đổi trạng thái hoặc thông tin của sân bay hiện có.","Thông tin sân bay hợp lệ được lưu vào hệ thống.",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC01-EXC,"Appendix A Exception Flow",UC-01,"Quản trị dữ liệu","Quản lý sân bay / EXC","Actor đã đăng nhập và có quyền quản lý dữ liệu nền.","E1. Thiếu dữ liệu bắt buộc → yêu cầu nhập lại.
+
+E2. Mã sân bay bị trùng → từ chối lưu.
+E3. Không đủ quyền → từ chối thao tác.","Thông tin sân bay hợp lệ được lưu vào hệ thống.",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật;Tests\Feature\FoundationWorkflowTest::test_airport_identifier_coordinates_timezone_and_status_are_validated_and_audited",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml;docs/testing/evidence/2026-10-18-g2/mysql.xml,browser+mysql,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC01-DENIED,DERIVED,UC-01,"Quản trị dữ liệu","Quản lý sân bay / DENIED","Actor đã đăng nhập và có quyền quản lý dữ liệu nền.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật;Tests\Feature\FoundationWorkflowTest::test_airport_scope_filters_lists_and_checks_objects_before_validation",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml;docs/testing/evidence/2026-10-18-g2/mysql.xml,browser+mysql,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC02-MAIN,"Appendix A Basic Flow",UC-02,"Quản trị dữ liệu","Quản lý tài nguyên sân bay / MAIN","Sân bay đã tồn tại.","1. Actor chọn sân bay.
+
+2. Hệ thống hiển thị tài nguyên.
+3. Actor thêm hoặc sửa tài nguyên.
+4. Nhập thông tin tài nguyên.
+5. Chọn trạng thái khả dụng.
+6. Hệ thống kiểm tra.
+7. Lưu dữ liệu.","Tài nguyên được lưu và liên kết đúng với sân bay.",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC02-ALT,"Appendix A Alternative Flow",UC-02,"Quản trị dữ liệu","Quản lý tài nguyên sân bay / ALT","Sân bay đã tồn tại.","Actor chuyển một tài nguyên sang trạng thái tạm ngừng sử dụng.","Tài nguyên được lưu và liên kết đúng với sân bay.",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC02-DENIED,DERIVED,UC-02,"Quản trị dữ liệu","Quản lý tài nguyên sân bay / DENIED","Sân bay đã tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật;Tests\Feature\FoundationWorkflowTest::test_airport_scope_filters_lists_and_checks_objects_before_validation",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml;docs/testing/evidence/2026-10-18-g2/mysql.xml,browser+mysql,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC03-MAIN,"Appendix A Basic Flow",UC-03,"Quản trị dữ liệu","Quản lý dữ liệu chủ / MAIN","Actor có quyền quản lý dữ liệu.","1. Actor chọn dữ liệu cần quản lý.
+
+2. Nhập hoặc chỉnh sửa dữ liệu.
+3. Hệ thống kiểm tra mã trùng, dữ liệu thiếu và quan hệ không hợp lệ.
+4. Hiển thị kết quả kiểm tra.
+5. Actor sửa nếu cần.
+6. Gửi phê duyệt.
+7. Hệ thống lưu phiên bản.","Dữ liệu hợp lệ được phê duyệt và công bố.",Passed,"foundation.spec.js::UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC03-ALT,"Appendix A Alternative Flow",UC-03,"Quản trị dữ liệu","Quản lý dữ liệu chủ / ALT","Actor có quyền quản lý dữ liệu.","Actor xuất dữ liệu để kiểm tra hoặc sử dụng ngoài hệ thống.","Dữ liệu hợp lệ được phê duyệt và công bố.",Passed,"foundation.spec.js::UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc;Tests\Feature\FoundationWorkflowTest::test_export_filters_escape_formula_cells_and_default_admin_has_no_data_authority",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml;docs/testing/evidence/2026-10-18-g2/mysql.xml,browser+mysql,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC03-EXC,"Appendix A Exception Flow",UC-03,"Quản trị dữ liệu","Quản lý dữ liệu chủ / EXC","Actor có quyền quản lý dữ liệu.","E1. Tệp nhập sai định dạng → từ chối.
+
+E2. Dữ liệu không đạt chất lượng → không cho công bố.","Dữ liệu hợp lệ được phê duyệt và công bố.",Passed,"foundation.spec.js::UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối;Tests\Feature\FoundationWorkflowTest::test_quality_is_rechecked_at_publication_and_stale_revision_is_rejected",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml;docs/testing/evidence/2026-10-18-g2/mysql.xml,browser+mysql,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC03-DENIED,DERIVED,UC-03,"Quản trị dữ liệu","Quản lý dữ liệu chủ / DENIED","Actor có quyền quản lý dữ liệu.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,"foundation.spec.js::UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối;Tests\Feature\FoundationWorkflowTest::test_export_filters_escape_formula_cells_and_default_admin_has_no_data_authority",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml;docs/testing/evidence/2026-10-18-g2/mysql.xml,browser+mysql,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC04-MAIN,"Appendix A Basic Flow",UC-04,"Quản trị dữ liệu","Quản lý đường bay / MAIN","Sân bay đi và sân bay đến tồn tại.","1. Mở danh sách đường bay.
+
+2. Chọn thêm/sửa.
+3. Chọn sân bay đi và đến.
+4. Nhập thông tin khai thác.
+5. Hệ thống kiểm tra.
+6. Lưu.","Đường bay hợp lệ được lưu.",Passed,"planning.spec.js::UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml,browser,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC04-ALT,"Appendix A Alternative Flow",UC-04,"Quản trị dữ liệu","Quản lý đường bay / ALT","Sân bay đi và sân bay đến tồn tại.","Cập nhật hạn chế hoặc mùa khai thác.","Đường bay hợp lệ được lưu.",Passed,"planning.spec.js::UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml,browser,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC04-DENIED,DERIVED,UC-04,"Quản trị dữ liệu","Quản lý đường bay / DENIED","Sân bay đi và sân bay đến tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\FlightPlanningTest::test_airport_scoped_route_and_schedule_collections_objects_and_writes,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/mysql.xml,mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:44:10+00:00
+UAT-UC05-MAIN,"Appendix A Basic Flow",UC-05,"Điều hành khai thác","Lập và công bố lịch bay / MAIN","Đường bay và dữ liệu nền đã tồn tại.","1. Actor tạo lịch.
+
+2. Chọn đường bay, ngày, giờ và tần suất.
+3. Hệ thống kiểm tra dữ liệu.
+4. Actor kiểm tra xung đột.
+5. Gửi phê duyệt.
+6. Người có thẩm quyền phê duyệt.
+7. Hệ thống công bố lịch.","Lịch được lưu ở trạng thái nháp, chờ duyệt, đã duyệt hoặc đã công bố.",Passed,"planning.spec.js::UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi;Tests\Feature\FlightPlanningTest::test_full_schedule_workflow_records_actors_checks_and_immutable_snapshot",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml;docs/testing/evidence/2026-10-18-planning/mysql.xml,browser+mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC05-ALT,"Appendix A Alternative Flow",UC-05,"Điều hành khai thác","Lập và công bố lịch bay / ALT","Đường bay và dữ liệu nền đã tồn tại.","Actor tạo phiên bản mới từ lịch đã công bố.","Lịch được lưu ở trạng thái nháp, chờ duyệt, đã duyệt hoặc đã công bố.",Passed,"planning.spec.js::UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi;Tests\Feature\FlightPlanningTest::test_revision_keeps_published_schedule_until_new_publication;Tests\Feature\FlightPlanningTest::test_changed_revision_lists_impacted_flights_and_blocks_silent_replan",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml;docs/testing/evidence/2026-10-18-planning/mysql.xml,browser+mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC05-EXC,"Appendix A Exception Flow",UC-05,"Điều hành khai thác","Lập và công bố lịch bay / EXC","Đường bay và dữ liệu nền đã tồn tại.","E1. Thiếu thông tin bắt buộc → không công bố.
+
+E2. Có xung đột chưa xử lý → giữ trạng thái chờ.","Lịch được lưu ở trạng thái nháp, chờ duyệt, đã duyệt hoặc đã công bố.",Passed,"planning.spec.js::UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch;Tests\Feature\FlightPlanningTest::test_missing_resources_and_multiple_conflicts_return_persisted_diagnostics;Tests\Feature\FlightPlanningTest::test_publish_rechecks_route_season_restrictions_and_does_not_advance",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml;docs/testing/evidence/2026-10-18-planning/mysql.xml,browser+mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC05-DENIED,DERIVED,UC-05,"Điều hành khai thác","Lập và công bố lịch bay / DENIED","Đường bay và dữ liệu nền đã tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,"planning.spec.js::UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch;Tests\Feature\FlightPlanningTest::test_airport_scoped_route_and_schedule_collections_objects_and_writes",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml;docs/testing/evidence/2026-10-18-planning/mysql.xml,browser+mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC06-MAIN,"Appendix A Basic Flow",UC-06,"Điều hành khai thác","Kiểm tra xung đột lịch bay / MAIN","Phương án lịch bay đã được tạo.","1. Nhận lịch cần kiểm tra.
+
+2. Kiểm tra tàu bay.
+3. Kiểm tra tài nguyên sân bay.
+4. Kiểm tra thời gian quay đầu.
+5. Tổng hợp xung đột.
+6. Hiển thị cho actor.","Hệ thống trả về kết quả hợp lệ hoặc danh sách xung đột.",Passed,"planning.spec.js::UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi;Tests\Feature\FlightPlanningTest::test_missing_resources_and_multiple_conflicts_return_persisted_diagnostics",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml;docs/testing/evidence/2026-10-18-planning/mysql.xml,browser+mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC06-ALT,"Appendix A Alternative Flow",UC-06,"Điều hành khai thác","Kiểm tra xung đột lịch bay / ALT","Phương án lịch bay đã được tạo.","Không có xung đột → cho phép tiếp tục phê duyệt.","Hệ thống trả về kết quả hợp lệ hoặc danh sách xung đột.",Passed,Tests\Feature\FlightPlanningTest::test_full_schedule_workflow_records_actors_checks_and_immutable_snapshot,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/mysql.xml,mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:44:10+00:00
+UAT-UC06-EXC,"Appendix A Exception Flow",UC-06,"Điều hành khai thác","Kiểm tra xung đột lịch bay / EXC","Phương án lịch bay đã được tạo.","E1. Thiếu dữ liệu nguồn lực → cảnh báo không thể kiểm tra đầy đủ.","Hệ thống trả về kết quả hợp lệ hoặc danh sách xung đột.",Passed,"planning.spec.js::UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml,browser,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC06-DENIED,DERIVED,UC-06,"Điều hành khai thác","Kiểm tra xung đột lịch bay / DENIED","Phương án lịch bay đã được tạo.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,"planning.spec.js::UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/browser.xml,browser,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:39:29.508Z
+UAT-UC07-MAIN,"Appendix A Basic Flow",UC-07,"Điều hành khai thác","Quản lý chuyến bay khai thác / MAIN","Lịch bay đã được công bố.","1. Hệ thống đọc lịch công bố.
+
+2. Khởi tạo chuyến.
+3. Gắn dữ liệu liên quan.
+4. Điều hành kiểm tra.
+5. Lưu trạng thái chuyến.","Chuyến bay khai thác được tạo và theo dõi.","Not Run",,Pending,,,,,,
+UAT-UC07-ALT,"Appendix A Alternative Flow",UC-07,"Điều hành khai thác","Quản lý chuyến bay khai thác / ALT","Lịch bay đã được công bố.","Actor cập nhật thông tin chuyến khi có thay đổi.","Chuyến bay khai thác được tạo và theo dõi.","Not Run",,Pending,,,,,,
+UAT-UC07-DENIED,DERIVED,UC-07,"Điều hành khai thác","Quản lý chuyến bay khai thác / DENIED","Lịch bay đã được công bố.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC08-MAIN,"Appendix A Basic Flow",UC-08,"Điều hành khai thác","Theo dõi trạng thái và cảnh báo chuyến bay / MAIN","Chuyến bay đã tồn tại.","1. Nhận sự kiện.
+
+2. Xác định chuyến.
+3. Cập nhật mốc thời gian.
+4. So sánh kế hoạch với thực tế.
+5. Kiểm tra điều kiện cảnh báo.
+6. Hiển thị cảnh báo.","Trạng thái và cảnh báo được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC08-EXC,"Appendix A Exception Flow",UC-08,"Điều hành khai thác","Theo dõi trạng thái và cảnh báo chuyến bay / EXC","Chuyến bay đã tồn tại.","E1. Không xác định được chuyến → ghi lỗi tích hợp.","Trạng thái và cảnh báo được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC08-DENIED,DERIVED,UC-08,"Điều hành khai thác","Theo dõi trạng thái và cảnh báo chuyến bay / DENIED","Chuyến bay đã tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC09-MAIN,"Appendix A Basic Flow",UC-09,"Điều hành khai thác","Xử lý gián đoạn khai thác / MAIN","Chuyến bay và sự kiện bất thường đã tồn tại.","1. Actor mở cảnh báo.
+
+2. Hệ thống xác định đối tượng bị ảnh hưởng.
+3. Hiển thị thông tin liên quan.
+4. Actor xây dựng phương án.
+5. Chọn phương án xử lý.
+6. Cập nhật dữ liệu.
+7. Lưu lý do quyết định.","Phương án xử lý được ghi nhận và các dữ liệu liên quan được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC09-ALT,"Appendix A Alternative Flow",UC-09,"Điều hành khai thác","Xử lý gián đoạn khai thác / ALT","Chuyến bay và sự kiện bất thường đã tồn tại.","Hệ thống cung cấp gợi ý nhưng actor quyết định.","Phương án xử lý được ghi nhận và các dữ liệu liên quan được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC09-DENIED,DERIVED,UC-09,"Điều hành khai thác","Xử lý gián đoạn khai thác / DENIED","Chuyến bay và sự kiện bất thường đã tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC10-MAIN,"Appendix A Basic Flow",UC-10,"Quản lý đội bay","Quản lý tàu bay / MAIN","Actor có quyền quản lý đội bay.","1. Xem danh sách.
+
+2. Chọn thêm/sửa.
+3. Nhập thông tin.
+4. Chọn trạng thái.
+5. Kiểm tra.
+6. Lưu.","Hồ sơ tàu bay được cập nhật.",Passed,"fleet.spec.js::UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml,browser,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC10-ALT,"Appendix A Alternative Flow",UC-10,"Quản lý đội bay","Quản lý tàu bay / ALT","Actor có quyền quản lý đội bay.","Actor thay đổi cấu hình hoặc trạng thái.","Hồ sơ tàu bay được cập nhật.",Passed,"fleet.spec.js::UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml,browser,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC10-EXC,"Appendix A Exception Flow",UC-10,"Quản lý đội bay","Quản lý tàu bay / EXC","Actor có quyền quản lý đội bay.","E1. Số đăng ký bị trùng → từ chối lưu.","Hồ sơ tàu bay được cập nhật.",Passed,Tests\Feature\FleetManagementTest::test_aircraft_crud_normalization_revision_and_noneditable_usage,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC10-DENIED,DERIVED,UC-10,"Quản lý đội bay","Quản lý tàu bay / DENIED","Actor có quyền quản lý đội bay.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\FleetManagementTest::test_airport_scopes_filter_collections_and_protect_objects_and_configuration_history,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC11-MAIN,"Appendix A Basic Flow",UC-11,"Quản lý đội bay","Theo dõi sử dụng tàu bay / MAIN","Tàu bay tồn tại.","1. Nhận số liệu.
+
+2. Xác định tàu bay.
+3. Cập nhật giờ bay.
+4. Cập nhật chu kỳ.
+5. Kiểm tra ngưỡng.
+6. Lưu.","Giờ bay và chu kỳ được cập nhật.",Passed,Tests\Feature\FleetManagementTest::test_usage_from_completed_facts_is_idempotent_with_durable_alias_receipts;Tests\Feature\FleetManagementTest::test_threshold_alert_blocks_operations_and_reconciliation_exposes_discrepancy,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC11-ALT,"Appendix A Alternative Flow",UC-11,"Quản lý đội bay","Theo dõi sử dụng tàu bay / ALT","Tàu bay tồn tại.","Actor tra cứu lịch sử sử dụng.","Giờ bay và chu kỳ được cập nhật.",Passed,"fleet.spec.js::UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml,browser,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC11-DENIED,DERIVED,UC-11,"Quản lý đội bay","Theo dõi sử dụng tàu bay / DENIED","Tàu bay tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\FleetManagementTest::test_airport_scopes_filter_collections_and_protect_objects_and_configuration_history,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC12-MAIN,"Appendix A Basic Flow",UC-12,"Kỹ thuật bảo dưỡng","Quản lý lịch bảo dưỡng / MAIN","Tàu bay tồn tại.","1. Chọn tàu bay.
+
+2. Xem số liệu sử dụng.
+3. Chọn hạng mục bảo dưỡng.
+4. Xác định hạn.
+5. Kiểm tra xung đột.
+6. Lưu lịch.","Lịch bảo dưỡng được lưu và theo dõi.",Passed,"maintenance.spec.js::UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml,browser,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-UC12-ALT,"Appendix A Alternative Flow",UC-12,"Kỹ thuật bảo dưỡng","Quản lý lịch bảo dưỡng / ALT","Tàu bay tồn tại.","Điều chỉnh lịch khi dữ liệu khai thác thay đổi.","Lịch bảo dưỡng được lưu và theo dõi.",Passed,"maintenance.spec.js::UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng;Tests\Feature\MaintenanceWorkflowTest::test_plan_revisions_history_validation_and_overdue_deferral_are_enforced",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml;docs/testing/evidence/2026-10-18-maintenance/mysql.xml,browser+mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-UC12-DENIED,DERIVED,UC-12,"Kỹ thuật bảo dưỡng","Quản lý lịch bảo dưỡng / DENIED","Tàu bay tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\MaintenanceWorkflowTest::test_airport_scope_protects_collections_orders_files_stock_and_admin_has_no_bypass,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-UC13-MAIN,"Appendix A Basic Flow",UC-13,"Kỹ thuật bảo dưỡng","Quản lý lệnh bảo dưỡng / MAIN","Có kế hoạch bảo dưỡng hợp lệ.","1. Tạo lệnh.
+
+2. Chọn hạng mục.
+3. Phân công nhân lực.
+4. Chọn vật tư/vị trí.
+5. Thực hiện.
+6. Ghi kết quả.
+7. Xác nhận kỹ thuật.","Kết quả bảo dưỡng và bằng chứng được lưu.",Passed,"maintenance.spec.js::UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng;Tests\Feature\MaintenanceStockRaceTest::test_two_independent_orders_cannot_consume_the_same_material_stock",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml;docs/testing/evidence/2026-10-18-maintenance/mysql.xml,browser+mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-UC13-ALT,"Appendix A Alternative Flow",UC-13,"Kỹ thuật bảo dưỡng","Quản lý lệnh bảo dưỡng / ALT","Có kế hoạch bảo dưỡng hợp lệ.","Công việc chưa hoàn tất → giữ trạng thái đang thực hiện.","Kết quả bảo dưỡng và bằng chứng được lưu.",Passed,"maintenance.spec.js::UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng;Tests\Feature\MaintenanceWorkflowTest::test_incomplete_tasks_missing_evidence_or_signature_keep_work_in_progress",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml;docs/testing/evidence/2026-10-18-maintenance/mysql.xml,browser+mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-UC13-EXC,"Appendix A Exception Flow",UC-13,"Kỹ thuật bảo dưỡng","Quản lý lệnh bảo dưỡng / EXC","Có kế hoạch bảo dưỡng hợp lệ.","E1. Thiếu vật tư → cảnh báo.
+
+E2. Thiếu xác nhận → không đóng lệnh.","Kết quả bảo dưỡng và bằng chứng được lưu.",Passed,Tests\Feature\MaintenanceWorkflowTest::test_material_shortage_persists_alert_receipt_is_idempotent_and_start_consumes_once;Tests\Feature\MaintenanceWorkflowTest::test_incomplete_tasks_missing_evidence_or_signature_keep_work_in_progress,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-UC13-DENIED,DERIVED,UC-13,"Kỹ thuật bảo dưỡng","Quản lý lệnh bảo dưỡng / DENIED","Có kế hoạch bảo dưỡng hợp lệ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\MaintenanceWorkflowTest::test_airport_scope_protects_collections_orders_files_stock_and_admin_has_no_bypass,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-UC14-MAIN,"Appendix A Basic Flow",UC-14,"Kỹ thuật bảo dưỡng","Cảnh báo và giải phóng kỹ thuật / MAIN","Có hồ sơ bảo dưỡng.","1. Hệ thống kiểm tra hạn.
+
+2. Tạo cảnh báo.
+3. Kỹ thuật xem hồ sơ.
+4. Kiểm tra kết quả.
+5. Xác nhận kỹ thuật.
+6. Cập nhật trạng thái tàu bay.","Trạng thái kỹ thuật tàu bay được cập nhật.",Passed,"maintenance.spec.js::UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng;Tests\Feature\MaintenanceWorkflowTest::test_plan_date_hours_cycles_condition_and_due_alerts_block_planning_synchronously",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml;docs/testing/evidence/2026-10-18-maintenance/mysql.xml,browser+mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-UC14-ALT,"Appendix A Alternative Flow",UC-14,"Kỹ thuật bảo dưỡng","Cảnh báo và giải phóng kỹ thuật / ALT","Có hồ sơ bảo dưỡng.","Tàu bay tiếp tục ở trạng thái không khả dụng.","Trạng thái kỹ thuật tàu bay được cập nhật.",Passed,"maintenance.spec.js::UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng;Tests\Feature\MaintenanceWorkflowTest::test_completion_approval_and_release_record_responsibility_without_resetting_unrelated_usage",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml;docs/testing/evidence/2026-10-18-maintenance/mysql.xml,browser+mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-UC14-DENIED,DERIVED,UC-14,"Kỹ thuật bảo dưỡng","Cảnh báo và giải phóng kỹ thuật / DENIED","Có hồ sơ bảo dưỡng.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\MaintenanceWorkflowTest::test_airport_scope_protects_collections_orders_files_stock_and_admin_has_no_bypass,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-UC15-MAIN,"Appendix A Basic Flow",UC-15,"Điều hành tổ bay","Quản lý hồ sơ và khả dụng tổ bay / MAIN","Có hồ sơ nhân sự.","1. Chọn nhân sự.
+
+2. Xem hồ sơ.
+3. Cập nhật năng định/giấy phép.
+4. Cập nhật lịch khả dụng.
+5. Kiểm tra.
+6. Lưu.","Hồ sơ và trạng thái khả dụng được cập nhật.",Passed,"crew.spec.js::UAT-UC15: hồ sơ năng định, nghỉ phép, dự bị và hủy khoảng có lịch sử",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml,browser,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC15-ALT,"Appendix A Alternative Flow",UC-15,"Điều hành tổ bay","Quản lý hồ sơ và khả dụng tổ bay / ALT","Có hồ sơ nhân sự.","Ghi nhận nghỉ phép hoặc dự bị.","Hồ sơ và trạng thái khả dụng được cập nhật.",Passed,"crew.spec.js::UAT-UC15: hồ sơ năng định, nghỉ phép, dự bị và hủy khoảng có lịch sử",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml,browser,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC15-EXC,"Appendix A Exception Flow",UC-15,"Điều hành tổ bay","Quản lý hồ sơ và khả dụng tổ bay / EXC","Có hồ sơ nhân sự.","E1. Dữ liệu năng định không hợp lệ → không lưu.","Hồ sơ và trạng thái khả dụng được cập nhật.",Passed,Tests\Feature\CrewWorkflowTest::test_profile_updates_validate_qualifications_identity_and_revision,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC15-DENIED,DERIVED,UC-15,"Điều hành tổ bay","Quản lý hồ sơ và khả dụng tổ bay / DENIED","Có hồ sơ nhân sự.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\CrewWorkflowTest::test_backend_airport_and_flight_scopes_on_profiles_plans_and_actions,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC16-MAIN,"Appendix A Basic Flow",UC-16,"Điều hành tổ bay","Phân công tổ bay / MAIN","Chuyến bay và nhân sự tồn tại.","1. Chọn chuyến.
+
+2. Xác định nhu cầu vị trí.
+3. Xem nhân sự khả dụng.
+4. Chọn nhân sự.
+5. Kiểm tra năng định, giấy phép, thời gian nhiệm vụ và nghỉ ngơi.
+6. Lưu phương án.","Phương án phân công hợp lệ được tạo.",Passed,"crew.spec.js::UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay thế giữ lịch sử",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml,browser,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC16-ALT,"Appendix A Alternative Flow",UC-16,"Điều hành tổ bay","Phân công tổ bay / ALT","Chuyến bay và nhân sự tồn tại.","Hệ thống đề xuất phương án phân công.","Phương án phân công hợp lệ được tạo.",Passed,Tests\Feature\CrewWorkflowTest::test_suggestions_include_qualified_standby_and_warn_when_none_are_eligible,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC16-EXC,"Appendix A Exception Flow",UC-16,"Điều hành tổ bay","Phân công tổ bay / EXC","Chuyến bay và nhân sự tồn tại.","E1. Không đủ nhân sự hợp lệ → cảnh báo.
+
+E2. Vi phạm quy tắc → không chấp nhận.","Phương án phân công hợp lệ được tạo.",Passed,Tests\Feature\CrewWorkflowTest::test_suggestions_include_qualified_standby_and_warn_when_none_are_eligible;Tests\Feature\CrewWorkflowTest::test_leave_blocks_assignment_and_cancellation_keeps_history;Tests\Feature\CrewWorkflowTest::test_ineligible_replacement_rolls_back_original_assignment_and_events,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC16-DENIED,DERIVED,UC-16,"Điều hành tổ bay","Phân công tổ bay / DENIED","Chuyến bay và nhân sự tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\CrewWorkflowTest::test_backend_airport_and_flight_scopes_on_profiles_plans_and_actions,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC17-MAIN,"Appendix A Basic Flow",UC-17,"Điều hành tổ bay","Phê duyệt và thay thế tổ bay / MAIN","Đã có phương án phân công.","1. Xem phương án.
+
+2. Kiểm tra quy tắc.
+3. Phê duyệt.
+4. Gửi thông báo.
+5. Ghi nhận xác nhận.
+6. Thay thế nếu cần.
+7. Lưu lịch sử.","Phân công chính thức được cập nhật và lưu lịch sử.",Passed,"crew.spec.js::UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay thế giữ lịch sử;Tests\Feature\CrewWorkflowTest::test_only_linked_member_or_scoped_operator_can_confirm",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml;docs/testing/evidence/2026-10-18-fleet/mysql.xml,browser+mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC17-ALT,"Appendix A Alternative Flow",UC-17,"Điều hành tổ bay","Phê duyệt và thay thế tổ bay / ALT","Đã có phương án phân công.","Sử dụng nhân sự dự bị.","Phân công chính thức được cập nhật và lưu lịch sử.",Passed,"crew.spec.js::UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay thế giữ lịch sử;Tests\Feature\CrewWorkflowTest::test_approval_confirmation_and_replacement_have_actor_policy_and_immutable_events",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml;docs/testing/evidence/2026-10-18-fleet/mysql.xml,browser+mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC17-EXC,"Appendix A Exception Flow",UC-17,"Điều hành tổ bay","Phê duyệt và thay thế tổ bay / EXC","Đã có phương án phân công.","E1. Người thay thế không đạt điều kiện → từ chối.","Phân công chính thức được cập nhật và lưu lịch sử.",Passed,Tests\Feature\CrewWorkflowTest::test_ineligible_replacement_rolls_back_original_assignment_and_events,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC17-DENIED,DERIVED,UC-17,"Điều hành tổ bay","Phê duyệt và thay thế tổ bay / DENIED","Đã có phương án phân công.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,Tests\Feature\CrewWorkflowTest::test_only_linked_member_or_scoped_operator_can_confirm,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/mysql.xml,mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T04:01:45+00:00
+UAT-UC18-MAIN,"Appendix A Basic Flow",UC-18,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý hồ sơ hành khách / MAIN","Người dùng có quyền phù hợp.","1. Nhập thông tin.
+
+2. Hệ thống kiểm tra dữ liệu.
+3. Ghi nhận sự đồng ý xử lý dữ liệu.
+4. Xác nhận.
+5. Lưu hồ sơ.","Hồ sơ được lưu.",Passed,"passenger.spec.js::UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC18-ALT,"Appendix A Alternative Flow",UC-18,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý hồ sơ hành khách / ALT","Người dùng có quyền phù hợp.","Hành khách tự cập nhật thông tin được phép.","Hồ sơ được lưu.",Passed,"passenger.spec.js::UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC18-DENIED,DERIVED,UC-18,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý hồ sơ hành khách / DENIED","Người dùng có quyền phù hợp.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC19-MAIN,"Appendix A Basic Flow",UC-19,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý nhu cầu hỗ trợ / MAIN","Có hồ sơ hành khách hoặc đặt chỗ.","1. Chọn hành khách.
+
+2. Chọn loại hỗ trợ.
+3. Nhập thông tin.
+4. Kiểm tra quyền.
+5. Lưu.
+6. Chuyển đến bộ phận liên quan.","Nhu cầu hỗ trợ được ghi nhận.",Passed,"passenger.spec.js::UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC19-ALT,"Appendix A Alternative Flow",UC-19,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý nhu cầu hỗ trợ / ALT","Có hồ sơ hành khách hoặc đặt chỗ.","Cập nhật hoặc hủy yêu cầu.","Nhu cầu hỗ trợ được ghi nhận.",Passed,"passenger.spec.js::UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC19-DENIED,DERIVED,UC-19,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý nhu cầu hỗ trợ / DENIED","Có hồ sơ hành khách hoặc đặt chỗ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC20-MAIN,"Appendix A Basic Flow",UC-20,"Hành khách; Bán vé và chăm sóc khách hàng","Tìm kiếm hành trình / MAIN","Có lịch bay và dữ liệu giá.","1. Nhập điểm đi, điểm đến, ngày.
+
+2. Hệ thống tìm chuyến.
+3. Kiểm tra giá và chỗ.
+4. Áp dụng điều kiện.
+5. Hiển thị kết quả.","Các phương án phù hợp được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC20-ALT,"Appendix A Alternative Flow",UC-20,"Hành khách; Bán vé và chăm sóc khách hàng","Tìm kiếm hành trình / ALT","Có lịch bay và dữ liệu giá.","Người dùng thay đổi bộ lọc.","Các phương án phù hợp được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC20-DENIED,DERIVED,UC-20,"Hành khách; Bán vé và chăm sóc khách hàng","Tìm kiếm hành trình / DENIED","Có lịch bay và dữ liệu giá.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC21-MAIN,"Appendix A Basic Flow",UC-21,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý đặt chỗ và đơn hàng / MAIN","Hành trình còn chỗ.","1. Chọn hành trình.
+
+2. Hệ thống giữ chỗ.
+3. Nhập hành khách.
+4. Chọn dịch vụ.
+5. Tính tổng tiền.
+6. Lưu đơn hàng.","Đơn hàng được tạo.","Not Run",,Pending,,,,,,
+UAT-UC21-ALT,"Appendix A Alternative Flow",UC-21,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý đặt chỗ và đơn hàng / ALT","Hành trình còn chỗ.","Hủy giữ chỗ trước khi thanh toán.","Đơn hàng được tạo.","Not Run",,Pending,,,,,,
+UAT-UC21-DENIED,DERIVED,UC-21,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý đặt chỗ và đơn hàng / DENIED","Hành trình còn chỗ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC22-MAIN,"Appendix A Basic Flow",UC-22,"Hành khách; Cổng thanh toán","Thanh toán và phát hành / MAIN","Đơn hàng còn hiệu lực.","1. Xác nhận số tiền.
+
+2. Gửi giao dịch tới cổng thanh toán.
+3. Nhận kết quả.
+4. Kiểm tra giao dịch trùng.
+5. Cập nhật đơn hàng.
+6. Phát hành vé/xác nhận.","Thanh toán và vé được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC22-ALT,"Appendix A Alternative Flow",UC-22,"Hành khách; Cổng thanh toán","Thanh toán và phát hành / ALT","Đơn hàng còn hiệu lực.","Giao dịch chưa xác định → chuyển chờ đối soát.","Thanh toán và vé được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC22-DENIED,DERIVED,UC-22,"Hành khách; Cổng thanh toán","Thanh toán và phát hành / DENIED","Đơn hàng còn hiệu lực.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC23-MAIN,"Appendix A Basic Flow",UC-23,"Hành khách; Bán vé và chăm sóc khách hàng; Cổng thanh toán","Đổi, hủy và hoàn tiền / MAIN","Đơn hàng tồn tại.","1. Mở đơn hàng.
+
+2. Chọn yêu cầu.
+3. Kiểm tra điều kiện.
+4. Tính phí/chênh lệch.
+5. Xác nhận.
+6. Thực hiện giao dịch.
+7. Cập nhật đơn hàng.","Đơn hàng và giao dịch liên quan được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC23-ALT,"Appendix A Alternative Flow",UC-23,"Hành khách; Bán vé và chăm sóc khách hàng; Cổng thanh toán","Đổi, hủy và hoàn tiền / ALT","Đơn hàng tồn tại.","Chuyển yêu cầu sang người có quyền cao hơn.","Đơn hàng và giao dịch liên quan được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC23-EXC,"Appendix A Exception Flow",UC-23,"Hành khách; Bán vé và chăm sóc khách hàng; Cổng thanh toán","Đổi, hủy và hoàn tiền / EXC","Đơn hàng tồn tại.","E1. Không đủ điều kiện đổi/hoàn → từ chối.","Đơn hàng và giao dịch liên quan được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC23-DENIED,DERIVED,UC-23,"Hành khách; Bán vé và chăm sóc khách hàng; Cổng thanh toán","Đổi, hủy và hoàn tiền / DENIED","Đơn hàng tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC24-MAIN,"Appendix A Basic Flow",UC-24,"Hành khách; Nhân viên sân bay","Làm thủ tục và chọn chỗ / MAIN","Có đặt chỗ hợp lệ.","1. Xác định hành khách.
+
+2. Kiểm tra điều kiện.
+3. Hiển thị sơ đồ ghế.
+4. Chọn ghế.
+5. Kiểm tra chính sách.
+6. Xác nhận.","Hành khách hoàn thành thủ tục và có chỗ ngồi.","Not Run",,Pending,,,,,,
+UAT-UC24-ALT,"Appendix A Alternative Flow",UC-24,"Hành khách; Nhân viên sân bay","Làm thủ tục và chọn chỗ / ALT","Có đặt chỗ hợp lệ.","Hệ thống tự gán ghế.","Hành khách hoàn thành thủ tục và có chỗ ngồi.","Not Run",,Pending,,,,,,
+UAT-UC24-DENIED,DERIVED,UC-24,"Hành khách; Nhân viên sân bay","Làm thủ tục và chọn chỗ / DENIED","Có đặt chỗ hợp lệ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC25-MAIN,"Appendix A Basic Flow",UC-25,"Nhân viên sân bay","Tiếp nhận hành lý ký gửi / MAIN","Hành khách có chuyến bay hợp lệ.","1. Mở hồ sơ hành khách.
+
+2. Nhập số kiện và trọng lượng.
+3. Kiểm tra điều kiện.
+4. Xác nhận hành lý.
+5. Lưu.","Hành lý được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC25-ALT,"Appendix A Alternative Flow",UC-25,"Nhân viên sân bay","Tiếp nhận hành lý ký gửi / ALT","Hành khách có chuyến bay hợp lệ.","Hành lý có yêu cầu xử lý đặc biệt.","Hành lý được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC25-EXC,"Appendix A Exception Flow",UC-25,"Nhân viên sân bay","Tiếp nhận hành lý ký gửi / EXC","Hành khách có chuyến bay hợp lệ.","E1. Không liên kết được với hành khách → không tiếp nhận.","Hành lý được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC25-DENIED,DERIVED,UC-25,"Nhân viên sân bay","Tiếp nhận hành lý ký gửi / DENIED","Hành khách có chuyến bay hợp lệ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC26-MAIN,"Appendix A Basic Flow",UC-26,"Hành khách; Nhân viên sân bay","Phát hành thẻ lên tàu bay bằng mã QR / MAIN","Hành khách đủ điều kiện lên tàu bay.","1. Nhận dữ liệu chuyến.
+
+2. Sinh mã nhận diện.
+3. Gắn chuyến và thời hạn.
+4. Lưu trạng thái.
+5. Cấp thẻ cho hành khách.","Thẻ lên tàu bay có mã QR hợp lệ được tạo.","Not Run",,Pending,,,,,,
+UAT-UC26-ALT,"Appendix A Alternative Flow",UC-26,"Hành khách; Nhân viên sân bay","Phát hành thẻ lên tàu bay bằng mã QR / ALT","Hành khách đủ điều kiện lên tàu bay.","Thu hồi mã cũ và cấp lại mã mới.","Thẻ lên tàu bay có mã QR hợp lệ được tạo.","Not Run",,Pending,,,,,,
+UAT-UC26-EXC,"Appendix A Exception Flow",UC-26,"Hành khách; Nhân viên sân bay","Phát hành thẻ lên tàu bay bằng mã QR / EXC","Hành khách đủ điều kiện lên tàu bay.","E1. Không tạo được mã → báo lỗi.","Thẻ lên tàu bay có mã QR hợp lệ được tạo.","Not Run",,Pending,,,,,,
+UAT-UC26-DENIED,DERIVED,UC-26,"Hành khách; Nhân viên sân bay","Phát hành thẻ lên tàu bay bằng mã QR / DENIED","Hành khách đủ điều kiện lên tàu bay.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC27-MAIN,"Appendix A Basic Flow",UC-27,"Nhân viên sân bay","Kiểm soát lên tàu bay / MAIN","Chuyến đang trong thời gian lên tàu bay.","1. Quét QR.
+
+2. Xác thực mã.
+3. Kiểm tra chuyến và thời hạn.
+4. Kiểm tra trạng thái sử dụng.
+5. Ghi nhận hành khách đã lên tàu.
+6. Đồng bộ danh sách.","Trạng thái hành khách được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC27-ALT,"Appendix A Alternative Flow",UC-27,"Nhân viên sân bay","Kiểm soát lên tàu bay / ALT","Chuyến đang trong thời gian lên tàu bay.","Ghi nhận hành khách không lên tàu hoặc bị đưa khỏi chuyến.","Trạng thái hành khách được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC27-EXC,"Appendix A Exception Flow",UC-27,"Nhân viên sân bay","Kiểm soát lên tàu bay / EXC","Chuyến đang trong thời gian lên tàu bay.","E1. Mã hết hạn/sai chuyến → từ chối.
+
+E2. Mã đã sử dụng → cảnh báo.","Trạng thái hành khách được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC27-DENIED,DERIVED,UC-27,"Nhân viên sân bay","Kiểm soát lên tàu bay / DENIED","Chuyến đang trong thời gian lên tàu bay.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC28-MAIN,"Appendix A Basic Flow",UC-28,"Nhân viên sân bay","Tạo thẻ hành lý / MAIN","Hành khách có hành trình hợp lệ.","1. Nhận thông tin hành lý.
+
+2. Sinh mã thẻ.
+3. Liên kết hành khách.
+4. Liên kết chuyến/chặng.
+5. Lưu.
+6. In thẻ.","Thẻ hành lý duy nhất được tạo.","Not Run",,Pending,,,,,,
+UAT-UC28-ALT,"Appendix A Alternative Flow",UC-28,"Nhân viên sân bay","Tạo thẻ hành lý / ALT","Hành khách có hành trình hợp lệ.","Hành trình gồm nhiều chặng.","Thẻ hành lý duy nhất được tạo.","Not Run",,Pending,,,,,,
+UAT-UC28-EXC,"Appendix A Exception Flow",UC-28,"Nhân viên sân bay","Tạo thẻ hành lý / EXC","Hành khách có hành trình hợp lệ.","E1. Không xác định được chuyến → không tạo thẻ.","Thẻ hành lý duy nhất được tạo.","Not Run",,Pending,,,,,,
+UAT-UC28-DENIED,DERIVED,UC-28,"Nhân viên sân bay","Tạo thẻ hành lý / DENIED","Hành khách có hành trình hợp lệ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC29-MAIN,"Appendix A Basic Flow",UC-29,"Nhân viên sân bay; Hành khách; Hệ thống xử lý hành lý","Theo dõi hành trình hành lý / MAIN","Thẻ hành lý tồn tại.","1. Nhận mã hành lý.
+
+2. Xác định điểm xử lý.
+3. Ghi thời gian.
+4. Ghi nguồn sự kiện.
+5. Cập nhật trạng thái.
+6. Kiểm tra bất thường.","Hành trình hành lý được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC29-ALT,"Appendix A Alternative Flow",UC-29,"Nhân viên sân bay; Hành khách; Hệ thống xử lý hành lý","Theo dõi hành trình hành lý / ALT","Thẻ hành lý tồn tại.","Hành khách tra cứu trạng thái bằng mã an toàn.","Hành trình hành lý được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC29-DENIED,DERIVED,UC-29,"Nhân viên sân bay; Hành khách; Hệ thống xử lý hành lý","Theo dõi hành trình hành lý / DENIED","Thẻ hành lý tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC30-MAIN,"Appendix A Basic Flow",UC-30,"Nhân viên sân bay; Hành khách","Xử lý hành lý bất thường / MAIN","Hành lý có mã nhận diện.","1. Tra cứu hành lý.
+
+2. Xem lịch sử.
+3. Xác định loại sự cố.
+4. Tạo hồ sơ.
+5. Theo dõi xử lý.
+6. Giao trả nếu tìm thấy.
+7. Đóng hồ sơ.","Hồ sơ bất thường được tạo và theo dõi.","Not Run",,Pending,,,,,,
+UAT-UC30-ALT,"Appendix A Alternative Flow",UC-30,"Nhân viên sân bay; Hành khách","Xử lý hành lý bất thường / ALT","Hành lý có mã nhận diện.","Chuyển sang quy trình an ninh nếu cần.","Hồ sơ bất thường được tạo và theo dõi.","Not Run",,Pending,,,,,,
+UAT-UC30-DENIED,DERIVED,UC-30,"Nhân viên sân bay; Hành khách","Xử lý hành lý bất thường / DENIED","Hành lý có mã nhận diện.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC31-MAIN,"Appendix A Basic Flow",UC-31,"Điều hành khai thác; Dịch vụ mặt đất","Tạo và phân công nhiệm vụ / MAIN","Chuyến bay tồn tại.","1. Chọn chuyến.
+
+2. Tạo danh sách nhiệm vụ.
+3. Kiểm tra danh sách.
+4. Phân công đơn vị.
+5. Đặt thời hạn.
+6. Lưu.","Nhiệm vụ có đơn vị chịu trách nhiệm và thời hạn.","Not Run",,Pending,,,,,,
+UAT-UC31-ALT,"Appendix A Alternative Flow",UC-31,"Điều hành khai thác; Dịch vụ mặt đất","Tạo và phân công nhiệm vụ / ALT","Chuyến bay tồn tại.","Thêm nhiệm vụ phát sinh.","Nhiệm vụ có đơn vị chịu trách nhiệm và thời hạn.","Not Run",,Pending,,,,,,
+UAT-UC31-EXC,"Appendix A Exception Flow",UC-31,"Điều hành khai thác; Dịch vụ mặt đất","Tạo và phân công nhiệm vụ / EXC","Chuyến bay tồn tại.","E1. Không có đơn vị phù hợp → cảnh báo.","Nhiệm vụ có đơn vị chịu trách nhiệm và thời hạn.","Not Run",,Pending,,,,,,
+UAT-UC31-DENIED,DERIVED,UC-31,"Điều hành khai thác; Dịch vụ mặt đất","Tạo và phân công nhiệm vụ / DENIED","Chuyến bay tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC32-MAIN,"Appendix A Basic Flow",UC-32,"Dịch vụ mặt đất","Thực hiện nhiệm vụ mặt đất / MAIN","Nhiệm vụ đã được phân công.","1. Mở nhiệm vụ.
+
+2. Xác nhận bắt đầu.
+3. Thực hiện.
+4. Ghi bằng chứng.
+5. Xác nhận hoàn thành.","Kết quả thực hiện được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC32-ALT,"Appendix A Alternative Flow",UC-32,"Dịch vụ mặt đất","Thực hiện nhiệm vụ mặt đất / ALT","Nhiệm vụ đã được phân công.","Ghi nhận ngoại lệ hoặc chậm.","Kết quả thực hiện được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC32-DENIED,DERIVED,UC-32,"Dịch vụ mặt đất","Thực hiện nhiệm vụ mặt đất / DENIED","Nhiệm vụ đã được phân công.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC33-MAIN,"Appendix A Basic Flow",UC-33,"Điều hành khai thác; Dịch vụ mặt đất","Theo dõi tiến độ quay đầu / MAIN","Có danh sách nhiệm vụ.","1. Tổng hợp trạng thái.
+
+2. Hiển thị tiến độ.
+3. So sánh với thời hạn.
+4. Phát hiện nhiệm vụ trễ.
+5. Tạo cảnh báo.
+6. Theo dõi đến hoàn tất.","Tiến độ và cảnh báo được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC33-ALT,"Appendix A Alternative Flow",UC-33,"Điều hành khai thác; Dịch vụ mặt đất","Theo dõi tiến độ quay đầu / ALT","Có danh sách nhiệm vụ.","Đánh giá chất lượng sau khi hoàn thành.","Tiến độ và cảnh báo được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC33-EXC,"Appendix A Exception Flow",UC-33,"Điều hành khai thác; Dịch vụ mặt đất","Theo dõi tiến độ quay đầu / EXC","Có danh sách nhiệm vụ.","E1. Còn mốc bắt buộc → không đóng chuyến khi chưa có ngoại lệ được duyệt.","Tiến độ và cảnh báo được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC33-DENIED,DERIVED,UC-33,"Điều hành khai thác; Dịch vụ mặt đất","Theo dõi tiến độ quay đầu / DENIED","Có danh sách nhiệm vụ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC34-MAIN,"Appendix A Basic Flow",UC-34,"Tài chính kế toán","Ghi nhận giao dịch tài chính / MAIN","Có giao dịch nguồn hợp lệ.","1. Nhận giao dịch.
+
+2. Xác định loại khoản.
+3. Ghi số tiền.
+4. Liên kết nguồn.
+5. Lưu.","Dữ liệu tài chính được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC34-ALT,"Appendix A Alternative Flow",UC-34,"Tài chính kế toán","Ghi nhận giao dịch tài chính / ALT","Có giao dịch nguồn hợp lệ.","Ghi nhận hoàn tiền hoặc điều chỉnh.","Dữ liệu tài chính được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC34-DENIED,DERIVED,UC-34,"Tài chính kế toán","Ghi nhận giao dịch tài chính / DENIED","Có giao dịch nguồn hợp lệ.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC35-MAIN,"Appendix A Basic Flow",UC-35,"Tài chính kế toán; Cổng thanh toán","Đối soát giao dịch / MAIN","Có dữ liệu hai phía.","1. Nhận dữ liệu.
+
+2. Ghép giao dịch.
+3. So sánh số tiền và trạng thái.
+4. Đánh dấu khớp.
+5. Tạo hồ sơ chênh lệch nếu có.","Giao dịch được đánh dấu khớp hoặc tạo hồ sơ chênh lệch.","Not Run",,Pending,,,,,,
+UAT-UC35-ALT,"Appendix A Alternative Flow",UC-35,"Tài chính kế toán; Cổng thanh toán","Đối soát giao dịch / ALT","Có dữ liệu hai phía.","Tự động đóng giao dịch khớp hoàn toàn.","Giao dịch được đánh dấu khớp hoặc tạo hồ sơ chênh lệch.","Not Run",,Pending,,,,,,
+UAT-UC35-EXC,"Appendix A Exception Flow",UC-35,"Tài chính kế toán; Cổng thanh toán","Đối soát giao dịch / EXC","Có dữ liệu hai phía.","E1. Không xác định giao dịch → chuyển xử lý.","Giao dịch được đánh dấu khớp hoặc tạo hồ sơ chênh lệch.","Not Run",,Pending,,,,,,
+UAT-UC35-DENIED,DERIVED,UC-35,"Tài chính kế toán; Cổng thanh toán","Đối soát giao dịch / DENIED","Có dữ liệu hai phía.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC36-MAIN,"Appendix A Basic Flow",UC-36,"Tài chính kế toán","Điều chỉnh, báo cáo và xuất dữ liệu / MAIN","Có dữ liệu tài chính.","1. Chọn dữ liệu.
+
+2. Kiểm tra giao dịch.
+3. Kiểm tra quyền phê duyệt.
+4. Xử lý điều chỉnh.
+5. Tạo báo cáo.
+6. Xuất dữ liệu sang ERP.","Điều chỉnh hoặc báo cáo được hoàn tất.","Not Run",,Pending,,,,,,
+UAT-UC36-ALT,"Appendix A Alternative Flow",UC-36,"Tài chính kế toán","Điều chỉnh, báo cáo và xuất dữ liệu / ALT","Có dữ liệu tài chính.","Báo cáo theo chuyến, đường bay, kênh hoặc kỳ.","Điều chỉnh hoặc báo cáo được hoàn tất.","Not Run",,Pending,,,,,,
+UAT-UC36-DENIED,DERIVED,UC-36,"Tài chính kế toán","Điều chỉnh, báo cáo và xuất dữ liệu / DENIED","Có dữ liệu tài chính.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC37-MAIN,"Appendix A Basic Flow",UC-37,"Bán vé và chăm sóc khách hàng; Hành khách","Gửi thông báo đa kênh / MAIN","Có thông tin liên hệ phù hợp.","1. Nhận sự kiện.
+
+2. Xác định người nhận.
+3. Chọn mẫu.
+4. Chọn kênh.
+5. Gửi.
+6. Lưu trạng thái.","Trạng thái gửi thông báo được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC37-ALT,"Appendix A Alternative Flow",UC-37,"Bán vé và chăm sóc khách hàng; Hành khách","Gửi thông báo đa kênh / ALT","Có thông tin liên hệ phù hợp.","Chuyển sang kênh khác khi kênh chính lỗi.","Trạng thái gửi thông báo được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC37-EXC,"Appendix A Exception Flow",UC-37,"Bán vé và chăm sóc khách hàng; Hành khách","Gửi thông báo đa kênh / EXC","Có thông tin liên hệ phù hợp.","E1. Không có thông tin liên hệ → ghi không gửi được.","Trạng thái gửi thông báo được ghi nhận.","Not Run",,Pending,,,,,,
+UAT-UC37-DENIED,DERIVED,UC-37,"Bán vé và chăm sóc khách hàng; Hành khách","Gửi thông báo đa kênh / DENIED","Có thông tin liên hệ phù hợp.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC38-MAIN,"Appendix A Basic Flow",UC-38,"Hành khách; Bán vé và chăm sóc khách hàng","Xử lý khiếu nại và bồi thường / MAIN","Có thông tin hành khách.","1. Tiếp nhận yêu cầu.
+
+2. Tạo hồ sơ.
+3. Liên kết giao dịch/chuyến.
+4. Phân loại.
+5. Xử lý.
+6. Cập nhật kết quả.
+7. Thông báo hành khách.","Hồ sơ khiếu nại được tạo và theo dõi.","Not Run",,Pending,,,,,,
+UAT-UC38-ALT,"Appendix A Alternative Flow",UC-38,"Hành khách; Bán vé và chăm sóc khách hàng","Xử lý khiếu nại và bồi thường / ALT","Có thông tin hành khách.","Chuyển yêu cầu bồi thường sang người có thẩm quyền.","Hồ sơ khiếu nại được tạo và theo dõi.","Not Run",,Pending,,,,,,
+UAT-UC38-DENIED,DERIVED,UC-38,"Hành khách; Bán vé và chăm sóc khách hàng","Xử lý khiếu nại và bồi thường / DENIED","Có thông tin hành khách.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC39-MAIN,"Appendix A Basic Flow",UC-39,"Bán vé và chăm sóc khách hàng","Tra cứu lịch sử tương tác / MAIN","Actor có quyền truy cập.","1. Tìm hành khách.
+
+2. Kiểm tra quyền.
+3. Tổng hợp tương tác.
+4. Che dữ liệu không cần thiết.
+5. Hiển thị theo thời gian.","Lịch sử tương tác được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC39-ALT,"Appendix A Alternative Flow",UC-39,"Bán vé và chăm sóc khách hàng","Tra cứu lịch sử tương tác / ALT","Actor có quyền truy cập.","Lọc theo loại tương tác.","Lịch sử tương tác được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC39-EXC,"Appendix A Exception Flow",UC-39,"Bán vé và chăm sóc khách hàng","Tra cứu lịch sử tương tác / EXC","Actor có quyền truy cập.","E1. Không đủ quyền → từ chối.","Lịch sử tương tác được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC39-DENIED,DERIVED,UC-39,"Bán vé và chăm sóc khách hàng","Tra cứu lịch sử tương tác / DENIED","Actor có quyền truy cập.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC40-MAIN,"Appendix A Basic Flow",UC-40,"Quản trị dữ liệu và các vai trò được phân quyền","Xem bảng điều khiển và chỉ số KPI / MAIN","Có quyền truy cập và dữ liệu nguồn.","1. Xác định vai trò.
+
+2. Lấy dữ liệu.
+3. Áp dụng bộ lọc.
+4. Tính chỉ số.
+5. Hiển thị kết quả.","KPI phù hợp được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC40-ALT,"Appendix A Alternative Flow",UC-40,"Quản trị dữ liệu và các vai trò được phân quyền","Xem bảng điều khiển và chỉ số KPI / ALT","Có quyền truy cập và dữ liệu nguồn.","Thay đổi khoảng thời gian hoặc bộ lọc.","KPI phù hợp được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC40-DENIED,DERIVED,UC-40,"Quản trị dữ liệu và các vai trò được phân quyền","Xem bảng điều khiển và chỉ số KPI / DENIED","Có quyền truy cập và dữ liệu nguồn.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC41-MAIN,"Appendix A Basic Flow",UC-41,"Điều hành khai thác; Kỹ thuật bảo dưỡng; Tài chính kế toán; Bán vé và chăm sóc khách hàng","Dự báo và khuyến nghị / MAIN","Mô hình được phê duyệt và có dữ liệu đầu vào.","1. Chọn bài toán.
+
+2. Lấy dữ liệu.
+3. Chọn phiên bản mô hình.
+4. Thực hiện dự báo.
+5. Hiển thị kết quả.
+6. Người có trách nhiệm xem xét.","Kết quả dự báo được tạo để hỗ trợ người dùng.","Not Run",,Pending,,,,,,
+UAT-UC41-ALT,"Appendix A Alternative Flow",UC-41,"Điều hành khai thác; Kỹ thuật bảo dưỡng; Tài chính kế toán; Bán vé và chăm sóc khách hàng","Dự báo và khuyến nghị / ALT","Mô hình được phê duyệt và có dữ liệu đầu vào.","Người dùng không sử dụng khuyến nghị.","Kết quả dự báo được tạo để hỗ trợ người dùng.","Not Run",,Pending,,,,,,
+UAT-UC41-EXC,"Appendix A Exception Flow",UC-41,"Điều hành khai thác; Kỹ thuật bảo dưỡng; Tài chính kế toán; Bán vé và chăm sóc khách hàng","Dự báo và khuyến nghị / EXC","Mô hình được phê duyệt và có dữ liệu đầu vào.","E1. Dữ liệu không đạt chất lượng → cảnh báo hoặc không chạy.","Kết quả dự báo được tạo để hỗ trợ người dùng.","Not Run",,Pending,,,,,,
+UAT-UC41-DENIED,DERIVED,UC-41,"Điều hành khai thác; Kỹ thuật bảo dưỡng; Tài chính kế toán; Bán vé và chăm sóc khách hàng","Dự báo và khuyến nghị / DENIED","Mô hình được phê duyệt và có dữ liệu đầu vào.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC42-MAIN,"Appendix A Basic Flow",UC-42,"Quản trị dữ liệu","Giải thích và giám sát mô hình / MAIN","Mô hình tồn tại.","1. Chọn mô hình/kết quả.
+
+2. Hiển thị phiên bản.
+3. Hiển thị thời điểm chạy.
+4. Hiển thị độ tin cậy.
+5. Theo dõi độ lệch và chất lượng.
+6. Ghi nhận kết quả giám sát.","Thông tin giải thích và trạng thái mô hình được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC42-ALT,"Appendix A Alternative Flow",UC-42,"Quản trị dữ liệu","Giải thích và giám sát mô hình / ALT","Mô hình tồn tại.","Khôi phục phiên bản mô hình trước theo quy trình được duyệt.","Thông tin giải thích và trạng thái mô hình được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC42-EXC,"Appendix A Exception Flow",UC-42,"Quản trị dữ liệu","Giải thích và giám sát mô hình / EXC","Mô hình tồn tại.","E1. Thiếu thông tin mô hình → đánh dấu kết quả không đủ căn cứ.","Thông tin giải thích và trạng thái mô hình được hiển thị.","Not Run",,Pending,,,,,,
+UAT-UC42-DENIED,DERIVED,UC-42,"Quản trị dữ liệu","Giải thích và giám sát mô hình / DENIED","Mô hình tồn tại.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC43-MAIN,"Appendix A Basic Flow",UC-43,"Quản trị hệ thống","Mô phỏng thiết bị và dữ liệu đo / MAIN","Thiết bị và kịch bản đã được cấu hình.","1. Chọn thiết bị.
+
+2. Chọn kịch bản.
+3. Khởi chạy.
+4. Sinh sự kiện.
+5. Gửi dữ liệu.
+6. Hệ thống tiếp nhận và lưu.","Dữ liệu mô phỏng được sinh và tiếp nhận.","Not Run",,Pending,,,,,,
+UAT-UC43-ALT,"Appendix A Alternative Flow",UC-43,"Quản trị hệ thống","Mô phỏng thiết bị và dữ liệu đo / ALT","Thiết bị và kịch bản đã được cấu hình.","Chạy đồng thời nhiều thiết bị.","Dữ liệu mô phỏng được sinh và tiếp nhận.","Not Run",,Pending,,,,,,
+UAT-UC43-DENIED,DERIVED,UC-43,"Quản trị hệ thống","Mô phỏng thiết bị và dữ liệu đo / DENIED","Thiết bị và kịch bản đã được cấu hình.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC44-MAIN,"Appendix A Basic Flow",UC-44,"Quản trị hệ thống; Quản trị dữ liệu","Xử lý dữ liệu thiết bị bất thường / MAIN","Luồng dữ liệu thiết bị đang hoạt động.","1. Nhận dữ liệu.
+
+2. Kiểm tra mã sự kiện.
+3. Kiểm tra thời gian/thứ tự.
+4. Kiểm tra giá trị.
+5. Phân loại bất thường.
+6. Phát cảnh báo.","Bất thường được ghi nhận và cảnh báo.","Not Run",,Pending,,,,,,
+UAT-UC44-ALT,"Appendix A Alternative Flow",UC-44,"Quản trị hệ thống; Quản trị dữ liệu","Xử lý dữ liệu thiết bị bất thường / ALT","Luồng dữ liệu thiết bị đang hoạt động.","Dữ liệu đến trễ nhưng hợp lệ → vẫn lưu với thời gian nguồn.","Bất thường được ghi nhận và cảnh báo.","Not Run",,Pending,,,,,,
+UAT-UC44-EXC,"Appendix A Exception Flow",UC-44,"Quản trị hệ thống; Quản trị dữ liệu","Xử lý dữ liệu thiết bị bất thường / EXC","Luồng dữ liệu thiết bị đang hoạt động.","E1. Thiếu trường bắt buộc → đưa vào danh sách dữ liệu lỗi.","Bất thường được ghi nhận và cảnh báo.","Not Run",,Pending,,,,,,
+UAT-UC44-DENIED,DERIVED,UC-44,"Quản trị hệ thống; Quản trị dữ liệu","Xử lý dữ liệu thiết bị bất thường / DENIED","Luồng dữ liệu thiết bị đang hoạt động.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC45-MAIN,"Appendix A Basic Flow",UC-45,"Quản trị hệ thống","Quản lý người dùng và phân quyền / MAIN","Actor có quyền quản trị.","1. Chọn người dùng.
+
+2. Xem quyền hiện tại.
+3. Gán vai trò.
+4. Chọn phạm vi dữ liệu.
+5. Xác nhận.
+6. Lưu.
+7. Ghi nhật ký.","Tài khoản và quyền được cập nhật.",Passed,"administration.spec.js::UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC45-ALT,"Appendix A Alternative Flow",UC-45,"Quản trị hệ thống","Quản lý người dùng và phân quyền / ALT","Actor có quyền quản trị.","Đồng bộ thông tin từ nhà cung cấp định danh.","Tài khoản và quyền được cập nhật.","Not Run",,Pending,,,,,,
+UAT-UC45-DENIED,DERIVED,UC-45,"Quản trị hệ thống","Quản lý người dùng và phân quyền / DENIED","Actor có quyền quản trị.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC46-MAIN,"Appendix A Basic Flow",UC-46,"Quản trị hệ thống; An toàn và an ninh","Quản lý nhật ký kiểm toán / MAIN","Cơ chế ghi nhật ký hoạt động.","1. Nhận sự kiện.
+
+2. Ghi thời gian.
+3. Ghi người thực hiện.
+4. Ghi hành động và kết quả.
+5. Lưu an toàn.
+6. Người có quyền tra cứu.","Sự kiện được lưu và có thể truy vết.",Passed,"administration.spec.js::UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC46-ALT,"Appendix A Alternative Flow",UC-46,"Quản trị hệ thống; An toàn và an ninh","Quản lý nhật ký kiểm toán / ALT","Cơ chế ghi nhật ký hoạt động.","Xuất dữ liệu phục vụ kiểm tra.","Sự kiện được lưu và có thể truy vết.",Passed,"administration.spec.js::UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC46-EXC,"Appendix A Exception Flow",UC-46,"Quản trị hệ thống; An toàn và an ninh","Quản lý nhật ký kiểm toán / EXC","Cơ chế ghi nhật ký hoạt động.","E1. Không đủ quyền → từ chối tra cứu.","Sự kiện được lưu và có thể truy vết.",Passed,UAT-UC45-G1:,Pending,"JUnit: executed, no failure/error",docs/testing/evidence/2026-10-18/browser.xml,"Chrome/MySQL, synthetic fixtures",8b1a1c6778226b611a5102504e5a01cba08d8d65d5456ba95f7c8baa97eebd8b,"Codex automated browser",2026-10-18T00:27:28+00:00
+UAT-UC46-DENIED,DERIVED,UC-46,"Quản trị hệ thống; An toàn và an ninh","Quản lý nhật ký kiểm toán / DENIED","Cơ chế ghi nhật ký hoạt động.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation",Passed,"administration.spec.js::UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC47-MAIN,"Appendix A Basic Flow",UC-47,"Quản trị hệ thống","Quản lý tích hợp hệ thống / MAIN","Hệ thống đối tác và giao diện trao đổi đã được xác định.","1. Chọn tích hợp.
+
+2. Cấu hình giao diện.
+3. Cấu hình xác thực.
+4. Kiểm tra kết nối.
+5. Kích hoạt.
+6. Theo dõi trạng thái.
+7. Ghi lỗi nếu có.","Luồng tích hợp hoạt động và được giám sát.","Not Run",,Pending,,,,,,
+UAT-UC47-ALT,"Appendix A Alternative Flow",UC-47,"Quản trị hệ thống","Quản lý tích hợp hệ thống / ALT","Hệ thống đối tác và giao diện trao đổi đã được xác định.","Trao đổi tệp thay vì API.","Luồng tích hợp hoạt động và được giám sát.","Not Run",,Pending,,,,,,
+UAT-UC47-DENIED,DERIVED,UC-47,"Quản trị hệ thống","Quản lý tích hợp hệ thống / DENIED","Hệ thống đối tác và giao diện trao đổi đã được xác định.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UAT-UC48-MAIN,"Appendix A Basic Flow",UC-48,"Quản trị hệ thống; Quản trị dữ liệu","Quản lý cấu hình và cảnh báo / MAIN","Actor có quyền đối với loại cấu hình.","1. Chọn nhóm cấu hình.
+
+2. Xem giá trị hiện tại.
+3. Thay đổi giá trị.
+4. Kiểm tra hợp lệ.
+5. Xác nhận.
+6. Lưu.
+7. Ghi lịch sử.","Cấu hình mới được lưu và ghi nhật ký.","Not Run",,Pending,,,,,,
+UAT-UC48-ALT,"Appendix A Alternative Flow",UC-48,"Quản trị hệ thống; Quản trị dữ liệu","Quản lý cấu hình và cảnh báo / ALT","Actor có quyền đối với loại cấu hình.","Thiết lập thời điểm bắt đầu có hiệu lực.","Cấu hình mới được lưu và ghi nhật ký.","Not Run",,Pending,,,,,,
+UAT-UC48-EXC,"Appendix A Exception Flow",UC-48,"Quản trị hệ thống; Quản trị dữ liệu","Quản lý cấu hình và cảnh báo / EXC","Actor có quyền đối với loại cấu hình.","E1. Giá trị không hợp lệ → không lưu.
+
+E2. Không đủ quyền → từ chối.","Cấu hình mới được lưu và ghi nhật ký.","Not Run",,Pending,,,,,,
+UAT-UC48-DENIED,DERIVED,UC-48,"Quản trị hệ thống; Quản trị dữ liệu","Quản lý cấu hình và cảnh báo / DENIED","Actor có quyền đối với loại cấu hình.","Unauthenticated; missing permission; other owner or scope; assert DB unchanged","401/403/404; no leakage or mutation","Not Run",,Pending,,,,,,
+UT-W1-LOGIN-01,"W1 UT-LOGIN-01",,"Theo phụ lục C","Đăng nhập đúng tài khoản","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Trả token/session và role",Passed,Tests\Feature\AccessFoundationTest::test_login_roles_and_token_revocation,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W1-FLIGHT-01,"W1 UT-FLIGHT-01",,"Theo phụ lục C","Tạo chuyến với dữ liệu hợp lệ","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Lưu chuyến thành công",Passed,Tests\Feature\Module1Test::test_aircraft_conflict_turnaround_boundary_and_maintenance,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W1-FLIGHT-02,"W1 UT-FLIGHT-02",,"Theo phụ lục C","Từ chối giờ đến <= giờ đi","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Validation error",Passed,"Tests\Feature\SourceBaselineTest::test_ut_w1_w2_flight_02_rejects_arrival_not_after_departure with data set ""equal"";Tests\Feature\SourceBaselineTest::test_ut_w1_w2_flight_02_rejects_arrival_not_after_departure with data set ""earlier""",N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W1-BOOK-01,"W1 UT-BOOK-01",,"Theo phụ lục C","Tạo booking đủ thông tin","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Booking ID được tạo",Passed,Tests\Feature\MySqlBookingRaceTest::test_two_connections_compete_for_last_seat_without_overbooking,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-AUTH-01,"W2 UT-AUTH-01",,"Theo phụ lục C","Đăng nhập hợp lệ","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Tạo session/token và trả đúng role",Passed,Tests\Feature\AccessFoundationTest::test_login_roles_and_token_revocation,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-AUTH-02,"W2 UT-AUTH-02",,"Theo phụ lục C","Từ chối role không đủ quyền","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Access denied/403; không thay đổi dữ liệu",Passed,Tests\Feature\AccessFoundationTest::test_admin_cannot_release_and_role_without_scope_cannot_write,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-AIRPORT-01,"W2 UT-AIRPORT-01",,"Theo phụ lục C","Tạo sân bay có định danh duy nhất","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Lưu sân bay thành công",Passed,Tests\Feature\Module1Test::test_airport_crud_and_validation,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-ROUTE-01,"W2 UT-ROUTE-01",,"Theo phụ lục C","Tạo đường bay với 2 sân bay hợp lệ","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Lưu route, FK hợp lệ",Passed,Tests\Feature\Module1Test::test_route_crud_and_duplicate_constraints,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-FLIGHT-01,"W2 UT-FLIGHT-01",,"Theo phụ lục C","Tạo chuyến hợp lệ","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Lưu chuyến thành công",Passed,Tests\Feature\Module1Test::test_aircraft_conflict_turnaround_boundary_and_maintenance,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-FLIGHT-02,"W2 UT-FLIGHT-02",,"Theo phụ lục C","Từ chối giờ đến <= giờ đi","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Validation error",Passed,"Tests\Feature\SourceBaselineTest::test_ut_w1_w2_flight_02_rejects_arrival_not_after_departure with data set ""equal"";Tests\Feature\SourceBaselineTest::test_ut_w1_w2_flight_02_rejects_arrival_not_after_departure with data set ""earlier""",N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-FLIGHT-03,"W2 UT-FLIGHT-03",,"Theo phụ lục C","Kiểm tra xung đột tàu bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Phát hiện xung đột theo BR-005",Passed,Tests\Feature\Module1Test::test_aircraft_conflict_turnaround_boundary_and_maintenance,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-CREW-01,"W2 UT-CREW-01",,"Theo phụ lục C","Từ chối tổ bay không đủ điều kiện","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Không cho phân công",Passed,Tests\Feature\DiagramWorkflowTest::test_crew_license_availability_rest_and_replacement_rollback,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-BOOK-01,"W2 UT-BOOK-01",,"Theo phụ lục C","Tạo booking đủ dữ liệu","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Tạo Booking ID",Passed,Tests\Feature\MySqlBookingRaceTest::test_two_connections_compete_for_last_seat_without_overbooking,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-BOOK-02,"W2 UT-BOOK-02",,"Theo phụ lục C","Giải phóng giữ chỗ hết hạn","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Ghế được trả về tồn chỗ theo BR-011","Not Run",,N/A,,,,,,
+UT-W2-TICKET-01,"W2 UT-TICKET-01",,"Theo phụ lục C","Sinh QR cho vé hợp lệ","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","QR/token liên kết đúng vé","Not Run",,N/A,,,,,,
+UT-W2-CHECKIN-01,"W2 UT-CHECKIN-01",,"Theo phụ lục C","Kiểm tra điều kiện check-in","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Cho phép check-in khi đủ điều kiện","Not Run",,N/A,,,,,,
+UT-W2-BAG-01,"W2 UT-BAG-01",,"Theo phụ lục C","Tạo thẻ hành lý","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Tag duy nhất, liên kết đúng hành trình","Not Run",,N/A,,,,,,
+UT-W2-MAINT-01,"W2 UT-MAINT-01",,"Theo phụ lục C","Tính/cảnh báo bảo dưỡng đến hạn","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Sinh cảnh báo đến hạn",Passed,Tests\Feature\MaintenanceWorkflowTest::test_plan_date_hours_cycles_condition_and_due_alerts_block_planning_synchronously,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-MAINT-02,"W2 UT-MAINT-02",,"Theo phụ lục C","Chặn khai thác khi bảo dưỡng quá hạn","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Aircraft unavailable theo BR-007",Passed,Tests\Feature\DiagramWorkflowTest::test_maintenance_requires_resources_completion_approval_and_non_overdue_release,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UT-W2-DASH-01,"W2 UT-DASH-01",,"Theo phụ lục C","Lọc KPI theo thời gian","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Trả đúng tập dữ liệu/filter","Not Run",,N/A,,,,,,
+UT-W2-AI-01,"W2 UT-AI-01",,"Theo phụ lục C","Nhận bộ feature chuyến bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Trả probability/expected delay theo schema","Not Run",,N/A,,,,,,
+UT-W2-AI-02,"W2 UT-AI-02",,"Theo phụ lục C","Phát hiện mẫu cảm biến bất thường","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Trả anomaly flag/score","Not Run",,N/A,,,,,,
+UT-W2-IOT-01,"W2 UT-IOT-01",,"Theo phụ lục C","Đọc dữ liệu cảm biến mô phỏng","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Sinh payload JSON đúng schema","Not Run",,N/A,,,,,,
+UT-W2-AUDIT-01,"W2 UT-AUDIT-01",,"Theo phụ lục C","Ghi log thay đổi quan trọng","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Audit log có actor/time/action",Passed,Tests\Feature\AccessFoundationTest::test_audit_redacts_nested_pii_and_has_correlation,N/A,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-W1-01,"W1 UAT-01",,"Theo phụ lục C","Đăng nhập và phân quyền","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Đúng chức năng theo role",Passed,"administration.spec.js::UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml,browser,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-W1-02,"W1 UAT-02",,"Theo phụ lục C","Quản lý chuyến/lịch bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","CRUD + trạng thái hoạt động","Not Run",,Pending,,,,,,
+UAT-W1-03,"W1 UAT-03",,"Theo phụ lục C","Hành khách/booking/vé/QR","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Luồng demo hoàn chỉnh","Not Run",,Pending,,,,,,
+UAT-W1-04,"W1 UAT-04",,"Theo phụ lục C","AI/IoT mô phỏng","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Có cảnh báo và dashboard","Not Run",,Pending,,,,,,
+UAT-W2-01,"W2 UAT-01",,"Theo phụ lục C","Đăng nhập & phân quyền","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Quản lý/Nhân viên chỉ sử dụng chức năng được cấp",Passed,"administration.spec.js::UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml,browser,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-W2-02,"W2 UAT-02",,"Theo phụ lục C","Quản lý sân bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Thêm/sửa/xem dữ liệu sân bay và định danh duy nhất",Passed,"foundation.spec.js::UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml,browser,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-W2-03,"W2 UAT-03",,"Theo phụ lục C","Đường bay & lịch/chuyến bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Tạo route/flight và kiểm tra xung đột cơ bản","Not Run",,Pending,,,,,,
+UAT-W2-04,"W2 UAT-04",,"Theo phụ lục C","Đội tàu bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Theo dõi trạng thái/khả dụng tàu bay","Not Run",,Pending,,,,,,
+UAT-W2-05,"W2 UAT-05",,"Theo phụ lục C","Tổ bay","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Phân công theo khả dụng/điều kiện","Not Run",,Pending,,,,,,
+UAT-W2-06,"W2 UAT-06",,"Theo phụ lục C","Hành khách","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Quản lý hồ sơ hành khách đúng quyền",Passed,"passenger.spec.js::UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/browser.xml,browser,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:12:23.448Z
+UAT-W2-07,"W2 UAT-07",,"Theo phụ lục C",Booking,"Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Tìm chuyến và tạo booking/giữ ghế","Not Run",,Pending,,,,,,
+UAT-W2-08,"W2 UAT-08",,"Theo phụ lục C","Vé & QR","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Phát hành vé/QR mô phỏng từ booking","Not Run",,Pending,,,,,,
+UAT-W2-09,"W2 UAT-09",,"Theo phụ lục C",Check-in/Boarding,"Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Check-in và quét QR cập nhật trạng thái","Not Run",,Pending,,,,,,
+UAT-W2-10,"W2 UAT-10",,"Theo phụ lục C","Hành lý","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Tạo tag và theo dõi hành trình hành lý","Not Run",,Pending,,,,,,
+UAT-W2-11,"W2 UAT-11",,"Theo phụ lục C","Dịch vụ mặt đất","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Theo dõi nhiệm vụ và tiến độ quay đầu","Not Run",,Pending,,,,,,
+UAT-W2-12,"W2 UAT-12",,"Theo phụ lục C","Bảo dưỡng","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Theo dõi lịch/work order và cảnh báo quá hạn","Not Run",,Pending,,,,,,
+UAT-W2-13,"W2 UAT-13",,"Theo phụ lục C",Dashboard,"Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Hiển thị KPI và bộ lọc dữ liệu","Not Run",,Pending,,,,,,
+UAT-W2-14,"W2 UAT-14",,"Theo phụ lục C",AI,"Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Có dự đoán/cảnh báo hỗ trợ quyết định; không tự thay thế người có thẩm quyền","Not Run",,Pending,,,,,,
+UAT-W2-15,"W2 UAT-15",,"Theo phụ lục C","IoT mô phỏng","Synthetic test fixture, isolated DB","Xem phương thức test hoặc kế hoạch baseline","Wokwi phát telemetry; hệ thống nhận và cảnh báo","Not Run",,Pending,,,,,,
+UAT-UC45-G1,"DERIVED browser slice",UC-45,"Quản trị / hành khách với tài khoản tổng hợp",UAT-UC45-G1,"prepare-browser synthetic MySQL database; local built assets","1. Admin đăng nhập. 2. Tạo user. 3. Gán CUSTOMER/self. 4. User đăng nhập. 5. Truy cập audit bị 403.","User và scope lưu DB; thiếu quyền bị từ chối; approval Pending.",Passed,"administration.spec.js::UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC46-G1,"DERIVED browser slice",UC-46,"Quản trị / hành khách với tài khoản tổng hợp",UAT-UC46-G1,"prepare-browser synthetic MySQL database; local built assets","1. Đăng nhập. 2. Lọc LOGIN_SUCCEEDED. 3. Tải CSV. 4. POST thiếu CSRF.","Đúng filter/export; POST thiếu token bị 419.",Passed,"administration.spec.js::UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC18-19,"DERIVED browser slice",UC-18;UC-19,"Quản trị / hành khách với tài khoản tổng hợp",UAT-UC18-19,"prepare-browser synthetic MySQL database; local built assets","1. Tạo hồ sơ và consent. 2. Sửa hồ sơ. 3. Rút consent. 4. Gửi hỗ trợ. 5. Sửa và hủy.","Hồ sơ và lịch sử consent lưu thật; hỗ trợ chuyển bộ phận, cập nhật và kết thúc đúng trạng thái.",Passed,"passenger.spec.js::UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật",Pending,"Executed source flow via browser and/or MySQL checks listed; aliases are not extra test executions.",docs/testing/evidence/2026-10-18-g2/browser.xml,browser,6bb83424b2e150bbb28b7a7dda9c4de3837a86ab0ce36d98d728cc970b334461,"Automated PHPUnit/Playwright",2026-10-18T01:28:45.116Z
+UAT-UC02-EXC,"Original DOCX Exception Flow",UC-02,"Quản trị dữ liệu","Quản lý tài nguyên sân bay / EXC","Sân bay đã tồn tại.","E1. Mã tài nguyên bị trùng → từ chối lưu. E2. Dữ liệu không hợp lệ → yêu cầu sửa.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,Tests\Feature\FoundationWorkflowTest::test_all_source_resource_types_can_be_created_edited_and_suspended,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/mysql.xml,mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:44:10+00:00
+UAT-UC04-EXC,"Original DOCX Exception Flow",UC-04,"Quản trị dữ liệu","Quản lý đường bay / EXC","Sân bay đi và sân bay đến tồn tại.","E1. Sân bay không tồn tại → từ chối. E2. Dữ liệu không hợp lệ → yêu cầu sửa.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,Tests\Feature\FlightPlanningTest::test_route_season_restrictions_validation_and_audit,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/mysql.xml,mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:44:10+00:00
+UAT-UC07-EXC,"Original DOCX Exception Flow",UC-07,"Điều hành khai thác","Quản lý chuyến bay khai thác / EXC","Lịch bay đã được công bố.","E1. Lịch không hợp lệ → không tạo chuyến. E2. Thiếu nguồn lực → cảnh báo.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC08-ALT,"Original DOCX Alternative Flow",UC-08,"Điều hành khai thác","Theo dõi trạng thái và cảnh báo chuyến bay / ALT","Chuyến bay đã tồn tại.","Không có bất thường → chỉ cập nhật trạng thái.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC09-EXC,"Original DOCX Exception Flow",UC-09,"Điều hành khai thác","Xử lý gián đoạn khai thác / EXC","Chuyến bay và sự kiện bất thường đã tồn tại.","E1. Phương án vi phạm ràng buộc → không cho áp dụng.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC11-EXC,"Original DOCX Exception Flow",UC-11,"Quản lý đội bay","Theo dõi sử dụng tàu bay / EXC","Tàu bay tồn tại.","E1. Bản ghi bị trùng → không cộng lại.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,"fleet.spec.js::UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp;Tests\Feature\FleetCommitRaceTest::test_configuration_and_usage_commit_with_two_independent_connections with data set #1",Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-fleet/browser.xml;docs/testing/evidence/2026-10-18-fleet/mysql.xml,browser+mysql,bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c,"Automated PHPUnit/Playwright",2026-10-18T03:57:08.011Z
+UAT-UC12-EXC,"Original DOCX Exception Flow",UC-12,"Kỹ thuật bảo dưỡng","Quản lý lịch bảo dưỡng / EXC","Tàu bay tồn tại.","E1. Thiếu số liệu sử dụng → cảnh báo.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,Tests\Feature\MaintenanceWorkflowTest::test_missing_usage_provenance_invalid_upload_and_resource_contention_fail_closed;Tests\Feature\MaintenanceWorkflowTest::test_flight_and_maintenance_window_conflicts_reject_without_partial_writes,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-UC14-EXC,"Original DOCX Exception Flow",UC-14,"Kỹ thuật bảo dưỡng","Cảnh báo và giải phóng kỹ thuật / EXC","Có hồ sơ bảo dưỡng.","E1. Bảo dưỡng quá hạn → không cho khai thác. E2. Thiếu phê duyệt → không giải phóng kỹ thuật.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,Tests\Feature\MaintenanceWorkflowTest::test_overdue_other_plan_and_tampered_evidence_block_technical_release;Tests\Feature\MaintenanceWorkflowTest::test_incomplete_tasks_missing_evidence_or_signature_keep_work_in_progress,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-maintenance/mysql.xml,mysql,9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72,"Automated PHPUnit/Playwright",2026-10-18T06:21:19+00:00
+UAT-UC18-EXC,"Original DOCX Exception Flow",UC-18,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý hồ sơ hành khách / EXC","Người dùng có quyền phù hợp.","E1. Thiếu dữ liệu → yêu cầu bổ sung. E2. Truy cập trái quyền → từ chối.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,Tests\Feature\PassengerProfileTest::test_uc18_denied_ownership_validation_unique_document_and_required_consent,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/mysql.xml,mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:44:10+00:00
+UAT-UC19-EXC,"Original DOCX Exception Flow",UC-19,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý nhu cầu hỗ trợ / EXC","Có hồ sơ hành khách hoặc đặt chỗ.","E1. Không có chuyến liên quan → cảnh báo.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.",Passed,Tests\Feature\PassengerProfileTest::test_uc19_flight_link_requires_valid_booking_and_airport_queue_is_scoped,Pending,"Executed source/baseline alias; listed executions provide evidence, aliases do not add test runs.",docs/testing/evidence/2026-10-18-planning/mysql.xml,mysql,817554fe930bb2ce2e8e22f6956d2e47ce4fec91bb17f901f4f087f815f6f60d,"Automated PHPUnit/Playwright",2026-10-18T02:44:10+00:00
+UAT-UC20-EXC,"Original DOCX Exception Flow",UC-20,"Hành khách; Bán vé và chăm sóc khách hàng","Tìm kiếm hành trình / EXC","Có lịch bay và dữ liệu giá.","E1. Không có chuyến → thông báo.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC21-EXC,"Original DOCX Exception Flow",UC-21,"Hành khách; Bán vé và chăm sóc khách hàng","Quản lý đặt chỗ và đơn hàng / EXC","Hành trình còn chỗ.","E1. Hết thời gian giữ chỗ → tự giải phóng.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC22-EXC,"Original DOCX Exception Flow",UC-22,"Hành khách; Cổng thanh toán","Thanh toán và phát hành / EXC","Đơn hàng còn hiệu lực.","E1. Thanh toán thất bại → không phát hành. E2. Giao dịch trùng → không xử lý lần hai.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC24-EXC,"Original DOCX Exception Flow",UC-24,"Hành khách; Nhân viên sân bay","Làm thủ tục và chọn chỗ / EXC","Có đặt chỗ hợp lệ.","E1. Ngoài thời gian cho phép → từ chối.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC29-EXC,"Original DOCX Exception Flow",UC-29,"Nhân viên sân bay; Hành khách; Hệ thống xử lý hành lý","Theo dõi hành trình hành lý / EXC","Thẻ hành lý tồn tại.","E1. Mã không tồn tại → báo lỗi. E2. Sự kiện trùng → không xử lý lại.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC30-EXC,"Original DOCX Exception Flow",UC-30,"Nhân viên sân bay; Hành khách","Xử lý hành lý bất thường / EXC","Hành lý có mã nhận diện.","E1. Thiếu dữ liệu truy vết → xử lý thủ công.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC32-EXC,"Original DOCX Exception Flow",UC-32,"Dịch vụ mặt đất","Thực hiện nhiệm vụ mặt đất / EXC","Nhiệm vụ đã được phân công.","E1. Thiếu bằng chứng bắt buộc → không hoàn tất.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC34-EXC,"Original DOCX Exception Flow",UC-34,"Tài chính kế toán","Ghi nhận giao dịch tài chính / EXC","Có giao dịch nguồn hợp lệ.","E1. Giao dịch trùng → không tạo thêm.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC36-EXC,"Original DOCX Exception Flow",UC-36,"Tài chính kế toán","Điều chỉnh, báo cáo và xuất dữ liệu / EXC","Có dữ liệu tài chính.","E1. Vượt hạn mức → chuyển cấp có thẩm quyền.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC38-EXC,"Original DOCX Exception Flow",UC-38,"Hành khách; Bán vé và chăm sóc khách hàng","Xử lý khiếu nại và bồi thường / EXC","Có thông tin hành khách.","E1. Thiếu thông tin → yêu cầu bổ sung.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC40-EXC,"Original DOCX Exception Flow",UC-40,"Quản trị dữ liệu và các vai trò được phân quyền","Xem bảng điều khiển và chỉ số KPI / EXC","Có quyền truy cập và dữ liệu nguồn.","E1. Dữ liệu thiếu → hiển thị cảnh báo chất lượng dữ liệu.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC43-EXC,"Original DOCX Exception Flow",UC-43,"Quản trị hệ thống","Mô phỏng thiết bị và dữ liệu đo / EXC","Thiết bị và kịch bản đã được cấu hình.","E1. Mất kết nối → ghi nhận lỗi/kịch bản mất kết nối.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC45-EXC,"Original DOCX Exception Flow",UC-45,"Quản trị hệ thống","Quản lý người dùng và phân quyền / EXC","Actor có quyền quản trị.","E1. Quyền vượt phạm vi của actor → từ chối.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,
+UAT-UC47-EXC,"Original DOCX Exception Flow",UC-47,"Quản trị hệ thống","Quản lý tích hợp hệ thống / EXC","Hệ thống đối tác và giao diện trao đổi đã được xác định.","E1. Mất kết nối → thử lại/cảnh báo. E2. Dữ liệu sai cấu trúc → chuyển xử lý lỗi.","Thực hiện đúng nhánh nguồn; từ chối thao tác lỗi, không ghi dữ liệu trái quy tắc, có phản hồi/audit phù hợp.","Not Run",,Pending,,,,,,

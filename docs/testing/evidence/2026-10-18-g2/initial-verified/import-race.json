@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-MASTER-IMPORT-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_012034_001c7f",
+    "connections": [
+        315,
+        317
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "id": "3bf73bb7-9e3b-42e3-b2b8-a4948b0d794d"
+        },
+        {
+            "result": "rejected",
+            "fields": [
+                "batch"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T01:21:19+00:00"
+}

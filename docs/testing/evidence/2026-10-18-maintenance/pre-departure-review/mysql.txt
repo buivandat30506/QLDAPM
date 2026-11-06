@@ -1,0 +1,12 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Admin\Desktop\airline-smart\phpunit.xml
+
+...............................................................  63 / 156 ( 40%)
+............................................................... 126 / 156 ( 80%)
+..............................                                  156 / 156 (100%)
+
+Time: 10:50.544, Memory: 66.00 MB
+
+OK (156 tests, 1384 assertions)

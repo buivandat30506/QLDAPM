@@ -1,0 +1,6 @@
+
+   INFO  No scheduled commands are ready to run.  
+
+  2026-10-18 03:58:00 App\Jobs\RuntimeHeartbeat .............................................................. RUNNING
+  2026-10-18 03:58:00 App\Jobs\RuntimeHeartbeat ......................................................... 20.18ms DONE
+{"status":"ready","database":"ready","queue_connection":"database","background_required":true,"scheduler":"fresh","worker":"fresh","failed_jobs":0,"pending_jobs":0}

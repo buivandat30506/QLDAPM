@@ -1,0 +1,25 @@
+{
+    "test_id": "IT-PLANNING-MAINTENANCE-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_021959_47bca0",
+    "connections": [
+        1067,
+        1068
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "operation": "submit",
+            "id": "b897e656-8bcc-4984-8cea-a027a857c2d7"
+        },
+        {
+            "result": "rejected",
+            "operation": "maintenance",
+            "fields": [
+                "starts_at_utc"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T02:22:47+00:00"
+}

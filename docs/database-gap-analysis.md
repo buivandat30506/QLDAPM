@@ -1,0 +1,17 @@
+# Khoảng trống CSDL
+
+Giữ 20 thực thể baseline phụ lục B. Quy ước cũ: User.password tương ứng password_hash, PassengerProfile.dob tương ứng date_of_birth, Route.standard_duration_minutes tương ứng flight_duration_minutes; OperationalFlight.scheduled_dep_utc/arr_utc giữ tên đang dùng. Không tạo cột đồng nghĩa. UUID cho users/passenger/order/flight/crew; airport IATA và tail number là khóa chuỗi; role/route/model là bigint.
+
+| Module | Bảng hiện có | Bổ sung theo UC / lý do |
+| --- | --- | --- |
+| M01 | airports, airport_resources, master_data_records, entity_versions, domain_locks, master_import_batches/rows | Đã thêm tọa độ/ICAO unique, preview/atomic import, typed quality, revision, actor duyệt, snapshot công bố. Load/retention còn cần kiểm chứng; mô tả dictionary mới ở data-dictionary.md. |
+| M02–M03 | routes, flight_schedules, flight_schedule_checks, operational_flights, flight_events, domain_locks | M02 đã có mùa/hạn chế, chuỗi phiên bản, actor/time/reason/impacts và khóa commit. M03 còn resource allocations, disruption cases/decisions đầy đủ; không coi nền M03 hiện có là hoàn tất. |
+| M04 | aircraft_models, aircrafts, aircraft_configurations, aircraft_usage_records/receipts/alerts | Đã có phiên bản sơ đồ ghế, capacity snapshot trên flight, opening/ledger reconciliation, airport base scope. Physical map legacy chưa xác nhận không được tự suy đoán; chuyển ghế khi đổi tàu cần G3. |
+| M06 | crew_members, flight_crew_assignments, crew_notifications, crew_availability_windows, crew_rule_versions, crew_assignment_events | Đã có năng định/hạn giấy phép/đào tạo, calendar nghỉ/dự bị, quy tắc local có provenance, actor/confirmation mode và lịch sử append-only. Ngưỡng local chưa được chuyên gia duyệt; M16 còn quản trị rule/integration nâng cao và retention. |
+| M05 | maintenance_orders, maintenance_plans, maintenance_order_tasks, maintenance_materials, maintenance_order_materials, maintenance_stock_moves, maintenance_evidence, maintenance_events, maintenance_alerts | Đã thêm kế hoạch ngày/giờ/cycle/condition, revision, nguồn lực, xuất kho nguyên tử, file private/hash, ký/duyệt/giải phóng và cảnh báo/readiness đồng bộ. Legacy cần rà soát/chuyển; không tạo chứng chỉ giả. Predictive thuộc M14. PKI/MRO và profile chuyên môn còn mở. |
+| M07–M10 | passenger_profiles, order_bookings/items, checkin_records, boarding_pass_tokens, baggage_tags/events | consents/assistance; fare_products/inventory/holds/payments/events/tickets/refunds; boarding/token history; baggage_segments/incidents/returns |
+| M11–M13 | Chưa có | ground_tasks/units/evidence/exceptions; financial_entries/reconciliation/approvals; deliveries/complaints/compensation/interactions |
+| M14–M15 | Chưa có | model_versions/predictions/evaluations; devices/telemetry/rejected_events/alerts |
+| M16 | users, roles, user_roles, audit_logs, entity_versions | permissions/role_permissions; user_data_scopes/delegations; integration/config/outbox/idempotency |
+
+Mọi FK nghiệp vụ mới mặc định restrict delete; pivot và dòng staging thuộc lô import dùng cascade có chủ đích, không có API xóa lô/audit. Bảng security mới dùng FK users/roles/permissions; audit actor không cascade nhằm giữ lịch sử. Migrations mới additive; không sửa migration cũ để thay schema đã triển khai. Test sạch chạy trên MySQL độc lập; profile demo đã áp dụng migration bổ sung mà không reset dữ liệu. Data dictionary cho bảng triển khai mới được cập nhật cùng migration, không ghi bảng dự kiến như đã tồn tại.

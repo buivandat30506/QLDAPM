@@ -1,0 +1,32 @@
+{
+    "checked_at_utc": "2026-10-18T01:41:01+00:00",
+    "database": "airline_demo_20261018_010122_1556ab",
+    "accounts": [
+        {
+            "username": "demo_admin",
+            "status": "ACTIVE",
+            "profile_password_matches": true,
+            "json_serialization_changes_password": true
+        },
+        {
+            "username": "demo_data",
+            "status": "ACTIVE",
+            "profile_password_matches": true,
+            "json_serialization_changes_password": false
+        },
+        {
+            "username": "demo_ops",
+            "status": "ACTIVE",
+            "profile_password_matches": true,
+            "json_serialization_changes_password": true
+        },
+        {
+            "username": "demo_customer",
+            "status": "ACTIVE",
+            "profile_password_matches": true,
+            "json_serialization_changes_password": true
+        }
+    ],
+    "build_sha256": "9c1a02d822fe1cb6ee139bb0a1dfbc1014a7b24fa86e8ec110960f05d7b6ddc7",
+    "snapshot_unchanged_after_tests": true
+}

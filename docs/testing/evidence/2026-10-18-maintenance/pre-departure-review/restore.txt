@@ -1,0 +1,1 @@
+Restore Passed: 59 table fingerprints; 96 FK relationships; encrypted assistance and upload fixture verified. Target retained: airline_test_restore_20261018_055443_fa8a8c

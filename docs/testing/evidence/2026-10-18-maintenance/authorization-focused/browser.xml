@@ -1,0 +1,6 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="18.135355">
+<testsuite name="maintenance.spec.js" timestamp="2026-10-18T06:11:02.393Z" hostname="" tests="1" failures="0" skipped="0" time="16.663" errors="0">
+<testcase name="UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng" classname="maintenance.spec.js" time="16.663">
+</testcase>
+</testsuite>
+</testsuites>

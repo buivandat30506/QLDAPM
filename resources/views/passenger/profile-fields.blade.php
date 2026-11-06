@@ -1,0 +1,6 @@
+@foreach(['full_name' => 'Họ và tên', 'id_card_passport' => 'Giấy tờ định danh', 'dob' => 'Ngày sinh', 'phone' => 'Số điện thoại', 'email' => 'Email liên hệ'] as $field => $label)
+<div class="col-md-6"><label for="profile_{{ $field }}">{{ $label }}</label>
+<input id="profile_{{ $field }}" class="form-control" name="{{ $field }}" type="{{ $field === 'dob' ? 'date' : ($field === 'email' ? 'email' : 'text') }}" value="{{ $field === 'id_card_passport' ? old($field) : old($field, $profile?->{$field} instanceof \DateTimeInterface ? $profile->{$field}->format('Y-m-d') : $profile?->{$field}) }}" {{ in_array($field, ['full_name','dob']) || ($field === 'id_card_passport' && !$profile) ? 'required' : '' }} maxlength="{{ $field === 'phone' ? 20 : ($field === 'id_card_passport' ? 50 : 100) }}">
+@if($field === 'id_card_passport' && $profile)<small class="text-muted">Để trống để giữ giấy tờ hiện tại; không hiển thị số đầy đủ.</small>@endif</div>
+@endforeach
+<div class="col-md-6"><label for="gender">Giới tính</label><select name="gender" id="gender" class="form-select">@foreach(['MALE' => 'Nam', 'FEMALE' => 'Nữ', 'OTHER' => 'Khác'] as $value => $label)<option value="{{ $value }}" @selected(old('gender', $profile?->gender) === $value)>{{ $label }}</option>@endforeach</select></div>

@@ -1,0 +1,28 @@
+<testsuites id="" name="" tests="9" failures="0" skipped="0" errors="0" time="49.235811999999996">
+<testsuite name="administration.spec.js" timestamp="2026-10-18T02:32:12.702Z" hostname="" tests="2" failures="0" skipped="0" time="5.829" errors="0">
+<testcase name="UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit" classname="administration.spec.js" time="4.162">
+</testcase>
+<testcase name="UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token" classname="administration.spec.js" time="1.667">
+</testcase>
+</testsuite>
+<testsuite name="foundation.spec.js" timestamp="2026-10-18T02:32:12.702Z" hostname="" tests="3" failures="0" skipped="0" time="18.304" errors="0">
+<testcase name="UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật" classname="foundation.spec.js" time="6.827">
+</testcase>
+<testcase name="UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc" classname="foundation.spec.js" time="7.079">
+</testcase>
+<testcase name="UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối" classname="foundation.spec.js" time="4.398">
+</testcase>
+</testsuite>
+<testsuite name="passenger.spec.js" timestamp="2026-10-18T02:32:12.702Z" hostname="" tests="1" failures="0" skipped="0" time="4.496" errors="0">
+<testcase name="UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật" classname="passenger.spec.js" time="4.496">
+</testcase>
+</testsuite>
+<testsuite name="planning.spec.js" timestamp="2026-10-18T02:32:12.702Z" hostname="" tests="3" failures="0" skipped="0" time="19.034" errors="0">
+<testcase name="UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện" classname="planning.spec.js" time="4.37">
+</testcase>
+<testcase name="UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi" classname="planning.spec.js" time="9.132">
+</testcase>
+<testcase name="UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch" classname="planning.spec.js" time="5.532">
+</testcase>
+</testsuite>
+</testsuites>

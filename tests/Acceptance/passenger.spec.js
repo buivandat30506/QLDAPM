@@ -1,0 +1,35 @@
+import { test, expect } from '@playwright/test';
+
+test('UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật', async ({ page }) => {
+    await page.goto('/login');
+    await page.locator('[name="username"]').fill('nguyen_van_a');
+    await page.locator('[name="password"]').fill('Customer@123');
+    await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
+    await page.getByRole('link', { name: 'Hồ sơ hành khách', exact: true }).click();
+    await page.getByLabel('Họ và tên', { exact: true }).fill('Hành khách mô phỏng UAT');
+    await page.getByLabel('Giấy tờ định danh', { exact: true }).fill('SYNTHETIC-UAT-P123');
+    await page.getByLabel('Ngày sinh', { exact: true }).fill('1995-01-01');
+    await page.locator('[name="consent"]').check();
+    await page.getByRole('button', { name: 'Xác nhận tạo hồ sơ' }).click();
+    await expect(page.getByRole('status')).toContainText('Đã lưu hồ sơ');
+    await expect(page.getByLabel('Giấy tờ định danh', { exact: true })).toHaveValue('');
+    await page.getByLabel('Họ và tên', { exact: true }).fill('Hành khách mô phỏng UAT đã sửa');
+    await page.getByRole('button', { name: 'Xác nhận cập nhật hồ sơ', exact: true }).click();
+    await expect(page.getByRole('status')).toContainText('Đã lưu hồ sơ');
+    await page.getByLabel('Lựa chọn', { exact: true }).selectOption('0');
+    await page.getByRole('button', { name: 'Xác nhận lựa chọn', exact: true }).click();
+    await expect(page.locator('tbody')).toContainText('Đã rút lại');
+    await page.getByRole('link', { name: 'Yêu cầu hỗ trợ', exact: true }).click();
+    await page.getByLabel('Loại hỗ trợ', { exact: true }).selectOption('WHEELCHAIR');
+    await page.getByLabel('Thông tin cần hỗ trợ', { exact: true }).fill('Yêu cầu hỗ trợ mô phỏng UAT');
+    await page.getByRole('button', { name: 'Xác nhận gửi yêu cầu' }).click();
+    await expect(page.getByRole('status')).toContainText('Đã chuyển yêu cầu');
+    await expect(page.locator('main')).toContainText('Chăm sóc khách hàng');
+    await page.getByLabel('Thông tin cập nhật', { exact: true }).fill('Cập nhật yêu cầu mô phỏng UAT');
+    await page.getByRole('button', { name: 'Lưu cập nhật', exact: true }).click();
+    await expect(page.locator('main')).toContainText('Cập nhật yêu cầu mô phỏng UAT');
+    await page.getByRole('button', { name: 'Xác nhận hủy yêu cầu', exact: true }).click();
+    await expect(page.locator('main')).toContainText('Đã hủy');
+    await expect(page.getByRole('button', { name: 'Lưu cập nhật', exact: true })).toHaveCount(0);
+    await page.screenshot({ path: (process.env.TEST_EVIDENCE_DIR || 'docs/testing/evidence/2026-10-18') + '/uc18-19-passenger.png', fullPage: true });
+});

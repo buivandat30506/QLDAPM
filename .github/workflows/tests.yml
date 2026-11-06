@@ -1,0 +1,49 @@
+name: Laravel MySQL and Blade acceptance
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    services:
+      mysql:
+        image: mysql:8.0.46
+        env:
+          MYSQL_ROOT_PASSWORD: synthetic-ci-root
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping --password=synthetic-ci-root"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    env:
+      APP_ENV: testing
+      CACHE_STORE: array
+      TEST_MYSQL_HOST: 127.0.0.1
+      TEST_MYSQL_PORT: 3306
+      TEST_MYSQL_USER: root
+      TEST_MYSQL_PASSWORD: synthetic-ci-root
+      TEST_EVIDENCE_DIR: ${{ github.workspace }}/docs/testing/evidence/ci-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql, pdo_sqlite, mbstring, bcmath, zip
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env && php artisan key:generate
+      - run: npm ci
+      - run: npm run build
+      - run: php scripts/lint.php
+      - run: php scripts/verify-traceability.php
+      - run: php scripts/test-mysql.php
+      - run: php scripts/prepare-browser.php
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:acceptance
+      - run: php scripts/verify-restore.php
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: execution-evidence
+          path: docs/testing/evidence/

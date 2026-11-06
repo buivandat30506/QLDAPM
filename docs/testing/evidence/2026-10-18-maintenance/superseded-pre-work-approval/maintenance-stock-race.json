@@ -1,0 +1,28 @@
+{
+    "test_id": "IT-MAINTENANCE-STOCK-RACE-01",
+    "database": "airline_test_20261018_060316_bd09b1",
+    "engine": "8.0.46",
+    "observed_lock_waiters": 2,
+    "connections": [
+        5089,
+        5090
+    ],
+    "results": [
+        {
+            "result": "committed",
+            "operation": "maintenance-start",
+            "id": 3
+        },
+        {
+            "result": "committed",
+            "operation": "maintenance-start",
+            "id": 4
+        }
+    ],
+    "states": [
+        "IN_PROGRESS",
+        "WAITING_MATERIALS"
+    ],
+    "stock": 0,
+    "executed_at_utc": "2026-10-18T06:07:16+00:00"
+}

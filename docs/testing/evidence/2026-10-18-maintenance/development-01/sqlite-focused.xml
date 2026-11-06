@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="9" assertions="70" errors="4" failures="0" skipped="0" time="2.817598">
+    <testsuite name="Feature" tests="9" assertions="70" errors="4" failures="0" skipped="0" time="2.817598">
+      <testsuite name="Tests\Feature\MaintenanceWorkflowTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" tests="9" assertions="70" errors="4" failures="0" skipped="0" time="2.817598">
+        <testcase name="test_plan_date_hours_cycles_condition_and_due_alerts_block_planning_synchronously" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="66" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="8" time="0.643117"/>
+        <testcase name="test_plan_revisions_history_validation_and_overdue_deferral_are_enforced" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="83" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="9" time="0.271014"/>
+        <testcase name="test_flight_and_maintenance_window_conflicts_reject_without_partial_writes" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="94" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="4" time="0.259490"/>
+        <testcase name="test_material_shortage_persists_alert_receipt_is_idempotent_and_start_consumes_once" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="103" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="18" time="0.269494"/>
+        <testcase name="test_incomplete_tasks_missing_evidence_or_signature_keep_work_in_progress" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="119" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="11" time="0.286845">
+          <error type="LogicException">Tests\Feature\MaintenanceWorkflowTest::test_incomplete_tasks_missing_evidence_or_signature_keep_work_in_progress&#13;
+LogicException: GD extension is not installed.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:77
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:59
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php:125</error>
+        </testcase>
+        <testcase name="test_completion_approval_and_release_record_responsibility_without_resetting_unrelated_usage" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="131" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="5" time="0.275038">
+          <error type="LogicException">Tests\Feature\MaintenanceWorkflowTest::test_completion_approval_and_release_record_responsibility_without_resetting_unrelated_usage&#13;
+LogicException: GD extension is not installed.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:77
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:59
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php:62
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php:133</error>
+        </testcase>
+        <testcase name="test_overdue_other_plan_and_tampered_evidence_block_technical_release" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="145" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="5" time="0.270253">
+          <error type="LogicException">Tests\Feature\MaintenanceWorkflowTest::test_overdue_other_plan_and_tampered_evidence_block_technical_release&#13;
+LogicException: GD extension is not installed.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:77
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:59
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php:62
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php:147</error>
+        </testcase>
+        <testcase name="test_resources_inactive_technician_wrong_base_and_stale_order_are_rejected" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="160" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="7" time="0.275472"/>
+        <testcase name="test_airport_scope_protects_collections_orders_files_stock_and_admin_has_no_bypass" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="172" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="3" time="0.266875">
+          <error type="LogicException">Tests\Feature\MaintenanceWorkflowTest::test_airport_scope_protects_collections_orders_files_stock_and_admin_has_no_bypass&#13;
+LogicException: GD extension is not installed.
+&#13;
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:77
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Http\Testing\FileFactory.php:59
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php:175</error>
+        </testcase>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

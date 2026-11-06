@@ -1,0 +1,732 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "M05 maintenance",
+    "version": "1.0.0",
+    "description": "Internal domain workflows are real. Numeric safety profiles are LOCAL_ONLY pending engineering approval. maintenance.read/write/approve are enforced with aircraft base airport scope; ADMIN has no bypass. Legacy text-only evidence cannot sign or release."
+  },
+  "servers": [
+    {
+      "url": "/api/v1/core"
+    }
+  ],
+  "paths": {
+    "/maintenance/plans": {
+      "get": {
+        "operationId": "maintenancePlans",
+        "summary": "UC12: scoped search q/status and pagination",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": []
+      },
+      "post": {
+        "operationId": "maintenancePlanCreate",
+        "summary": "UC12: plan date/hours/cycles/condition; usage reconciliation and conflict check",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/plans/{plan}": {
+      "get": {
+        "operationId": "maintenancePlanDetail",
+        "summary": "UC12–14: tasks, resources, private attachment metadata, alerts, immutable responsibility history",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "plan",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "put": {
+        "operationId": "maintenancePlanRevise",
+        "summary": "UC12 alternative: expected_revision required; no deferral of overdue requirements",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "plan",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/plans/{plan}/orders": {
+      "post": {
+        "operationId": "maintenanceOrderCreate",
+        "summary": "UC13: create one order from valid plan, assign scoped personnel/location and material requirements",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "plan",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/orders/{order}/adopt": {
+      "post": {
+        "operationId": "maintenanceLegacyAdopt",
+        "summary": "Explicit review of legacy order; technician_id, location_id and reason required. No fabricated evidence",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "order",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdoptInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/orders/{order}/{action}": {
+      "post": {
+        "operationId": "maintenanceOrderAction",
+        "summary": "UC13–14: authorize work before execution; assign invalidates authorization; start/stock, task, completion/signature, result approval, release/keep unavailable",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "order",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "action",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "authorize",
+                "assign",
+                "start",
+                "task",
+                "complete",
+                "approve",
+                "release",
+                "keep-unavailable"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/orders/{order}/evidence": {
+      "post": {
+        "operationId": "maintenanceEvidenceUpload",
+        "summary": "UC13: private PDF/PNG/JPEG, actual MIME checked, maximum 10 MiB",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "order",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/maintenance/evidence/{evidence}": {
+      "get": {
+        "operationId": "maintenanceEvidenceDownload",
+        "summary": "UC13: scoped download; SHA256 verification; no public URL; no-store attachment response",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "evidence",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/maintenance/materials/receipts": {
+      "post": {
+        "operationId": "maintenanceMaterialReceipt",
+        "summary": "UC13: integer units; idempotent material/reference, conflicting replay rejected",
+        "security": [
+          {
+            "sanctum": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Persisted result under data; paginated collections use data.data"
+          },
+          "401": {
+            "description": "Unauthenticated"
+          },
+          "403": {
+            "description": "Permission or airport scope denied"
+          },
+          "404": {
+            "description": "Object not found"
+          },
+          "409": {
+            "description": "Stale revision or legacy evidence requires adoption"
+          },
+          "422": {
+            "description": "Business validation failure; no partial mutation"
+          }
+        },
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "airport_code",
+                  "code",
+                  "name",
+                  "unit",
+                  "quantity",
+                  "reference",
+                  "reason"
+                ],
+                "properties": {
+                  "airport_code": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "reference": {
+                    "type": "string"
+                  },
+                  "reason": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "sanctum": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "PlanInput": {
+        "type": "object",
+        "required": [
+          "plan_code",
+          "aircraft_tail",
+          "task",
+          "trigger_type",
+          "tasks",
+          "reason",
+          "starts_at_utc",
+          "ends_at_utc",
+          "due_at_utc"
+        ],
+        "properties": {
+          "plan_code": {
+            "type": "string",
+            "maxLength": 50,
+            "description": "Uppercase letters, digits, underscore or dash. LEGACY- is reserved for server-managed adoption."
+          },
+          "aircraft_tail": {
+            "type": "string"
+          },
+          "task": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "trigger_type": {
+            "type": "string",
+            "enum": [
+              "DATE",
+              "HOURS",
+              "CYCLES",
+              "CONDITION"
+            ]
+          },
+          "tasks": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 50,
+            "items": {
+              "type": "string",
+              "maxLength": 200
+            }
+          },
+          "reason": {
+            "type": "string"
+          },
+          "due_hours": {
+            "type": "string",
+            "description": "Decimal total lifetime flight hours, required for HOURS"
+          },
+          "due_cycles": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "condition": {
+            "type": "string"
+          },
+          "condition_active": {
+            "type": "boolean"
+          },
+          "resets_usage_basis": {
+            "type": "boolean"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "starts_at_utc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC; explicit offset required for clients outside UTC"
+          },
+          "ends_at_utc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC; explicit offset required for clients outside UTC"
+          },
+          "due_at_utc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC; explicit offset required for clients outside UTC"
+          }
+        }
+      },
+      "OrderInput": {
+        "type": "object",
+        "required": [
+          "order_code",
+          "technician_id",
+          "location_id"
+        ],
+        "properties": {
+          "order_code": {
+            "type": "string"
+          },
+          "technician_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "location_id": {
+            "type": "integer"
+          },
+          "materials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "material_id",
+                "quantity"
+              ],
+              "properties": {
+                "material_id": {
+                  "type": "integer"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "ActionInput": {
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "reason"
+        ],
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reason": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "integer"
+          },
+          "result": {
+            "type": "string"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "technical_confirmed": {
+            "type": "boolean"
+          },
+          "technician_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "location_id": {
+            "type": "integer"
+          },
+          "materials": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "material_id",
+                "quantity"
+              ],
+              "properties": {
+                "material_id": {
+                  "type": "integer"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "AdoptInput": {
+        "type": "object",
+        "required": [
+          "technician_id",
+          "location_id",
+          "reason"
+        ],
+        "properties": {
+          "technician_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "location_id": {
+            "type": "integer"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

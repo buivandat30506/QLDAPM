@@ -1,0 +1,23 @@
+npm notice run npx
+npm notice run playwright test
+
+Running 14 tests using 1 worker
+
+(node:157464) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok  1 tests\Acceptance\administration.spec.js:10:1 › UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit (3.4s)
+  ok  2 tests\Acceptance\administration.spec.js:36:1 › UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token (1.8s)
+  ok  3 tests\Acceptance\crew.spec.js:11:1 › UAT-UC15: hồ sơ năng định, nghỉ phép, dự bị và hủy khoảng có lịch sử (5.0s)
+  ok  4 tests\Acceptance\crew.spec.js:35:1 › UAT-UC16-17: đề xuất, phân công, duyệt, xác nhận và thay thế giữ lịch sử (9.8s)
+  ok  5 tests\Acceptance\fleet.spec.js:16:1 › UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật (6.0s)
+  ok  6 tests\Acceptance\fleet.spec.js:66:1 › UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp (4.5s)
+  ok  7 tests\Acceptance\foundation.spec.js:16:1 › UAT-UC01-02: tạo sân bay, chỉnh trạng thái và quản lý vị trí đỗ thật (6.0s)
+  ok  8 tests\Acceptance\foundation.spec.js:59:1 › UAT-UC03: nhập CSV, duyệt công bố, bản sửa đổi, lịch sử và xuất theo bộ lọc (5.7s)
+  ok  9 tests\Acceptance\foundation.spec.js:92:1 › UAT-UC03-EX: tệp sai và lô có dòng lỗi bị chặn; role khác bị từ chối (3.6s)
+  ok 10 tests\Acceptance\maintenance.spec.js:5:1 › UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng (15.5s)
+  ok 11 tests\Acceptance\passenger.spec.js:3:1 › UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật (3.7s)
+  ok 12 tests\Acceptance\planning.spec.js:18:1 › UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện (4.1s)
+  ok 13 tests\Acceptance\planning.spec.js:52:1 › UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi (9.3s)
+  ok 14 tests\Acceptance\planning.spec.js:110:1 › UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch (4.8s)
+
+  14 passed (1.4m)

@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-MASTER-PUBLISH-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_012034_001c7f",
+    "connections": [
+        399,
+        401
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "id": 3
+        },
+        {
+            "result": "rejected",
+            "fields": [
+                "status"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T01:21:35+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "status": "Passed",
+  "database": "airline_demo_20261018_010122_1556ab",
+  "checked_at_utc": "2026-10-18T02:41:25.202Z",
+  "checks": [
+    "demo_ops login",
+    "Accessible M02 navigation",
+    "Persisted collection, detail, versions and history render",
+    "Logout"
+  ],
+  "limitations": [
+    "Read-only smoke; CRUD acceptance uses isolated MySQL browser fixture"
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "build_sha256": "9f7945bb9d6183efa8922a56ea0d97d4eb768290c4ce921eea2a156877576e72",
+  "base_commit": "0bd32bc5b774c70c8cc5d28ff39e7238169fa74a",
+  "snapshot_at_utc": "2026-10-18T06:12:04+00:00",
+  "verified_at_utc": "2026-10-18T06:23:28.706118+00:00",
+  "profiles": {
+    "mysql": {
+      "total": 159,
+      "passed": 159,
+      "failed": 0,
+      "skipped": 0,
+      "junit_duration_seconds": "554.510503",
+      "evidence": "mysql.xml"
+    },
+    "sqlite": {
+      "total": 159,
+      "passed": 141,
+      "failed": 0,
+      "skipped": 18,
+      "junit_duration_seconds": "65.901025",
+      "evidence": "sqlite.xml"
+    },
+    "browser": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "junit_duration_seconds": "100.473011",
+      "evidence": "browser.xml"
+    }
+  },
+  "traceability": {
+    "Implemented": 16,
+    "InProgress": 13,
+    "NotStarted": 19
+  },
+  "baseline": {
+    "Not Run": 23,
+    "Passed": 20
+  },
+  "human_uat_approval": "Pending",
+  "coverage": "NotMeasured",
+  "race_profiles": [
+    {
+      "file": "booking-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "fleet-configure-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "fleet-crew-leave-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "fleet-crew-profile-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "fleet-flight-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "fleet-usage-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "import-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "maintenance-stock-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "master-publish-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "operations-aircraft-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "operations-crew-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "operations-gate-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "planning-flight-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "planning-maintenance-plan-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "planning-maintenance-race.json",
+      "observed_lock_waiters": 2
+    },
+    {
+      "file": "planning-publish-race.json",
+      "observed_lock_waiters": 2
+    }
+  ],
+  "restore": {
+    "tables": 59,
+    "foreign_keys": 97,
+    "orphaned": 0,
+    "maintenance_attachments_restored": 1,
+    "target_database": "airline_test_restore_20261018_061434_229875"
+  },
+  "operations_documented_and_matched": 68,
+  "scope": "M05 checkpoint, not full 48 UC release",
+  "unresolved_high_defects": [
+    "BOOK-001",
+    "BOOK-002",
+    "QR-001"
+  ]
+}

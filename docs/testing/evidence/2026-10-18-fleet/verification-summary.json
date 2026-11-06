@@ -1,0 +1,48 @@
+{
+  "build_sha256": "bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c",
+  "profiles": {
+    "mysql": {
+      "cases": 138,
+      "statuses": {
+        "Passed": 138
+      },
+      "assertions": 1173,
+      "time_seconds": "382.531980"
+    },
+    "sqlite": {
+      "cases": 138,
+      "statuses": {
+        "Passed": 122,
+        "Skipped": 16
+      },
+      "assertions": 999,
+      "time_seconds": "45.641661"
+    },
+    "browser": {
+      "cases": 13,
+      "statuses": {
+        "Passed": 13
+      },
+      "assertions": 0,
+      "time_seconds": "78.686561"
+    }
+  },
+  "uc_statuses": {
+    "Implemented": 13,
+    "InProgress": 16,
+    "NotStarted": 19
+  },
+  "baseline_statuses": {
+    "Passed": 19,
+    "Not Run": 24
+  },
+  "source_fingerprint_verified_by_importer": true,
+  "human_uat": "Pending",
+  "coverage": "NotMeasured",
+  "final_source_hashes_verified_at_utc": "2026-10-18T04:05:53.988551+00:00",
+  "execution_ledger_statuses": {
+    "Passed": 275,
+    "Skipped": 16
+  },
+  "ledger_evidence_paths_exist": true
+}

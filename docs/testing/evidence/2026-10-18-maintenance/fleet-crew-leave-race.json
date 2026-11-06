@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-FLEET-CREW-LEAVE-RACE-01",
+    "database": "airline_test_20261018_061204_824d69",
+    "engine": "8.0.46",
+    "observed_lock_waiters": 2,
+    "connections": [
+        5634,
+        5635
+    ],
+    "results": [
+        {
+            "result": "committed",
+            "operation": "crew-approve",
+            "id": "01a14da6-0776-7351-9e2a-85effd360a44"
+        },
+        {
+            "result": "committed",
+            "operation": "crew-leave",
+            "id": 1
+        }
+    ],
+    "executed_at_utc": "2026-10-18T06:14:49+00:00"
+}

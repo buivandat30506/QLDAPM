@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-FLEET-USAGE-RACE-01",
+    "database": "airline_test_20261018_035522_709b3a",
+    "engine": "8.0.46",
+    "observed_lock_waiters": 2,
+    "connections": [
+        2773,
+        2774
+    ],
+    "results": [
+        {
+            "result": "committed",
+            "operation": "usage",
+            "id": 2
+        },
+        {
+            "result": "committed",
+            "operation": "usage",
+            "id": 2
+        }
+    ],
+    "executed_at_utc": "2026-10-18T03:56:25+00:00"
+}

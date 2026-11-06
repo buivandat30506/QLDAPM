@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="9" assertions="120" errors="0" failures="0" skipped="0" time="35.829587">
+    <testsuite name="Feature" tests="9" assertions="120" errors="0" failures="0" skipped="0" time="35.829587">
+      <testsuite name="Tests\Feature\MaintenanceWorkflowTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" tests="9" assertions="120" errors="0" failures="0" skipped="0" time="35.829587">
+        <testcase name="test_plan_date_hours_cycles_condition_and_due_alerts_block_planning_synchronously" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="72" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="8" time="27.314182"/>
+        <testcase name="test_plan_revisions_history_validation_and_overdue_deferral_are_enforced" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="89" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="9" time="0.987195"/>
+        <testcase name="test_flight_and_maintenance_window_conflicts_reject_without_partial_writes" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="100" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="4" time="0.951073"/>
+        <testcase name="test_material_shortage_persists_alert_receipt_is_idempotent_and_start_consumes_once" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="109" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="18" time="1.132192"/>
+        <testcase name="test_incomplete_tasks_missing_evidence_or_signature_keep_work_in_progress" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="125" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="18" time="1.091718"/>
+        <testcase name="test_completion_approval_and_release_record_responsibility_without_resetting_unrelated_usage" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="137" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="19" time="1.011173"/>
+        <testcase name="test_overdue_other_plan_and_tampered_evidence_block_technical_release" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="151" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="20" time="1.183099"/>
+        <testcase name="test_resources_inactive_technician_wrong_base_and_stale_order_are_rejected" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="166" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="7" time="1.093774"/>
+        <testcase name="test_airport_scope_protects_collections_orders_files_stock_and_admin_has_no_bypass" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\MaintenanceWorkflowTest.php" line="178" class="Tests\Feature\MaintenanceWorkflowTest" classname="Tests.Feature.MaintenanceWorkflowTest" assertions="17" time="1.065182"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

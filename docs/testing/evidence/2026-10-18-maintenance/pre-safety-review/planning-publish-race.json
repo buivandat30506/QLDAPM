@@ -1,0 +1,25 @@
+{
+    "test_id": "IT-PLANNING-PUBLISH-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_053725_68356b",
+    "connections": [
+        3981,
+        3982
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "operation": "publish",
+            "id": "26822f93-72fa-440c-a1ab-e2f26130013d"
+        },
+        {
+            "result": "rejected",
+            "operation": "publish",
+            "fields": [
+                "status"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T05:46:25+00:00"
+}

@@ -1,0 +1,379 @@
+openapi: 3.1.0
+info:
+  title: M03 Flight Operations
+  version: 2026-10-18
+  description: >-
+    Laravel API for operational flights, flight events, alerts, recovery decisions,
+    check-in control and flight close-out. Every write checks the current actor's
+    flight.write scope. DEMO/AODB/FIDS payloads are local-simulation fixtures unless
+    a separately approved adapter is configured; an external event never approves
+    its own recovery proposal.
+servers:
+  - url: /api/v1/core
+security:
+  - bearerAuth: []
+paths:
+  /flights:
+    get:
+      operationId: listOperationalFlights
+      summary: List scoped operational flights with search filters
+      parameters:
+        - { name: date, in: query, schema: { type: string, format: date } }
+        - { name: flight_status, in: query, schema: { type: string, enum: [SCHEDULED, BOARDING, DELAYED, DEPARTED, ARRIVED, CANCELLED] } }
+        - { name: origin, in: query, schema: { type: string, minLength: 3, maxLength: 3 } }
+        - { name: destination, in: query, schema: { type: string, minLength: 3, maxLength: 3 } }
+        - { name: aircraft_tail, in: query, schema: { type: string } }
+      responses:
+        '200': { description: Flights filtered by caller scope }
+        '401': { description: Authentication required }
+        '403': { description: Missing flight read permission }
+    post:
+      operationId: createOperationalFlight
+      summary: Materialize an operational flight from a published schedule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CreateOperationalFlight' }
+      responses:
+        '201': { description: Flight created after schedule and resource revalidation }
+        '403': { description: Missing flight write permission }
+        '404': { description: Schedule not found }
+        '409': { description: Schedule is not published or occurrence already exists }
+        '422': { description: "Schedule, resource, maintenance or crew requirements not met" }
+  /flights/check-conflict:
+    post:
+      operationId: checkOperationalFlightConflict
+      summary: Check aircraft turnaround conflict before planning
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [aircraft_tail, scheduled_dep_utc, scheduled_arr_utc]
+              properties:
+                aircraft_tail: { type: string }
+                scheduled_dep_utc: { type: string, format: date-time }
+                scheduled_arr_utc: { type: string, format: date-time }
+                ignore_flight_id: { type: string, format: uuid }
+      responses:
+        '200': { description: No aircraft turnaround conflict }
+        '403': { description: Missing flight write permission }
+        '404': { description: Aircraft not found }
+        '422': { description: Schedule conflict or invalid time range }
+  /flights/{id}:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+    get:
+      operationId: getOperationalFlight
+      summary: Get operational flight detail
+      responses:
+        '200': { description: "Flight with route, airports, aircraft and crew assignments" }
+        '403': { description: Missing flight read permission }
+        '404': { description: Flight not found }
+  /flights/{id}/status:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+    put:
+      operationId: updateOperationalFlightStatus
+      summary: Update lifecycle status with actual timestamps and reason
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FlightStatusUpdate' }
+      responses:
+        '200': { description: Status and durable history updated }
+        '403': { description: Missing flight write permission }
+        '404': { description: Flight not found }
+        '409': { description: Revision conflict }
+        '422': { description: "Illegal transition, missing actual time, or maintenance block" }
+  /flights/{id}/operations:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+    get:
+      operationId: flightOperationsDetail
+      summary: Get flight impact, events, proposals, milestones, outbox and history
+      responses:
+        '200': { description: Flight details scoped to caller }
+        '401': { description: Authentication required }
+        '403': { description: Missing flight scope }
+        '404': { description: Flight not found }
+  /flights/{id}/operations/{action}:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+      - name: action
+        in: path
+        required: true
+        schema: { type: string, enum: [status, events, proposals, checkin, close, milestone] }
+    post:
+      operationId: flightOperationsAct
+      summary: Apply a validated flight operation or create a recovery proposal
+      description: >-
+        checkin requires expected_revision, mode and reason. status requires a
+        flight_status and reason. milestone requires expected_revision, code, label,
+        status and evidence. close requires expected_revision and reason and is
+        rejected while mandatory milestones or active alerts remain. events accepts
+        the event schema below. proposals requires an active event_id, expected_revision,
+        action and reason; resource_id/aircraft_tail are required by selected action.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/FlightEventForFlight'
+                - $ref: '#/components/schemas/CheckinControl'
+                - $ref: '#/components/schemas/FlightStatusUpdate'
+                - $ref: '#/components/schemas/Milestone'
+                - $ref: '#/components/schemas/CloseFlight'
+                - $ref: '#/components/schemas/RecoveryProposal'
+      responses:
+        '200': { description: Operation saved with revision and history }
+        '202': { description: Event accepted and processed or held for operator review }
+        '401': { description: Authentication required }
+        '403': { description: Missing flight scope }
+        '404': { description: Flight not found }
+        '409': { description: Revision or workflow conflict }
+        '422': { description: "Validation or business rule rejected; no partial write" }
+  /flights/{id}/proposals/{proposal}/decision:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+      - name: proposal
+        in: path
+        required: true
+        schema: { type: integer }
+    post:
+      operationId: decideFlightRecovery
+      summary: Apply or reject an operator-authored recovery proposal
+      description: Revalidates revision, impact, event, aircraft, gate, turnaround and crew at commit.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision, reason]
+              properties:
+                decision: { type: string, enum: [APPLY, REJECT] }
+                reason: { type: string, maxLength: 500 }
+      responses:
+        '200': { description: Decision recorded with actor and time }
+        '403': { description: Missing flight scope }
+        '404': { description: Flight or proposal not found }
+        '409': { description: Proposal is stale or already decided }
+        '422': { description: Current operational constraints reject the plan }
+  /flights/{id}/resolve:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+    post:
+      operationId: resolveFlightAlert
+      summary: Compatibility flow to create and immediately decide a proposal for the latest open alert
+      description: Requires an existing ALERT for the same flight; decision and reason remain attributable to the signed-in operator.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolveFlightRecovery'
+      responses:
+        '200': { description: Recovery applied and flight history updated }
+        '403': { description: Missing flight scope }
+        '404': { description: Flight not found }
+        '409': { description: Revision conflict }
+        '422': { description: No open alert or plan invalid }
+  /events:
+    get:
+      operationId: listFlightEvents
+      summary: List scoped integration events
+      responses:
+        '200': { description: Paginated events visible to caller }
+        '401': { description: Authentication required }
+        '403': { description: Missing flight read permission }
+    post:
+      operationId: receiveFlightEvent
+      summary: Receive an idempotent flight event
+      description: >-
+        Unique source/external_id. Duplicate identical payload returns the existing
+        event; conflicting replay is rejected. Source time, timezone and sequence
+        are required with schema flight-event.v1. Unknown flights are retained as
+        integration failures; late/out-of-order events never overwrite newer state.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FlightEvent' }
+      responses:
+        '202': { description: "Event accepted; status may be PROCESSED, ALERT, IGNORED or FAILED" }
+        '403': { description: Missing write permission }
+        '409': { description: Conflicting idempotency key }
+        '422': { description: Invalid event contract }
+  /events/{event}/retry:
+    parameters:
+      - name: event
+        in: path
+        required: true
+        schema: { type: integer }
+    post:
+      operationId: retryFlightEvent
+      summary: Retry a retained FAILED event
+      responses:
+        '200': { description: "Retry processed; inspect returned event status" }
+        '403': { description: Missing flight write permission }
+        '404': { description: Event not found }
+        '422': { description: Event is not retryable }
+  /flights/{id}/outbox/{message}/retry:
+    parameters:
+      - $ref: '#/components/parameters/FlightId'
+      - name: message
+        in: path
+        required: true
+        schema: { type: integer }
+    post:
+      operationId: retryFlightOutbox
+      summary: Queue a failed flight-change message for delivery retry
+      responses:
+        '200': { description: Retry scheduled with deduplication receipt }
+        '403': { description: Missing flight write permission }
+        '404': { description: Message not found for flight }
+        '422': { description: Message is not retryable }
+  /flights/bulk/{action}:
+    parameters:
+      - name: action
+        in: path
+        required: true
+        schema: { type: string, enum: [preview, commit] }
+    post:
+      operationId: bulkFlightRecovery
+      summary: Preview or atomically apply a bounded multi-flight recovery batch
+      description: Each flight is scoped and revalidated; commit records individual decisions and rejects stale previews.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [items]
+              properties:
+                items: { type: array, minItems: 1, maxItems: 50, items: { type: object } }
+                reason: { type: string, maxLength: 500 }
+      responses:
+        '200': { description: Preview or committed result }
+        '403': { description: Missing scope for one or more flights }
+        '409': { description: Preview became stale }
+        '422': { description: Batch validation failed with no partial commit }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Sanctum token
+  parameters:
+    FlightId:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+  schemas:
+    CreateOperationalFlight:
+      type: object
+      required: [schedule_id]
+      properties:
+        schedule_id: { type: string, format: uuid }
+        service_date: { type: string, format: date }
+        flight_date: { type: string, format: date }
+        flight_number: { type: string, maxLength: 10 }
+        route_id: { type: integer }
+        aircraft_tail: { type: string }
+        scheduled_dep_utc: { type: string, format: date-time }
+        scheduled_arr_utc: { type: string, format: date-time }
+        gate_number: { type: string, maxLength: 20 }
+    FlightStatusUpdate:
+      type: object
+      required: [flight_status]
+      properties:
+        expected_revision: { type: integer, minimum: 0 }
+        flight_status: { type: string, enum: [SCHEDULED, BOARDING, DEPARTED, ARRIVED, DELAYED, CANCELLED] }
+        actual_dep_utc: { type: string, format: date-time }
+        actual_arr_utc: { type: string, format: date-time }
+        delay_reason: { type: string, maxLength: 500 }
+    FlightEvent:
+      type: object
+      required: [source, external_id, flight_id, flight_status]
+      properties:
+        schema: { type: string, const: flight-event.v1 }
+        source: { type: string, enum: [AODB, FIDS, DEMO] }
+        external_id: { type: string, maxLength: 100 }
+        flight_id: { type: string, format: uuid }
+        flight_status: { type: string, enum: [SCHEDULED, BOARDING, DEPARTED, ARRIVED, DELAYED, CANCELLED] }
+        source_time_utc: { type: string, format: date-time }
+        source_timezone: { type: string, description: IANA timezone }
+        sequence: { type: integer, minimum: 1 }
+        estimated_dep_utc: { type: string, format: date-time }
+        estimated_arr_utc: { type: string, format: date-time }
+        actual_dep_utc: { type: string, format: date-time }
+        actual_arr_utc: { type: string, format: date-time }
+        reason: { type: string, maxLength: 500 }
+    FlightEventForFlight:
+      type: object
+      required: [source, external_id, flight_status]
+      description: Same event fields as FlightEvent, with flight_id supplied from the path.
+      properties:
+        schema: { type: string, const: flight-event.v1 }
+        source: { type: string, enum: [AODB, FIDS, DEMO] }
+        external_id: { type: string, maxLength: 100 }
+        flight_status: { type: string, enum: [SCHEDULED, BOARDING, DEPARTED, ARRIVED, DELAYED, CANCELLED] }
+        source_time_utc: { type: string, format: date-time }
+        source_timezone: { type: string, description: IANA timezone }
+        sequence: { type: integer, minimum: 1 }
+        estimated_dep_utc: { type: string, format: date-time }
+        estimated_arr_utc: { type: string, format: date-time }
+        actual_dep_utc: { type: string, format: date-time }
+        actual_arr_utc: { type: string, format: date-time }
+        reason: { type: string, maxLength: 500 }
+    CheckinControl:
+      type: object
+      required: [expected_revision, mode, reason]
+      properties:
+        expected_revision: { type: integer, minimum: 0 }
+        mode: { type: string, enum: [AUTO, OPEN, CLOSED] }
+        reason: { type: string, maxLength: 500 }
+    Milestone:
+      type: object
+      required: [expected_revision, code, label, status, evidence]
+      properties:
+        expected_revision: { type: integer, minimum: 0 }
+        code: { type: string, pattern: '^[A-Z0-9_-]{1,40}$' }
+        label: { type: string, maxLength: 150 }
+        status: { type: string, enum: [PENDING, DONE, EXEMPT] }
+        evidence: { type: string, maxLength: 1000 }
+    CloseFlight:
+      type: object
+      required: [expected_revision, reason]
+      properties:
+        expected_revision: { type: integer, minimum: 0 }
+        reason: { type: string, maxLength: 500 }
+    RecoveryProposal:
+      type: object
+      required: [event_id, expected_revision, action, reason]
+      properties:
+        event_id: { type: integer }
+        expected_revision: { type: integer, minimum: 0 }
+        action: { type: string, enum: [DELAY, CANCEL, REASSIGN, GATE, RESOURCE, ACKNOWLEDGE] }
+        reason: { type: string, maxLength: 500 }
+        scheduled_dep_utc: { type: string, format: date-time }
+        scheduled_arr_utc: { type: string, format: date-time }
+        aircraft_tail: { type: string, maxLength: 20 }
+        resource_id: { type: integer }
+    ResolveFlightRecovery:
+      type: object
+      required: [action, reason]
+      properties:
+        expected_revision: { type: integer, minimum: 0 }
+        action: { type: string, enum: [DELAY, CANCEL, REASSIGN, GATE, RESOURCE, ACKNOWLEDGE] }
+        reason: { type: string, maxLength: 500 }
+        scheduled_dep_utc: { type: string, format: date-time }
+        scheduled_arr_utc: { type: string, format: date-time }
+        aircraft_tail: { type: string, maxLength: 20 }
+        resource_id: { type: integer }

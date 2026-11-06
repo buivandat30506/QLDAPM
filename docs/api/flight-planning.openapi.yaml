@@ -1,0 +1,836 @@
+openapi: 3.1.0
+info:
+  title: 'Smart Airline — M02 Flight Planning'
+  version: '2026-10-18'
+  description: 'Laravel/MySQL. Bearer token từ POST /api/v1/auth/login. Airport scope theo sân bay đi; ADMIN không bypass. Profile v1 ghi trong decisions, chưa được chứng nhận cho khai thác thật.'
+servers:
+  -
+    url: /api/v1/core
+security:
+  -
+    bearerAuth: {  }
+paths:
+  /routes:
+    get:
+      operationId: planningRoutes
+      summary: 'Danh sách có filter/paging trong data.data'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+      parameters:
+        -
+          name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 100
+        -
+          name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        -
+          name: status
+          in: query
+          required: false
+          schema:
+            enum:
+              - ACTIVE
+              - SUSPENDED
+    post:
+      operationId: planningRouteCreate
+      summary: 'Tạo đường bay (route.write)'
+      responses:
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+        201:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteCreate'
+  '/routes/{id}':
+    parameters:
+      -
+        name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: planningRouteGet
+      summary: 'Chi tiết đường bay (route.read)'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      operationId: planningRouteUpdate
+      summary: 'Sửa mùa/hạn chế; input một phần, expected_revision stale trả409'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteFields'
+    delete:
+      operationId: planningRouteDelete
+      summary: 'Xóa khi chưa có lịch/chuyến; còn liên kết trả422'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+  /schedules:
+    get:
+      operationId: planningSchedules
+      summary: 'Lọc lịch theo số hiệu, trạng thái, season_code; data.data'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+      parameters:
+        -
+          name: search
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 100
+        -
+          name: per_page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        -
+          name: status
+          in: query
+          required: false
+          schema:
+            enum:
+              - DRAFT
+              - PENDING
+              - APPROVED
+              - PUBLISHED
+              - SUPERSEDED
+              - CANCELLED
+        -
+          name: season_code
+          in: query
+          required: false
+          schema:
+            type: string
+    post:
+      operationId: planningScheduleCreate
+      summary: 'Tạo DRAFT; nguồn lực/hiệu lực có thể bổ sung trước gửi duyệt'
+      responses:
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+        201:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleCreate'
+  '/schedules/{id}':
+    parameters:
+      -
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: planningScheduleGet
+      summary: 'Chi tiết và impacts; lịch sửa đổi là UUID mới'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+    put:
+      operationId: planningScheduleUpdate
+      summary: 'Sửa DRAFT; expected_revision stale trả409'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleFields'
+  '/schedules/{id}/check':
+    parameters:
+      -
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      operationId: planningScheduleCheck
+      summary: 'Kiểm tra tổng hợp; lưu diagnostics, không đổi trạng thái, is_valid=false vẫn200 (schedule.write)'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+  '/schedules/{id}/{action}':
+    parameters:
+      -
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      -
+        name: action
+        in: path
+        required: true
+        schema:
+          type: string
+          enum:
+            - submit
+            - approve
+            - publish
+            - revise
+            - reject
+            - cancel
+    post:
+      operationId: planningScheduleTransition
+      summary: 'Chuyển trạng thái có kiểm lại. revise trả bản DRAFT UUID mới; reason bắt buộc cho revise/reject/cancel.'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transition'
+  /versions:
+    get:
+      operationId: planningVersions
+      summary: 'Snapshots bất biến theo entity ID; không sửa/xóa'
+      responses:
+        200:
+          description: 'Thành công'
+          content:
+            application/json:
+              schema:
+                type: object
+        401:
+          description: 'Chưa xác thực'
+          content:
+            application/json:
+              schema:
+                type: object
+        403:
+          description: 'Thiếu quyền hoặc airport scope'
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: 'Không tìm thấy'
+          content:
+            application/json:
+              schema:
+                type: object
+        422:
+          description: 'Lỗi validation/nghiệp vụ; không chuyển trạng thái'
+          content:
+            application/json:
+              schema:
+                type: object
+        409:
+          description: 'Dữ liệu đã thay đổi; tải lại trước thao tác'
+          content:
+            application/json:
+              schema:
+                type: object
+      parameters:
+        -
+          name: entity_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - flight_schedules
+        -
+          name: entity_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    RouteFields:
+      type: object
+      properties:
+        route_code:
+          type: string
+          description: 'Mã duy nhất; mặc định ORIGIN-DEST'
+        origin_airport_code:
+          type: string
+          description: 'IATA sân bay đi; quyết định airport scope'
+        dest_airport_code:
+          type: string
+          description: 'IATA sân bay đến, phải khác sân bay đi'
+        distance_km:
+          type: number
+          minimum: 1
+          maximum: 50000
+        standard_duration_minutes:
+          type: integer
+          minimum: 1
+          maximum: 2880
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - SUSPENDED
+        operating_from:
+          type:
+            - string
+            - 'null'
+          format: date
+        operating_to:
+          type:
+            - string
+            - 'null'
+          format: date
+        allowed_model_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: integer
+            minimum: 1
+          description: 'Rỗng/null: không giới hạn theo dòng'
+        blocked_weekdays:
+          type:
+            - array
+            - 'null'
+          items:
+            type: integer
+            minimum: 1
+            maximum: 7
+        restriction_notes:
+          type:
+            - string
+            - 'null'
+          maxLength: 2000
+        expected_revision:
+          type: integer
+          minimum: 1
+    RouteCreate:
+      allOf:
+        -
+          $ref: '#/components/schemas/RouteFields'
+      required:
+        - origin_airport_code
+        - dest_airport_code
+        - distance_km
+        - standard_duration_minutes
+    ScheduleFields:
+      type: object
+      properties:
+        flight_number:
+          type: string
+          maxLength: 10
+        route_id:
+          type: integer
+          minimum: 1
+        model_id:
+          type: integer
+          minimum: 1
+        aircraft_tail:
+          type:
+            - string
+            - 'null'
+        resource_id:
+          type:
+            - integer
+            - 'null'
+        season_code:
+          type:
+            - string
+            - 'null'
+          maxLength: 30
+        effective_from:
+          type:
+            - string
+            - 'null'
+          format: date
+        effective_to:
+          type:
+            - string
+            - 'null'
+          format: date
+        departure_time_utc:
+          type: string
+          description: 'HH:mm[:ss]; bắt buộc khi không dùng giờ địa phương'
+        arrival_time_utc:
+          type: string
+          description: 'HH:mm[:ss]; ≤ giờ đi là sang ngày sau'
+        source_timezone:
+          type: string
+          description: 'IANA; mặc định UTC. Dùng cùng múi giờ nguồn cho cả hai giờ địa phương'
+        departure_time_local:
+          type:
+            - string
+            - 'null'
+          description: 'HH:mm[:ss]; có cả cặp thì ưu tiên và quy đổi từng ngày'
+        arrival_time_local:
+          type:
+            - string
+            - 'null'
+        arrival_day_offset:
+          type: integer
+          minimum: 0
+          maximum: 2
+        days_of_week:
+          oneOf:
+            -
+              type: array
+              items:
+                type: integer
+                minimum: 1
+                maximum: 7
+            -
+              type: string
+        excluded_dates:
+          oneOf:
+            -
+              type:
+                - array
+                - 'null'
+              items:
+                type: string
+                format: date
+            -
+              type: string
+              description: 'CSV YYYY-MM-DD'
+        extra_dates:
+          oneOf:
+            -
+              type:
+                - array
+                - 'null'
+              items:
+                type: string
+                format: date
+            -
+              type: string
+              description: 'CSV YYYY-MM-DD'
+        is_active:
+          type: boolean
+        expected_revision:
+          type: integer
+          minimum: 1
+    ScheduleCreate:
+      allOf:
+        -
+          $ref: '#/components/schemas/ScheduleFields'
+      required:
+        - flight_number
+        - route_id
+        - model_id
+        - days_of_week
+    Transition:
+      type: object
+      properties:
+        expected_revision:
+          type: integer
+          minimum: 1
+        reason:
+          type: string
+          minLength: 5
+          maxLength: 1000

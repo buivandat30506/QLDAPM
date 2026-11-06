@@ -1,0 +1,8 @@
+
+Running 3 tests using 1 worker
+
+  ok 1 tests\Acceptance\administration.spec.js:10:1 › UAT-UC45-G1: tạo tài khoản, gán CUSTOMER/self, đăng nhập và bị từ chối audit (3.2s)
+  ok 2 tests\Acceptance\administration.spec.js:36:1 › UAT-UC46-G1: lọc nhật ký, xuất CSV; CSRF chặn POST thiếu token (1.3s)
+  ok 3 tests\Acceptance\passenger.spec.js:3:1 › UAT-UC18-19: hồ sơ, consent, hỗ trợ, sửa và hủy lưu DB thật (2.8s)
+
+  3 passed (8.5s)

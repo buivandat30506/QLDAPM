@@ -1,0 +1,24 @@
+{
+    "test_id": "IT-BOOK-RACE-01",
+    "database": "airline_test_20261018_053725_68356b",
+    "engine": "8.0.46",
+    "separate_connections": [
+        3955,
+        3956
+    ],
+    "observed_lock_waiters": 2,
+    "capacity": 1,
+    "results": [
+        {
+            "result": "created",
+            "booking_id": "01a14d89-fe0e-7363-90ec-4f8872e69506"
+        },
+        {
+            "result": "rejected",
+            "fields": [
+                "flight_id"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T05:44:11+00:00"
+}

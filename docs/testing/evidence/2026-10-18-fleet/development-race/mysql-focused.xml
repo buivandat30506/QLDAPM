@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Admin\Desktop\airline-smart\phpunit.xml" tests="3" assertions="38" errors="0" failures="0" skipped="0" time="68.427873">
+    <testsuite name="Feature" tests="3" assertions="38" errors="0" failures="0" skipped="0" time="68.427873">
+      <testsuite name="Tests\Feature\FleetCommitRaceTest" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetCommitRaceTest.php" tests="3" assertions="38" errors="0" failures="0" skipped="0" time="68.427873">
+        <testsuite name="Tests\Feature\FleetCommitRaceTest::test_configuration_and_usage_commit_with_two_independent_connections" tests="3" assertions="38" errors="0" failures="0" skipped="0" time="68.427873">
+          <testcase name="test_configuration_and_usage_commit_with_two_independent_connections with data set #0" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetCommitRaceTest.php" line="22" class="Tests\Feature\FleetCommitRaceTest" classname="Tests.Feature.FleetCommitRaceTest" assertions="11" time="21.322376"/>
+          <testcase name="test_configuration_and_usage_commit_with_two_independent_connections with data set #1" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetCommitRaceTest.php" line="22" class="Tests\Feature\FleetCommitRaceTest" classname="Tests.Feature.FleetCommitRaceTest" assertions="13" time="24.389202"/>
+          <testcase name="test_configuration_and_usage_commit_with_two_independent_connections with data set #2" file="C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetCommitRaceTest.php" line="22" class="Tests\Feature\FleetCommitRaceTest" classname="Tests.Feature.FleetCommitRaceTest" assertions="14" time="22.716295"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

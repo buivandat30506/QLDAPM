@@ -1,0 +1,15 @@
+@php($a = $aircraft ?? null)
+<div class="row g-3">
+@unless($a)<div class="col-md-4"><label for="tail_number" class="form-label">Số đăng ký</label><input id="tail_number" name="tail_number" class="form-control" required maxlength="20" value="{{ old('tail_number') }}" placeholder="VN-ABC01"></div>@endunless
+<div class="col-md-4"><label for="model_id" class="form-label">Dòng tàu bay</label><select id="model_id" name="model_id" class="form-select" required>@foreach($models as $model)<option value="{{ $model->id }}" @selected(old('model_id', $a?->model_id) == $model->id)>{{ $model->model_code }} · tối đa {{ $model->seat_capacity }} ghế</option>@endforeach</select></div>
+<div class="col-md-4"><label for="manufacture_year" class="form-label">Năm sản xuất</label><input type="number" id="manufacture_year" name="manufacture_year" class="form-control" min="1970" max="{{ now()->year + 1 }}" required value="{{ old('manufacture_year', $a?->manufacture_year ?? now()->year) }}"></div>
+<div class="col-md-4"><label for="base_airport_code" class="form-label">Sân bay cơ sở</label><select id="base_airport_code" name="base_airport_code" class="form-select"><option value="">Chưa xác định (quyền toàn đội bay)</option>@foreach($airports as $airport)<option value="{{ $airport->iata_code }}" @selected(old('base_airport_code', $a?->base_airport_code) === $airport->iata_code)>{{ $airport->iata_code }} · {{ $airport->airport_name }}</option>@endforeach</select></div>
+<div class="col-md-4"><label for="operational_status" class="form-label">Trạng thái khai thác</label><select id="operational_status" name="operational_status" class="form-select">@foreach(['OPERATIONAL'=>'Khả dụng','MAINTENANCE'=>'Bảo dưỡng','GROUNDED'=>'Ngừng khai thác'] as $value=>$label)<option value="{{ $value }}" @selected(old('operational_status', $a?->operational_status ?? 'OPERATIONAL') === $value)>{{ $label }}</option>@endforeach</select></div>
+@if($a)
+<input type="hidden" name="expected_revision" value="{{ $a->revision }}"><div class="col-md-8"><label for="profile_reason" class="form-label">Lý do cập nhật (bắt buộc khi đổi trạng thái)</label><input id="profile_reason" name="reason" maxlength="500" class="form-control" value="{{ old('reason') }}"></div>
+@else
+<div class="col-md-4"><label for="total_flight_hours" class="form-label">Giờ bay khi tiếp nhận</label><input type="number" id="total_flight_hours" name="total_flight_hours" class="form-control" min="0" step="0.01" value="{{ old('total_flight_hours', 0) }}"></div>
+<div class="col-md-4"><label for="total_flight_cycles" class="form-label">Chu kỳ khi tiếp nhận</label><input type="number" id="total_flight_cycles" name="total_flight_cycles" class="form-control" min="0" value="{{ old('total_flight_cycles', 0) }}"></div>
+<div class="col-12"><label for="opening_reason" class="form-label">Nguồn/chứng từ số dư tiếp nhận</label><input id="opening_reason" name="opening_reason" maxlength="500" class="form-control" value="{{ old('opening_reason') }}"><div class="form-text">Bắt buộc nếu số dư lớn hơn 0; sau tiếp nhận, số liệu được tính từ chuyến bay hoàn thành.</div></div>
+@endif
+</div>

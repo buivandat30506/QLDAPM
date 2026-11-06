@@ -1,0 +1,10 @@
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="19.276345999999997">
+<testsuite name="planning.spec.js" timestamp="2026-10-18T02:24:37.412Z" hostname="" tests="3" failures="0" skipped="0" time="17.717" errors="0">
+<testcase name="UAT-UC04: tạo, sửa mùa/hạn chế, tìm và xóa đường bay qua giao diện" classname="planning.spec.js" time="3.7">
+</testcase>
+<testcase name="UAT-UC05-06: lịch lặp, báo cáo, phê duyệt, công bố và phiên bản sửa đổi" classname="planning.spec.js" time="8.385">
+</testcase>
+<testcase name="UAT-UC06-EX: thiếu nguồn lực giữ nháp, data admin bị chặn thao tác lịch" classname="planning.spec.js" time="5.632">
+</testcase>
+</testsuite>
+</testsuites>

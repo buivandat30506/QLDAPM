@@ -1,0 +1,65 @@
+{
+  "started_at_utc": "2026-10-18T05:52:24.106Z",
+  "base_url": "http://127.0.0.1:8000",
+  "database": "airline_demo_20261018_010122_1556ab",
+  "engine": {
+    "version": "8.0.46",
+    "product": "MySQL Community Server - GPL"
+  },
+  "checks": [
+    {
+      "status": "Passed",
+      "check": "Decoded clipboard contract: demo_admin"
+    },
+    {
+      "status": "Passed",
+      "check": "Decoded clipboard contract: demo_data"
+    },
+    {
+      "status": "Passed",
+      "check": "Decoded clipboard contract: demo_ops"
+    },
+    {
+      "status": "Passed",
+      "check": "Decoded clipboard contract: demo_customer"
+    },
+    {
+      "status": "Passed",
+      "check": "Listing excludes passwords"
+    },
+    {
+      "status": "Passed",
+      "check": "Invalid copy request rejected without clipboard change: __nonexistent__"
+    },
+    {
+      "status": "Passed",
+      "check": "Invalid copy request rejected without clipboard change: "
+    },
+    {
+      "check": "Serialized JSON password reproduces the reported login error",
+      "status": "Passed"
+    },
+    {
+      "check": "demo_admin authenticates and accesses /administration/users",
+      "status": "Passed"
+    },
+    {
+      "check": "demo_data authenticates and accesses /admin/master-data",
+      "status": "Passed"
+    },
+    {
+      "check": "demo_ops authenticates and accesses /admin/workflows",
+      "status": "Passed"
+    },
+    {
+      "check": "demo_customer authenticates and accesses /portal/profiles",
+      "status": "Passed"
+    },
+    {
+      "check": "Private credentials and .env bytes unchanged",
+      "status": "Passed"
+    }
+  ],
+  "status": "Passed",
+  "finished_at_utc": "2026-10-18T05:52:37.798Z"
+}

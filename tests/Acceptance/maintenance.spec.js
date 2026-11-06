@@ -1,0 +1,69 @@
+import { test, expect } from '@playwright/test';
+
+const evidence = process.env.TEST_EVIDENCE_DIR || 'docs/testing/evidence/2026-10-18-maintenance';
+const stamp = date => date.toISOString().slice(0, 16);
+test('UAT-UC12-14: lập và sửa lịch, chờ vật tư, công việc, tài liệu, ký duyệt và giải phóng', async ({ page }) => {
+    const token = async username => {
+        const r = await page.request.post('/api/v1/auth/login', { data: { username, password: 'Demo@12345' } });
+        expect(r.status()).toBe(200); return { Authorization: 'Bearer ' + (await r.json()).data.token, Accept: 'application/json' };
+    };
+    const fleet = await token('fleet_demo'), data = await token('data_demo');
+    const models = await page.request.get('/api/v1/core/aircraft-models', { headers: fleet }); expect(models.ok()).toBe(true);
+    const aircrafts = await page.request.get('/api/v1/core/aircrafts', { headers: fleet });
+    const list = (await aircrafts.json()).data; const a = (Array.isArray(list) ? list : list.data)[0];
+    const newAircraft = await page.request.post('/api/v1/core/aircrafts', { headers: fleet, data: { tail_number: 'VN-BMX01', model_id: a.model_id, manufacture_year: 2020, base_airport_code: 'HAN' } }); expect(newAircraft.status()).toBe(201);
+    const loc = await page.request.post('/api/v1/core/airports/HAN/resources', { headers: data, data: { resource_type: 'STAND', resource_code: 'BROWSER-MX', status: 'AVAILABLE' } }); expect(loc.status()).toBe(201);
+    await page.request.post('/api/v1/auth/logout', { headers: fleet }); await page.request.post('/api/v1/auth/logout', { headers: data });
+    await page.goto('/login'); await page.locator('[name=username]').fill('tech_demo'); await page.locator('[name=password]').fill('Demo@12345');
+    await page.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
+    await page.getByRole('link', { name: 'Bảo dưỡng kỹ thuật', exact: true }).click();
+    const receipt = page.getByRole('form', { name: 'Nhập vật tư', exact: true });
+    await receipt.getByLabel('Kho sân bay', { exact: true }).selectOption('HAN');
+    for (const [label, value] of [['Mã vật tư', 'BM-BOLT'], ['Tên vật tư', 'Bộ đầu nối thử nghiệm'], ['Đơn vị nguyên (cái, bộ…)', 'bộ'], ['Số lượng nhập', '1'], ['Số phiếu nhập duy nhất', 'BM-R01'], ['Căn cứ nhập kho', 'Phiếu vật tư tổng hợp UAT']]) { await receipt.getByLabel(label, { exact: true }).fill(value); }
+    await receipt.getByRole('button', { name: 'Ghi phiếu nhập', exact: true }).click(); await expect(page.getByRole('alert')).toContainText('Đã ghi nhận phiếu');
+    const form = page.getByRole('form', { name: 'Kế hoạch bảo dưỡng', exact: true });
+    await form.getByLabel('Tàu bay / số liệu sử dụng', { exact: true }).selectOption('VN-BMX01');
+    await form.getByLabel('Mã kế hoạch', { exact: true }).fill('BM-P01'); await form.getByLabel('Hạng mục bảo dưỡng', { exact: true }).fill('Kiểm tra đầu nối UAT');
+    const now = Date.now(); await form.getByLabel('Bắt đầu (UTC)', { exact: true }).fill(stamp(new Date(now - 3600000)));
+    await form.getByLabel('Kết thúc dự kiến (UTC)', { exact: true }).fill(stamp(new Date(now + 3600000)));
+    await form.getByLabel('Hạn hoàn tất (UTC)', { exact: true }).fill(stamp(new Date(now + 86400000)));
+    await form.getByLabel('Các bước bắt buộc (mỗi dòng một bước)', { exact: true }).fill('Đo điện trở đầu nối');
+    await form.getByLabel('Lý do / căn cứ kỹ thuật', { exact: true }).fill('Lập kế hoạch từ hồ sơ tổng hợp'); await form.getByRole('button', { name: 'Lưu kế hoạch', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'BM-P01 — VN-BMX01', exact: true })).toBeVisible(); const detailUrl = page.url();
+    const edit = page.getByRole('form', { name: 'Điều chỉnh kế hoạch', exact: true });
+    await edit.getByLabel('Kết thúc dự kiến (UTC)', { exact: true }).fill(stamp(new Date(now + 7200000)));
+    await edit.getByLabel('Lý do / căn cứ kỹ thuật', { exact: true }).fill('Điều chỉnh sau thay đổi khai thác'); await edit.getByRole('button', { name: 'Lưu kế hoạch', exact: true }).click();
+    await expect(page.getByRole('table', { name: 'Lịch sử bảo dưỡng', exact: true })).toContainText('Điều chỉnh sau thay đổi khai thác');
+    const order = page.getByRole('form', { name: 'Tạo lệnh bảo dưỡng', exact: true });
+    await order.getByLabel('Mã lệnh', { exact: true }).fill('BM-O01'); await order.getByLabel('Kỹ thuật viên phụ trách', { exact: true }).selectOption({ label: 'tech_demo' });
+    await order.getByLabel('Vị trí bảo dưỡng', { exact: true }).selectOption({ label: 'HAN / BROWSER-MX' }); await order.getByLabel(/BM-BOLT — tồn/).fill('2');
+    await order.getByRole('button', { name: 'Tạo lệnh', exact: true }).click();
+    const act = async title => {
+        const f = page.getByRole('form', { name: title, exact: true }); await f.getByLabel('Lý do / căn cứ quyết định', { exact: true }).fill('Quyết định kỹ thuật dùng cho UAT'); await f.getByRole('button', { name: title, exact: true }).click();
+    };
+    await act('Duyệt cho phép thực hiện');
+    await act('Bắt đầu / kiểm tra lại vật tư'); await expect(page.getByRole('heading', { name: 'Lệnh BM-O01: Chờ vật tư', exact: true })).toBeVisible();
+    await page.getByRole('link', { name: 'Danh sách bảo dưỡng', exact: true }).click();
+    await receipt.getByLabel('Kho sân bay', { exact: true }).selectOption('HAN');
+    for (const [label, value] of [['Mã vật tư', 'BM-BOLT'], ['Tên vật tư', 'Bộ đầu nối thử nghiệm'], ['Đơn vị nguyên (cái, bộ…)', 'bộ'], ['Số lượng nhập', '1'], ['Số phiếu nhập duy nhất', 'BM-R02'], ['Căn cứ nhập kho', 'Phiếu vật tư tổng hợp UAT']]) { await receipt.getByLabel(label, { exact: true }).fill(value); }
+    await receipt.getByRole('button', { name: 'Ghi phiếu nhập', exact: true }).click(); await page.goto(detailUrl);
+    await act('Bắt đầu / kiểm tra lại vật tư'); await expect(page.getByRole('heading', { name: 'Lệnh BM-O01: Đang thực hiện', exact: true })).toBeVisible();
+    const task = page.getByRole('form', { name: 'Kết quả Đo điện trở đầu nối', exact: true });
+    await task.getByLabel('Kết quả hạng mục', { exact: true }).fill('Đã đo, đang kiểm tra lại'); await task.getByLabel('Căn cứ ghi kết quả', { exact: true }).fill('Chưa hoàn tất kiểm tra'); await task.getByRole('button', { name: 'Lưu kết quả hạng mục', exact: true }).click();
+    const completion = page.getByRole('form', { name: 'Hoàn tất và ký kỹ thuật', exact: true });
+    await completion.getByLabel('Kết luận kỹ thuật', { exact: true }).fill('Thử chốt khi chưa đạt'); await completion.getByRole('checkbox').check(); await act('Hoàn tất và ký kỹ thuật');
+    await expect(page.getByRole('alert').filter({ hasText: 'Chưa hoàn tất mọi hạng mục' })).toBeVisible();
+    await task.getByLabel('Kết quả hạng mục', { exact: true }).fill('Đo đạt theo hồ sơ kiểm thử'); await task.getByLabel('Đánh giá', { exact: true }).selectOption('1'); await task.getByLabel('Căn cứ ghi kết quả', { exact: true }).fill('Phiếu đo UAT'); await task.getByRole('button', { name: 'Lưu kết quả hạng mục', exact: true }).click();
+    const file = Buffer.from('%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF');
+    await page.getByLabel('Tài liệu PDF, PNG hoặc JPEG (tối đa 10 MB)', { exact: true }).setInputFiles({ name: 'proof.pdf', mimeType: 'application/pdf', buffer: file });
+    await page.getByRole('button', { name: 'Lưu tài liệu', exact: true }).click();
+    const downloadPromise = page.waitForEvent('download'); await page.getByRole('link', { name: /Tải tài liệu #/ }).click(); const download = await downloadPromise; expect(await download.failure()).toBeNull();
+    await completion.getByLabel('Kết luận kỹ thuật', { exact: true }).fill('Tất cả kiểm tra đã đạt theo hồ sơ'); await completion.getByRole('checkbox').check(); await act('Hoàn tất và ký kỹ thuật');
+    await expect(page.getByRole('heading', { name: 'Lệnh BM-O01: Đã ký kỹ thuật', exact: true })).toBeVisible();
+    await act('Phê duyệt kết quả'); await act('Tiếp tục không khả dụng'); await act('Giải phóng kỹ thuật'); await page.reload();
+    await expect(page.getByRole('heading', { name: 'Lệnh BM-O01: Đã giải phóng', exact: true })).toBeVisible();
+    await expect(page.getByRole('table', { name: 'Lịch sử bảo dưỡng', exact: true })).toContainText('tech_demo');
+    await page.setViewportSize({ width: 390, height: 844 }); expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    expect(await page.locator('[id]').evaluateAll(es => es.map(e => e.id).filter((id, i, a) => a.indexOf(id) !== i))).toEqual([]);
+    await page.screenshot({ path: evidence + '/uc12-14-maintenance-mobile.png', fullPage: true });
+});

@@ -1,0 +1,23 @@
+{
+    "test_id": "IT-GATE-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_012810_282279",
+    "connections": [
+        701,
+        702
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "id": "01a14ca0-d106-70b0-98c6-7e33c09f43a7"
+        },
+        {
+            "result": "rejected",
+            "fields": [
+                "resource_id"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T01:29:30+00:00"
+}

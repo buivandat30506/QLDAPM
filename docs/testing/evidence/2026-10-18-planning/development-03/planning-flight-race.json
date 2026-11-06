@@ -1,0 +1,25 @@
+{
+    "test_id": "IT-PLANNING-FLIGHT-RACE-01",
+    "engine": "8.0.46",
+    "database": "airline_test_20261018_021959_47bca0",
+    "connections": [
+        1063,
+        1064
+    ],
+    "observed_lock_waiters": 2,
+    "results": [
+        {
+            "result": "committed",
+            "operation": "flight",
+            "id": "01a14cd1-400b-70ab-ba7a-f476dc274f56"
+        },
+        {
+            "result": "rejected",
+            "operation": "flight",
+            "fields": [
+                "flight_number"
+            ]
+        }
+    ],
+    "executed_at_utc": "2026-10-18T02:22:24+00:00"
+}

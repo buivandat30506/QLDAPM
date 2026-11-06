@@ -1,0 +1,40 @@
+<testsuites id="" name="" tests="2" failures="1" skipped="0" errors="0" time="15.399417">
+<testsuite name="fleet.spec.js" timestamp="2026-10-18T03:29:57.067Z" hostname="" tests="2" failures="1" skipped="0" time="13.479" errors="0">
+<testcase name="UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật" classname="fleet.spec.js" time="8.273">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\..\..\..\storage\app\browser-results\fleet-UAT-UC10-hồ-sơ-phiên-7e0b3-iao-diện-mobile-lưu-DB-thật\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(locator).toContainText(expected) failed" type="expect.toContainText">
+<![CDATA[  fleet.spec.js:16:1 › UAT-UC10: hồ sơ, phiên bản cấu hình ghế, trạng thái và giao diện mobile lưu DB thật 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('main')
+    Expected substring: "4 ghế vật lý / 3 ghế sử dụng"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('main') with timeout 5000ms
+      - waiting for locator('main')
+
+
+      34 |     await expect(page.getByLabel('Sơ đồ ghế', { exact: true }).getByText('2B', { exact: true })).toHaveClass(/bg-secondary/);
+      35 |     await page.reload();
+    > 36 |     await expect(page.locator('main')).toContainText('4 ghế vật lý / 3 ghế sử dụng');
+         |                                        ^
+      37 |     await form.getByLabel('Tên cấu hình', { exact: true }).fill('Cấu hình thử nghiệm 2');
+      38 |     await form.locator('#section_0_from').fill('1'); await form.locator('#section_0_to').fill('2');
+      39 |     await form.locator('#section_0_columns').fill('AB');
+        at C:\Users\Admin\Desktop\airline-smart\tests\Acceptance\fleet.spec.js:36:40
+
+    Error Context: ..\..\storage\app\browser-results\fleet-UAT-UC10-hồ-sơ-phiên-7e0b3-iao-diện-mobile-lưu-DB-thật\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="UAT-UC11: lịch sử sau hoàn thành chuyến, lọc và gửi lại sự kiện không cộng lặp" classname="fleet.spec.js" time="5.206">
+</testcase>
+</testsuite>
+</testsuites>

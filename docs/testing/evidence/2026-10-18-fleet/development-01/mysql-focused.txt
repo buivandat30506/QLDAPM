@@ -1,0 +1,48 @@
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Admin\Desktop\airline-smart\phpunit.xml
+
+.....EFF.F                                                        10 / 10 (100%)
+
+Time: 00:26.269, Memory: 56.00 MB
+
+There was 1 error:
+
+1) Tests\Feature\FleetManagementTest::test_booking_and_checkin_use_sellable_seats_and_reject_missing_or_blocked_seat
+BadMethodCallException: Call to undefined method App\Models\OrderBooking::items()
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:67
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Support\Traits\ForwardsCalls.php:36
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Database\Eloquent\Model.php:2544
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:132
+
+--
+
+There were 3 failures:
+
+1) Tests\Feature\FleetManagementTest::test_usage_from_completed_facts_is_idempotent_with_durable_alias_receipts
+Failed asserting that 3 is identical to 2.
+
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:159
+
+2) Tests\Feature\FleetManagementTest::test_usage_rejects_wrong_aircraft_unfinished_flight_and_client_totals
+Expected response status code [422] but received 200.
+Failed asserting that 200 is identical to 422.
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:175
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:221
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:173
+
+3) Tests\Feature\FleetManagementTest::test_airport_scopes_filter_collections_and_protect_objects_and_configuration_history
+Expected response status code [403] but received 200.
+Failed asserting that 200 is identical to 403.
+
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponseAssert.php:45
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:175
+C:\Users\Admin\Desktop\airline-smart\vendor\laravel\framework\src\Illuminate\Testing\Concerns\AssertsStatusCodes.php:141
+C:\Users\Admin\Desktop\airline-smart\tests\Feature\FleetManagementTest.php:193
+
+ERRORS!
+Tests: 10, Assertions: 108, Errors: 1, Failures: 3.

@@ -1,0 +1,8 @@
+{
+    "test_id": "DOC-API-ROUTES-01",
+    "status": "Passed",
+    "checked_operations": 58,
+    "executed_at_utc": "2026-10-18T04:01:32+00:00",
+    "check": "Methods and normalized path parameters match actual Laravel route registry",
+    "build_sha256": "bdc0e08b911859ab76ebd0593d4ba70c268b4b75c9b7bcfd2023d9de0068c73c"
+}

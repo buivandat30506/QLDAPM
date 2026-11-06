@@ -1,0 +1,4 @@
+
+  2026-10-18 06:14:35 Running [runtime-heartbeat] ....................................................... 76.30ms DONE
+
+{"status":"ready","database":"ready","queue_connection":"database","background_required":true,"scheduler":"fresh","worker":"fresh","failed_jobs":0,"pending_jobs":0}

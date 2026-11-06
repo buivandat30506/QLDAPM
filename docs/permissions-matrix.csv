@@ -1,0 +1,166 @@
+role,uc_id,action,read_write_approve_export,data_scope,status,permission_code
+DATA_ADMIN,UC-01,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+FLIGHT_OPS,UC-01,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+FLEET_MANAGER,UC-01,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+TECHNICIAN,UC-01,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+CREW_OPS,UC-01,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+DATA_ADMIN,UC-02,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+FLIGHT_OPS,UC-02,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+FLEET_MANAGER,UC-02,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+TECHNICIAN,UC-02,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+CREW_OPS,UC-02,read,read,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.read
+DATA_ADMIN,UC-01,write,write,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.write
+DATA_ADMIN,UC-02,write,write,global;airport (M01 object checks and filtered collections),Implemented grant; workflow may be Partial,airport.write
+DATA_ADMIN,UC-04,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,route.read
+FLIGHT_OPS,UC-04,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,route.read
+FLEET_MANAGER,UC-04,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,route.read
+TECHNICIAN,UC-04,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,route.read
+CREW_OPS,UC-04,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,route.read
+DATA_ADMIN,UC-04,write,write,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,route.write
+DATA_ADMIN,UC-03,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,master.read
+DATA_ADMIN,UC-03,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,master.write
+DATA_ADMIN,UC-03,approve,approve,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,master.approve
+DATA_ADMIN,UC-05,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+FLIGHT_OPS,UC-05,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+FLEET_MANAGER,UC-05,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+TECHNICIAN,UC-05,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+CREW_OPS,UC-05,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+DATA_ADMIN,UC-06,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+FLIGHT_OPS,UC-06,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+FLEET_MANAGER,UC-06,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+TECHNICIAN,UC-06,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+CREW_OPS,UC-06,read,read,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.read
+FLIGHT_OPS,UC-05,write,write,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.write
+FLIGHT_OPS,UC-06,write,write,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.write
+FLIGHT_OPS,UC-05,approve,approve,global;airport (M02 outbound origin airport; filtered collections and object checks),M02 implemented; verification report and UAT approval tracked separately,schedule.approve
+DATA_ADMIN,UC-07,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLIGHT_OPS,UC-07,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLEET_MANAGER,UC-07,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+TECHNICIAN,UC-07,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+CREW_OPS,UC-07,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+DATA_ADMIN,UC-08,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLIGHT_OPS,UC-08,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLEET_MANAGER,UC-08,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+TECHNICIAN,UC-08,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+CREW_OPS,UC-08,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+DATA_ADMIN,UC-09,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLIGHT_OPS,UC-09,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLEET_MANAGER,UC-09,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+TECHNICIAN,UC-09,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+CREW_OPS,UC-09,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.read
+FLIGHT_OPS,UC-07,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.write
+FLIGHT_OPS,UC-08,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.write
+FLIGHT_OPS,UC-09,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,flight.write
+DATA_ADMIN,UC-10,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+FLIGHT_OPS,UC-10,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+FLEET_MANAGER,UC-10,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+TECHNICIAN,UC-10,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+CREW_OPS,UC-10,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+DATA_ADMIN,UC-11,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+FLIGHT_OPS,UC-11,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+FLEET_MANAGER,UC-11,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+TECHNICIAN,UC-11,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+CREW_OPS,UC-11,read,read,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.read
+FLEET_MANAGER,UC-10,write,write,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.write
+FLEET_MANAGER,UC-11,write,write,global;airport by aircraft base_airport_code; imported null base requires global; model catalogue mutation requires global,Implemented grant; workflow may be Partial,aircraft.write
+TECHNICIAN,UC-12,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+FLEET_MANAGER,UC-12,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+FLIGHT_OPS,UC-12,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+TECHNICIAN,UC-13,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+FLEET_MANAGER,UC-13,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+FLIGHT_OPS,UC-13,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+TECHNICIAN,UC-14,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+FLEET_MANAGER,UC-14,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+FLIGHT_OPS,UC-14,read,read,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.read
+TECHNICIAN,UC-12,write,write,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.write
+TECHNICIAN,UC-13,write,write,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.write
+TECHNICIAN,UC-13,approve,approve,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.approve
+TECHNICIAN,UC-14,approve,approve,global;airport (aircraft base scope; collections/orders/evidence/material warehouse filtered and object checked),Implemented grant; workflow may be Partial,maintenance.approve
+DATA_ADMIN,UC-15,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+FLIGHT_OPS,UC-15,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+FLEET_MANAGER,UC-15,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+TECHNICIAN,UC-15,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+CREW_OPS,UC-15,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+DATA_ADMIN,UC-16,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+FLIGHT_OPS,UC-16,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+FLEET_MANAGER,UC-16,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+TECHNICIAN,UC-16,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+CREW_OPS,UC-16,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+DATA_ADMIN,UC-17,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+FLIGHT_OPS,UC-17,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+FLEET_MANAGER,UC-17,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+TECHNICIAN,UC-17,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+CREW_OPS,UC-17,read,read,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.read
+CREW_OPS,UC-15,write,write,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.write
+CREW_OPS,UC-16,write,write,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.write
+CREW_OPS,UC-17,write,write,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.write
+CREW_OPS,UC-17,approve,approve,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.approve
+CREW_MEMBER,UC-17,write,write,profiles: global/airport by base; plans: global/airport by departure/flight; assign needs personnel and flight scopes; confirmation self linked member or scoped operator,Implemented grant; workflow may be Partial,crew.confirm
+DATA_ADMIN,UC-40,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,operations.read
+FLIGHT_OPS,UC-40,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,operations.read
+FLEET_MANAGER,UC-40,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,operations.read
+TECHNICIAN,UC-40,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,operations.read
+CREW_OPS,UC-40,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,operations.read
+CUSTOMER,UC-18,read,read,self,Implemented grant; workflow may be Partial,passenger.read
+SALES,UC-18,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,passenger.read
+AIRPORT_STAFF,UC-18,read,read,airport;flight;global,Implemented grant; workflow may be Partial,passenger.read
+CUSTOMER,UC-18,write,write,self,Implemented grant; workflow may be Partial,passenger.write
+SALES,UC-18,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,passenger.write
+CUSTOMER,UC-19,read,read,self,Implemented grant; workflow may be Partial,assistance.read
+SALES,UC-19,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,assistance.read
+AIRPORT_STAFF,UC-19,read,read,airport;flight;global,Implemented grant; workflow may be Partial,assistance.read
+CUSTOMER,UC-19,write,write,self,Implemented grant; workflow may be Partial,assistance.write
+SALES,UC-19,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,assistance.write
+SALES,UC-19,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,assistance.manage
+AIRPORT_STAFF,UC-19,write,write,airport;flight;global,Implemented grant; workflow may be Partial,assistance.manage
+CUSTOMER,UC-20,read,read,self,Implemented grant; workflow may be Partial,booking.read
+SALES,UC-20,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,booking.read
+CUSTOMER,UC-21,read,read,self,Implemented grant; workflow may be Partial,booking.read
+SALES,UC-21,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,booking.read
+CUSTOMER,UC-21,write,write,self,Implemented grant; workflow may be Partial,booking.write
+SALES,UC-21,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,booking.write
+CUSTOMER,UC-24,write,write,self,Implemented grant; workflow may be Partial,checkin.write
+AIRPORT_STAFF,UC-24,write,write,airport;flight;global,Implemented grant; workflow may be Partial,checkin.write
+CUSTOMER,UC-26,write,write,self,Implemented grant; workflow may be Partial,checkin.write
+AIRPORT_STAFF,UC-26,write,write,airport;flight;global,Implemented grant; workflow may be Partial,checkin.write
+AIRPORT_STAFF,UC-27,write,write,airport;flight;global,Implemented grant; workflow may be Partial,boarding.write
+CUSTOMER,UC-29,read,read,self,Implemented grant; workflow may be Partial,baggage.read
+AIRPORT_STAFF,UC-29,read,read,airport;flight;global,Implemented grant; workflow may be Partial,baggage.read
+AIRPORT_STAFF,UC-25,write,write,airport;flight;global,Implemented grant; workflow may be Partial,baggage.write
+AIRPORT_STAFF,UC-28,write,write,airport;flight;global,Implemented grant; workflow may be Partial,baggage.write
+AIRPORT_STAFF,UC-29,write,write,airport;flight;global,Implemented grant; workflow may be Partial,baggage.write
+ADMIN,UC-45,write,write,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,users.manage
+ADMIN,UC-46,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,audit.read
+SAFETY_SECURITY,UC-46,read,read,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,audit.read
+ADMIN,UC-46,export,export,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,audit.export
+SAFETY_SECURITY,UC-46,export,export,global (limited legacy core scopes fail closed),Implemented grant; workflow may be Partial,audit.export
+CUSTOMER,UC-22,Source workflow (planned),Pending decomposition,self; no staff actions,Planned; default deny in code,
+SALES,UC-23,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+CUSTOMER,UC-23,Source workflow (planned),Pending decomposition,self; no staff actions,Planned; default deny in code,
+AIRPORT_STAFF,UC-30,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+CUSTOMER,UC-30,Source workflow (planned),Pending decomposition,self; no staff actions,Planned; default deny in code,
+FLIGHT_OPS,UC-31,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+GROUND_SERVICES,UC-31,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+GROUND_SERVICES,UC-32,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+FLIGHT_OPS,UC-33,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+GROUND_SERVICES,UC-33,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+FINANCE,UC-34,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+FINANCE,UC-35,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+FINANCE,UC-36,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+SALES,UC-37,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+CUSTOMER,UC-37,Source workflow (planned),Pending decomposition,self; no staff actions,Planned; default deny in code,
+SALES,UC-38,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+CUSTOMER,UC-38,Source workflow (planned),Pending decomposition,self; no staff actions,Planned; default deny in code,
+SALES,UC-39,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+FLIGHT_OPS,UC-41,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+TECHNICIAN,UC-41,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+SALES,UC-41,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+FINANCE,UC-41,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+DATA_ADMIN,UC-42,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+ADMIN,UC-43,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+ADMIN,UC-44,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+DATA_ADMIN,UC-44,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+ADMIN,UC-47,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+ADMIN,UC-48,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+DATA_ADMIN,UC-48,Source workflow (planned),Pending decomposition,Pending airport/unit/flight assignment,Planned; default deny in code,
+DATA_ADMIN,UC-03,export,export,global,Implemented grant; UAT approval Pending,master.export

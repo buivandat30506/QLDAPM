@@ -1,0 +1,1 @@
+Demo login verification Passed: 4 real Chrome logins; JSON escape reproduction; clipboard contract (mocked, desktop clipboard untouched).
