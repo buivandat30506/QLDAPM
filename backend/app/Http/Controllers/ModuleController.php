@@ -151,6 +151,8 @@ class ModuleController extends Controller
             $reservationQuery->whereIn('id', $scopeBookingIds->isEmpty() ? ['-'] : $db->table('bookings')->whereIn('id', $scopeBookingIds)->whereNotNull('reservation_id')->pluck('reservation_id'));
         }
         $reservations = $reservationQuery->latest()->limit(8)->get();
+        $reservationTickets=$db->table('bookings')->whereIn('reservation_id',$reservations->pluck('id'))->where('reservation_initial',true)->get(['reservation_id','status'])->groupBy('reservation_id');
+        $reservations->each(function($reservation)use($reservationTickets){$reservation->status=\App\Support\ReservationStatus::fromBookings($reservation,$reservationTickets->get($reservation->id,collect()));});
         $baggageQuery = $db->table('baggage');
         if ($user->role === 'passenger') {
             $ids = $bookings->pluck('id');

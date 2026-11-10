@@ -8,6 +8,7 @@ class Ui
 {
     public static function label(?string $value): string
     {
+        if($value==='PARTIAL')return 'Xử lý một phần';
         return [
             'BUSINESS' => 'Thương gia', 'PREMIUM' => 'Phổ thông cao cấp', 'FLEX' => 'Phổ thông linh hoạt',
             'APPROVED' => 'Đã duyệt, chờ chi tiền', 'REPORTED' => 'Khách báo đã chuyển tiền', 'PROCESSING' => 'Đang xử lý', 'VNPAY' => 'VNPay', 'MOMO' => 'Ví MoMo', 'BANK' => 'Chuyển khoản',

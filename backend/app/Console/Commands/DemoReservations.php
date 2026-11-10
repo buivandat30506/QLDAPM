@@ -26,7 +26,7 @@ class DemoReservations extends Command
 
             return self::FAILURE;
         }
-        $path = storage_path('app/private/demo/reservations.json');
+        $path = rtrim(config('airline.demo_directory') ?? storage_path('app/private/demo'), '/').'/reservations.json';
         $state = File::exists($path) ? json_decode(File::get($path), true, 32, JSON_THROW_ON_ERROR) : ['anchor' => now()->startOfMinute()->toIso8601String(), 'flights' => [], 'reservations' => []];
         if ($state['complete'] ?? false) {
             $this->info('Examples already exist; test changes preserved. See '.$path);

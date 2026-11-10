@@ -26,17 +26,18 @@ Giao diện dùng trạng thái và tên nghiệp vụ tiếng Việt. Các mã 
 
 ## Cài và khởi động
 
-Cần Docker Engine/Compose, Node 22+, Python 3 và Bash. E2E dùng Chromium/Chrome trên máy chạy test; có thể đặt CHROMIUM_PATH theo vị trí trình duyệt.
+Cần **Docker Desktop/Engine với Compose v2 và Python 3.10+**. Bản cài mặc định tạo dữ liệu demo đầy đủ, gồm 22 sân bay và đủ 10 loại hạ tầng ở từng sân bay, lịch bay, tổ bay, vé, giao dịch mock và kế hoạch định kỳ M02. [Hướng dẫn chạy trên máy khác](docs/portable-demo.md).
 
-```bash
-cd airline  # thư mục mã nguồn
-./scripts/setup.sh
+```text
+git clone --branch feature/vinh --single-branch https://github.com/buivandat30506/QLDAPM.git
+cd QLDAPM
+python scripts/demo.py
 ```
 
-Script tạo cấu hình riêng một lần, giữ nguyên APP_KEY/mật khẩu cũ, cài theo lockfile, áp dụng migration và khởi động ứng dụng cổng **8000**, Mailpit cổng **8025**, worker nghiệp vụ, worker email và ba MySQL instance. DB không publish port; cổng web bind loopback. Không tự tạo chuyến hoặc nhân sự giả. Tài khoản quản trị local đầu tiên lấy email/mật khẩu từ backend/.env, buộc đổi mật khẩu khi đăng nhập lần đầu; bootstrap không chạy trong production. Khi khôi phục workspace:
+Linux/macOS dùng `python3 scripts/demo.py` hoặc `bash scripts/setup.sh`; Windows có thể dùng `python scripts/demo.py` hoặc `scripts/setup.ps1`. PHP/Composer/Node/MySQL chạy trong Docker, không cần cài riêng trên máy. Lần đầu cần Internet và thời gian tạo dữ liệu. Script tạo cấu hình riêng, giữ nguyên APP_KEY/mật khẩu cũ, cài theo lockfile, áp dụng migration và tạo dữ liệu mô phỏng có kiểm chứng trước khi khởi động web cổng **8000**, Mailpit **8025** và các worker. Đăng nhập `demo.admin@airline.test`, mật khẩu là `LOCAL_DEMO_PASSWORD` trong `backend/.env` của máy đó. Dùng `--minimal` nếu chủ động muốn ứng dụng trống thay vì demo. Database đã có dữ liệu riêng sẽ không bị ghi đè. Khi khởi động lại:
 
 ```bash
-docker compose up -d db1 db2 db3 mailpit app worker mail-worker
+docker compose --env-file backend/.env up -d db1 db2 db3 mailpit app worker mail-worker
 curl --fail http://127.0.0.1:8000/health/ready
 ```
 
@@ -46,7 +47,7 @@ curl --fail http://127.0.0.1:8000/health/ready
 
 Bộ [chuyến bay nhiều hãng](docs/multi-airline-demo.md) có 4 hãng, 6 sân bay, bay thẳng/1–2 điểm dừng và hai chiều. Bổ sung bằng `php artisan airline:demo-flights --days=14`; chạy lại giữ dữ liệu/vé hiện có. Giờ và giá là dữ liệu mô phỏng để test.
 
-Để có bộ dữ liệu đầy đủ phục vụ kiểm thử trên local (22 sân bay, đội tàu, tổ bay, lịch sử và 14 ngày lịch bay, hành khách, vé, hành lý, thanh toán và hồ sơ chờ duyệt), xem [Bộ dữ liệu thử nghiệm](docs/demo-data.md). Lệnh này chỉ chạy khi được gọi riêng, dùng thanh toán mock và giữ nguyên dữ liệu hiện có.
+Bộ cài demo mặc định đã nối bộ dữ liệu đầy đủ (22 sân bay, đội tàu, tổ bay, lịch sử và 14 ngày lịch bay, hành khách, vé, hành lý, thanh toán, hồ sơ chờ duyệt) với bước chuẩn hóa/bổ sung 10 loại hạ tầng và dữ liệu M02. Xem [bản demo giữa các máy](docs/portable-demo.md). Lệnh legacy `airline:demo-data` vẫn giữ để tương thích; không cần tự chạy một chuỗi lệnh bổ sung khi cài bằng `scripts/demo.py`.
 
 Bản local đã có quản trị viên đầu tiên với credential ngẫu nhiên trong `backend/.env` (`LOCAL_ADMIN_EMAIL`, `LOCAL_ADMIN_PASSWORD`). Đăng nhập và đổi mật khẩu tạm thời. Setup không đặt lại tài khoản đã tồn tại. Có thể chủ động khởi tạo tài khoản ngoài local bằng CLI `php artisan airline:user EMAIL --role=admin` với mật khẩu nhập ẩn.
 
