@@ -16,6 +16,9 @@ class WorkspacePresentation
         $this->maps['aircraft_id'] = DB::connection('ops')->table('aircraft')->whereIn('id', $ids(['aircraft_id']))->pluck('registration', 'id')->all();
         $this->maps['crew_member_id'] = DB::connection('ops')->table('crew_members')->whereIn('id', $ids(['crew_member_id']))->pluck('name', 'id')->all();
         $this->maps['resource_id'] = DB::connection('ops')->table('airport_resources')->whereIn('id', $ids(['resource_id']))->get()->mapWithKeys(fn ($r) => [$r->id => $r->airport_code.' · '.$r->code])->all();
+        if (app(\App\Modules\Operations\InfrastructureCompatibility::class)->ready()) {
+            $this->maps['resource_id'] = DB::connection('ops')->table('airport_resources as r')->leftJoin('airport_infrastructure as i', 'i.id', '=', 'r.infrastructure_id')->whereIn('r.id', $ids(['resource_id']))->get(['r.*', 'i.name'])->mapWithKeys(fn ($r) => [$r->id => $r->airport_code.' · '.InfrastructureDisplay::name($r)])->all();
+        }
         $bookings = DB::table('bookings')->whereIn('id', $ids(['booking_id', 'source_booking_id', 'target_booking_id']))->pluck('reference', 'id')->all();
         foreach (['booking_id', 'source_booking_id', 'target_booking_id'] as $field) {
             $this->maps[$field] = $bookings;
@@ -28,6 +31,9 @@ class WorkspacePresentation
 
     public function cell(string $key, $value): string
     {
+        if ($key === 'reason') {
+            return ProductText::reason($value) ?: '—';
+        }
         if ($value === null || $value === '') {
             return '—';
         }

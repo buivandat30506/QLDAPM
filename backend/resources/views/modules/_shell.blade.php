@@ -14,11 +14,13 @@
         </div>
     </header>
 
+    @if(!request()->has('flow'))
     <nav class="module-tabs" aria-label="Các module chính">
         <a class="{{ $module === 'm1' ? 'active' : '' }}" href="/modules/m1">Quản lý cốt lõi</a>
         <a class="{{ $module === 'm2' ? 'active' : '' }}" href="/modules/m2">Hành khách & hành lý</a>
         <a class="{{ $module === 'm3' ? 'active' : '' }}" href="/modules/m3">Phân tích & thiết bị</a>
     </nav>
+    @endif
 
     <section class="module-kpis" aria-label="Chỉ số module">
         @foreach($kpis as $kpi)

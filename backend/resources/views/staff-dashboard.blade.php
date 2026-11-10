@@ -57,7 +57,7 @@
         </section>
     @endif
     @if(in_array(auth()->user()->role, ['airport_agent', 'admin'], true))
-        <section class="dashboard-subpanel" aria-label="Kiểm soát lên tàu">
+        <section class="dashboard-subpanel" id="boarding-console" aria-label="Kiểm soát lên tàu">
             @include('partials.staff-boarding-panel')
         </section>
     @endif

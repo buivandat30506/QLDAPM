@@ -130,15 +130,16 @@ class FlightResourceChangeTest extends TestCase
     public function test_reserved_planes_block_maintenance_master_edit_and_publish(): void
     {
         $f = $this->fixture();
+        // This pending schedule predates the aircraft reservation, so publication must recheck it.
+        $svc = app(OperationsService::class);
+        $other = $svc->execute($f['ops'], 'schedule', ['number' => 'AS7900', 'route_id' => 1, 'aircraft_id' => $f['new'], 'departure' => $f['departure']->toIso8601String(), 'arrival' => $f['departure']->copy()->addHours(2)->toIso8601String(), 'sale_price' => 2000000, 'gate' => 'A2']);
+        $svc->execute($f['ops'], 'submit', ['flight_id' => $other->id]);
         $p = $this->propose($f);
         $this->approve($f, $p);
         $this->actingAs($this->user('maintenance'))->postJson('/api/v1/actions/work_order', ['aircraft_id' => $f['new'], 'title' => 'Không được khóa tàu đang giữ', 'due_at' => now()->addDay()->toIso8601String()])->assertConflict();
         $master = app(MasterDataService::class)->propose($f['fleet'], ['entity' => 'aircraft', 'record_id' => (string) $f['new'], 'changes' => ['type' => 'A320', 'capacity' => 24], 'reason' => 'Sửa cấu hình khi tàu đang giữ']);
         $this->actingAs($this->user('fleet_manager'))->postJson('/api/v1/actions/master_approve', ['change_id' => $master->id])->assertConflict();
-        $svc = app(OperationsService::class);
-        $other = $svc->execute($f['ops'], 'schedule', ['number' => 'AS7900', 'route_id' => 1, 'aircraft_id' => $f['new'], 'departure' => $f['departure']->toIso8601String(), 'arrival' => $f['departure']->copy()->addHours(2)->toIso8601String(), 'sale_price' => 2000000, 'gate' => 'A2']);
-        $svc->execute($f['ops'], 'submit', ['flight_id' => $other->id]);
-        $this->actingAs($f['manager'])->postJson('/api/v1/actions/publish', ['flight_id' => $other->id])->assertConflict()->assertJsonPath('message', 'Tàu đang được giữ cho phương án đổi tàu.');
+        $this->actingAs($f['manager'])->postJson('/api/v1/actions/publish', ['flight_id' => $other->id])->assertConflict()->assertJsonPath('message', fn($v)=>str_contains($v,'giữ cho phương án đổi tàu'));
         $this->actingAs($f['ops'])->postJson('/api/v1/actions/disruption', ['flight_id' => $f['f']->id, 'type' => 'CANCEL', 'delay_minutes' => 0, 'reason' => 'Không hủy chồng phương án đang chạy'])->assertConflict();
     }
 

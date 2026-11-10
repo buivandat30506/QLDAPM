@@ -1,0 +1,1 @@
+<details class="airport-status-legend"><summary>Chú giải trạng thái sân bay</summary><ul>@foreach(\App\Support\AirportWorkspace::STATUSES as $state)<li><span class="airport-status airport-status--{{ $state['tone'] }}"><span aria-hidden="true"></span>{{ $state['label'] }}</span> {{ $state['description'] }}</li>@endforeach</ul></details>

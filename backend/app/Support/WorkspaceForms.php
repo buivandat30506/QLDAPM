@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class WorkspaceForms
 {
-    public function prepare(array $forms, User $user): array
+    public function prepare(array $forms, User $user, array $scopeEntities = []): array
     {
         if (! $forms) {
             return [];
@@ -29,10 +29,21 @@ class WorkspaceForms
         $bookingLabels = in_array($user->role, ['passenger', 'airport_agent']) ? $bookingQuery->latest('b.created_at')->limit(500)->get()->mapWithKeys(fn ($b) => [$b->id => $b->reference.' · '.$b->passenger_name])->all() : [];
         foreach ($forms as &$form) {
             $action = $form['action'];
+            if ($action === 'allocate' && app(\App\Modules\Operations\InfrastructureCompatibility::class)->ready()) $form['endpoint'] = '/workspace/infrastructure-allocations';
             $entity = collect($form['fields'])->firstWhere('name', 'entity')['options']['value'] ?? null;
             foreach ($form['fields'] as &$field) {
                 $name = $field['name'];
                 $options = null;
+                if ($action === 'allocate' && isset($form['endpoint'])) {
+                    if ($name === 'flight_id') $field['airport_codes'] = $flightRows->pluck('origin', 'id')->all();
+                    if ($name === 'resource_id') {
+                        $resources = $ops->table('airport_resources as r')->leftJoin('airport_infrastructure as i', 'i.id', '=', 'r.infrastructure_id')->where('r.active', true)->whereIn('r.type', \App\Support\InfrastructureCatalog::SCHEDULED_TYPES);
+                        if (!Access::isAdmin($user)) $resources->where('r.airport_code', $user->airport_code);
+                        $resources = $resources->get(['r.*', 'i.name']);
+                        $field['options'] = $resources->mapWithKeys(fn ($r) => [$r->id => $r->airport_code.' · '.InfrastructureDisplay::name($r)])->all();
+                        $field['airport_codes'] = $resources->pluck('airport_code', 'id')->all();
+                    }
+                }
                 if ($name === 'flight_id') {
                     $allowed = match ($action) {
                         'submit' => ['DRAFT'],'publish' => ['PENDING'],'assign_crew' => ['DRAFT', 'PENDING'],'resource_propose' => ['SCHEDULED', 'DELAYED', 'BOARDING'],'fare','fare_class' => ['SCHEDULED', 'DELAYED', 'BOARDING'],default => null
@@ -69,8 +80,8 @@ class WorkspaceForms
                     $field['label'] = 'Nhiệm vụ';
                 }
                 if ($name === 'allocation_id') {
-                    $options = $ops->table('resource_allocations as a')->join('airport_resources as r', 'r.id', '=', 'a.resource_id')->whereIn('a.flight_id', $flightRows->pluck('id'))->select('a.*', 'r.code')->get()->mapWithKeys(fn ($a) => [$a->id => $a->code.' · '.($flightLabels[$a->flight_id] ?? '').' · '.Ui::date($a->starts_at)])->all();
-                    $field['label'] = 'Phân bổ hiện tại';
+                    $options = $ops->table('resource_allocations as a')->join('airport_resources as r', 'r.id', '=', 'a.resource_id')->leftJoin('airport_infrastructure as i', 'i.id', '=', 'r.infrastructure_id')->whereIn('a.flight_id', $flightRows->pluck('id'))->select('a.*', 'r.code', 'r.type', 'i.name')->get()->mapWithKeys(fn ($a) => [$a->id => InfrastructureDisplay::name($a).' · '.($flightLabels[$a->flight_id] ?? '').' · '.Ui::date($a->starts_at)])->all();
+                    $field['label'] = 'Lịch sử dụng cần gỡ';
                 }
                 if ($name === 'disruption_id') {
                     $options = $ops->table('disruptions')->whereIn('flight_id', $flightRows->pluck('id'))->where('status', 'PENDING')->get()->mapWithKeys(fn ($p) => [$p->id => Ui::label($p->type).' · '.($flightLabels[$p->flight_id] ?? '').' · '.$p->reason])->all();
@@ -111,8 +122,11 @@ class WorkspaceForms
                 }
                 if ($name === 'change_id' && $action === 'master_approve') {
                     $entities = match ($user->role) {
-                        'data_admin' => ['airports', 'routes', 'airport_resources'],'fleet_manager' => ['aircraft'],'crew_scheduler' => ['crew_members'],default => []
+                        'data_admin' => ['airports', 'routes', 'airport_resources'],'fleet_manager' => ['aircraft'],'crew_scheduler' => ['crew_members'],'admin' => ['airports', 'routes', 'airport_resources', 'aircraft', 'crew_members'],default => []
                     };
+                    if ($scopeEntities) {
+                        $entities = array_values(array_intersect($entities, $scopeEntities));
+                    }
                     $options = $ops->table('master_changes')->whereIn('entity', $entities)->where('status', 'PENDING')->where('created_by', '!=', $user->id)->get()->mapWithKeys(fn ($p) => [$p->id => $p->reason])->all();
                     $field['label'] = 'Đề nghị chờ duyệt';
                 }

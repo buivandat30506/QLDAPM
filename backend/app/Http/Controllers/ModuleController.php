@@ -43,6 +43,10 @@ class ModuleController extends Controller
         abort_unless(isset(self::ROLES[$module]), 404);
         Access::role($request->user(), ...self::ROLES[$module]);
 
+        $request->validate(['flow' => 'sometimes|required|string']);
+        $flow = $request->query('flow');
+        abort_if($flow !== null && ! in_array($module.':'.$flow, ['m2:bookings', 'm3:alerts'], true), 404);
+
         $data = match ($module) {
             'm1' => $this->core($request),
             'm2' => $this->passenger($request),
@@ -55,10 +59,24 @@ class ModuleController extends Controller
             'm3' => 'Phân tích AI & thiết bị',
         ][$module];
         $data['allowedActions'] = self::ACTIONS[$module];
+        $view = 'modules.'.$module;
+        if ($flow === 'bookings') {
+            $data['moduleTitle'] = 'Đặt chỗ và vé';
+            $data['kpis'] = array_slice($data['kpis'], 0, 3);
+            $view = 'modules.bookings';
+        } elseif ($flow === 'alerts') {
+            $data['moduleTitle'] = 'Cảnh báo thông minh';
+            $flights = DB::connection('ops')->table('flights')->where('departure', '>', now()->subDays(2));
+            if (in_array($request->user()->role, Access::SCOPED, true)) {
+                $flights->where('origin', $request->user()->airport_code);
+            }
+            $data['alertFlights'] = $flights->orderBy('departure')->limit(100)->get();
+            $view = 'modules.alerts';
+        }
 
         return $request->expectsJson()
             ? response()->json($data)
-            : view('modules.'.$module, $data);
+            : view($view, $data);
     }
 
     public function action(Request $request, string $module, string $action)
@@ -187,6 +205,7 @@ class ModuleController extends Controller
             ],
             'devices' => $devices,
             'telemetry' => $telemetry,
+            'alertEvents' => $request->query('flow') === 'alerts' ? (clone $telemetryQuery)->where('alert', true)->latest('received_at')->limit(20)->get() : collect(),
             'datasets' => $datasets,
             'runs' => $runs,
             'recommendations' => $recommendations,

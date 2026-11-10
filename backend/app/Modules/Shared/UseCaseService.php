@@ -96,8 +96,9 @@ class UseCaseService
         abort_unless($db->table('airports')->where('code', $d['airport_code'])->exists(), 422, 'Sân bay không tồn tại.');
         if (! empty($d['parent_id'])) abort_unless($db->table('airport_areas')->where('id', $d['parent_id'])->where('airport_code', $d['airport_code'])->exists(), 422, 'Khu vực cha không cùng sân bay.');
         $id = $d['id'] ?? null; $created = ! $id; unset($d['id']); $d['active'] = $d['active'] ?? true;
-        if ($id) { $old = $db->table('airport_areas')->where('id', $id)->lockForUpdate()->first() ?? abort(404); $db->table('airport_areas')->where('id', $id)->update($d); }
+        if ($id) { $old = $db->table('airport_areas')->where('id', $id)->lockForUpdate()->first() ?? abort(404); app(\App\Modules\Operations\InfrastructureCompatibility::class)->assertAreaIdentity($old, $d); $db->table('airport_areas')->where('id', $id)->update($d); }
         else { abort_if($db->table('airport_areas')->where('airport_code', $d['airport_code'])->where('code', $d['code'])->exists(), 409, 'Mã khu vực đã tồn tại.'); $id = $db->table('airport_areas')->insertGetId($d + ['created_at' => now(), 'updated_at' => now()]); $old = null; }
+        app(\App\Modules\Operations\InfrastructureCompatibility::class)->areaWritten((int)$id, $u);
         $this->audit($created ? 'airport_area.created' : 'airport_area.updated', $id, $u, $old ? json_encode($old, JSON_THROW_ON_ERROR) : null, json_encode($d, JSON_THROW_ON_ERROR), 'ops');
         return $this->result($id);
     }
@@ -105,8 +106,15 @@ class UseCaseService
     private function seasonRule(User $u, array $input): object
     {
         $db = $this->ops($u);
+        if (!empty($input['id'])) {
+            $existing=$db->table('flight_seasons')->where('id',(int)$input['id'])->lockForUpdate()->first() ?? abort(404);
+            $existingRoute=$db->table('routes')->find($existing->route_id) ?? abort(404);
+            Access::airport($u,$existingRoute->origin);
+            abort_if($existing->number || $db->table('flight_season_occurrences')->where('season_id',$existing->id)->exists(),409,'Quản lý kế hoạch tại Lịch bay định kỳ để kiểm tra phiên bản và bảo toàn nguồn lịch.');
+        }
         $d = $this->validate($input, ['id' => 'nullable|integer|min:1', 'code' => 'required|string|max:60', 'route_id' => 'required|integer', 'aircraft_id' => 'nullable|integer', 'from_date' => 'required|date', 'to_date' => 'required|date|after_or_equal:from_date', 'weekdays' => 'required|array|min:1|max:7', 'weekdays.*' => 'integer|between:1,7', 'local_departure' => 'required|date_format:H:i', 'duration_minutes' => 'required|integer|between:15,1440', 'sale_price' => 'required|integer|min:0', 'status' => 'sometimes|in:DRAFT,APPROVED,PUBLISHED,ARCHIVED']);
-        abort_unless($db->table('routes')->where('id', $d['route_id'])->exists(), 422, 'Đường bay không tồn tại.');
+        $route=$db->table('routes')->find($d['route_id']) ?? abort(422,'Đường bay không tồn tại.');
+        Access::airport($u,$route->origin);
         if (! empty($d['aircraft_id'])) abort_unless($db->table('aircraft')->where('id', $d['aircraft_id'])->exists(), 422, 'Tàu bay không tồn tại.');
         $id = $d['id'] ?? null; $created = ! $id; unset($d['id']); $d['weekdays'] = json_encode(array_values(array_unique($d['weekdays'])), JSON_THROW_ON_ERROR); $d['status'] = $d['status'] ?? 'DRAFT';
         if ($id) { $old = $db->table('flight_seasons')->where('id', $id)->lockForUpdate()->first() ?? abort(404); $db->table('flight_seasons')->where('id', $id)->update($d + ['version' => $old->version + 1, 'updated_at' => now()]); }

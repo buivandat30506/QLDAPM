@@ -47,6 +47,6 @@ class MockPaymentController extends Controller
         // run a second pass so the booking and ticket are updated in this request.
         $relay->drain();
 
-        return redirect($i->reservation_id ? '/reservations/'.$i->reservation_id : '/journeys/'.$i->booking_id)->with('message', $success ? 'Thanh toán thử nghiệm thành công.' : 'Thanh toán thử nghiệm bị từ chối.');
+        return redirect($i->reservation_id ? '/reservations/'.$i->reservation_id : '/journeys/'.$i->booking_id)->with('message', $success ? 'Thanh toán thành công.' : 'Thanh toán bị từ chối.');
     }
 }

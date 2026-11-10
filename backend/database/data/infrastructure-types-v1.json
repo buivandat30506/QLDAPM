@@ -1,0 +1,330 @@
+[
+    {
+        "code": "ACCESS_AREA",
+        "label": "Hạ tầng tiếp cận",
+        "group_code": "auxiliary",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "APRON",
+        "label": "Sân đỗ",
+        "group_code": "airfield",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "ARRIVAL_BELT",
+        "label": "Băng chuyền hành lý đến",
+        "group_code": "baggage",
+        "category": "resource",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "ARRIVAL_EXIT",
+        "label": "Cửa ra sảnh đến",
+        "group_code": "passenger",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "ARRIVAL_HALL",
+        "label": "Sảnh đến",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "BAG_DROP",
+        "label": "Quầy gửi hành lý",
+        "group_code": "passenger",
+        "category": "resource",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "BAG_MAKEUP_AREA",
+        "label": "Khu tập kết hành lý",
+        "group_code": "baggage",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "BAG_SORTING_AREA",
+        "label": "Khu phân loại hành lý",
+        "group_code": "baggage",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "BELT",
+        "label": "Băng chuyền chưa phân loại",
+        "group_code": "baggage",
+        "category": "resource",
+        "allocation_policy": null,
+        "basis": "LEGACY_SOURCE"
+    },
+    {
+        "code": "BUS_BOARDING_POINT",
+        "label": "Điểm lên xe buýt sân đỗ",
+        "group_code": "passenger",
+        "category": "resource",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "CARGO_TERMINAL",
+        "label": "Nhà ga hàng hóa",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "CARGO_WAREHOUSE",
+        "label": "Kho hàng hóa",
+        "group_code": "auxiliary",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "CHECKIN_AREA",
+        "label": "Khu vực làm thủ tục",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "CLAIM_AREA",
+        "label": "Khu nhận hành lý",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "COUNTER",
+        "label": "Quầy làm thủ tục",
+        "group_code": "passenger",
+        "category": "resource",
+        "allocation_policy": "DEPARTURE_WINDOW",
+        "basis": "LEGACY_SOURCE"
+    },
+    {
+        "code": "CUSTOMS_AREA",
+        "label": "Khu vực hải quan",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "DEPARTURE_BELT",
+        "label": "Băng chuyền hành lý đi",
+        "group_code": "baggage",
+        "category": "resource",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "DEPARTURE_HALL",
+        "label": "Sảnh khởi hành",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "DROPOFF_AREA",
+        "label": "Khu đón trả khách",
+        "group_code": "auxiliary",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "FIRE_STATION",
+        "label": "Trạm cứu nạn và cứu hỏa",
+        "group_code": "support",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "FUEL_AREA",
+        "label": "Khu tiếp nhiên liệu",
+        "group_code": "support",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "GATE",
+        "label": "Cổng tiếp cận máy bay",
+        "group_code": "passenger",
+        "category": "resource",
+        "allocation_policy": "DEPARTURE_WINDOW",
+        "basis": "LEGACY_SOURCE"
+    },
+    {
+        "code": "GROUND_VEHICLE_AREA",
+        "label": "Khu vận hành phương tiện mặt đất",
+        "group_code": "auxiliary",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "HANGAR",
+        "label": "Nhà chứa máy bay",
+        "group_code": "support",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "HOLDING_AREA",
+        "label": "Khu chờ khu bay",
+        "group_code": "airfield",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "IMMIGRATION_AREA",
+        "label": "Khu vực xuất nhập cảnh",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "JET_BRIDGE",
+        "label": "Cầu ống lồng",
+        "group_code": "passenger",
+        "category": "asset",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "LEVEL",
+        "label": "Tầng",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "MAINTENANCE_AREA",
+        "label": "Khu bảo dưỡng",
+        "group_code": "support",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "OVERSIZE_BAG_POINT",
+        "label": "Vị trí hành lý quá khổ",
+        "group_code": "baggage",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "PASSENGER_TERMINAL",
+        "label": "Nhà ga hành khách",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "RESTRICTED_AREA",
+        "label": "Khu hạn chế khai thác",
+        "group_code": "airfield",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "RUNWAY",
+        "label": "Đường băng vật lý",
+        "group_code": "airfield",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "SECURITY_AREA",
+        "label": "Khu vực an ninh",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "STAND",
+        "label": "Vị trí đỗ máy bay",
+        "group_code": "airfield",
+        "category": "resource",
+        "allocation_policy": "DEPARTURE_WINDOW",
+        "basis": "LEGACY_SOURCE"
+    },
+    {
+        "code": "TAXILANE",
+        "label": "Đường nối vị trí đỗ",
+        "group_code": "airfield",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "TAXIWAY",
+        "label": "Đường lăn",
+        "group_code": "airfield",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "TERMINAL",
+        "label": "Nhà ga chưa phân loại",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "LEGACY_SOURCE"
+    },
+    {
+        "code": "VEHICLE_PARKING",
+        "label": "Bãi đỗ phương tiện",
+        "group_code": "auxiliary",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "WAITING_AREA",
+        "label": "Khu vực chờ",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "USER_PROPOSAL"
+    },
+    {
+        "code": "ZONE",
+        "label": "Khu vực chưa phân loại",
+        "group_code": "terminal",
+        "category": "facility",
+        "allocation_policy": null,
+        "basis": "LEGACY_SOURCE"
+    }
+]

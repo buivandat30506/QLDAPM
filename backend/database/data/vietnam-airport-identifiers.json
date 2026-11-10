@@ -1,0 +1,31 @@
+{
+  "verified_on": "2026-11-10",
+  "icao_source": "https://aim.vatm.vn/images/stories/vnaic.vn/SanPhamDichVu/AIPVietNam/AIP/2026-10-01-AIRAC/html/eAIP/VV-AD-1.3-vi-VN.html",
+  "country_source": "https://unece.org/trade/cefact/unlocode-code-list-country-and-territory",
+  "country_standard": "ISO 3166-1 alpha-2",
+  "country_code": "VN",
+  "airports": {
+    "BMV": "VVBM",
+    "CAH": "VVCM",
+    "CXR": "VVCR",
+    "DAD": "VVDN",
+    "DIN": "VVDB",
+    "DLI": "VVDL",
+    "HAN": "VVNB",
+    "HPH": "VVCI",
+    "HUI": "VVPB",
+    "PQC": "VVPQ",
+    "PXU": "VVPK",
+    "SGN": "VVTS",
+    "TBB": "VVTH",
+    "THD": "VVTX",
+    "UIH": "VVPC",
+    "VCA": "VVCT",
+    "VCL": "VVCA",
+    "VCS": "VVCS",
+    "VDO": "VVVD",
+    "VDH": "VVDH",
+    "VII": "VVVH",
+    "VKG": "VVRG"
+  }
+}

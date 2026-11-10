@@ -36,7 +36,7 @@ class OperationsService
             'season' => [['operations'], ['number' => 'required|regex:/^[A-Z]{2}[0-9]{2,5}$/', 'route_id' => 'required|integer', 'aircraft_id' => 'required|integer', 'from_date' => 'required|date_format:Y-m-d|after:today', 'to_date' => 'required|date_format:Y-m-d|after_or_equal:from_date', 'weekdays' => 'required|regex:/^[1-7](,[1-7])*$/', 'local_departure' => 'required|date_format:H:i', 'duration_minutes' => 'required|integer|between:15,720', 'sale_price' => 'required|integer|between:1000,100000000', 'gate' => 'required|string|max:20']],
             'submit_batch' => [['operations'], ['flight_ids' => 'required|regex:/^[0-9]+(,[0-9]+){0,30}$/']],
             'publish_batch' => [['ops_manager'], ['flight_ids' => 'required|regex:/^[0-9]+(,[0-9]+){0,30}$/']],
-            'schedule' => [['operations'], ['number' => 'required|regex:/^[A-Z]{2}[0-9]{2,5}$/', 'route_id' => 'required|integer', 'aircraft_id' => 'required|integer', 'departure' => 'required|date|after:now', 'arrival' => 'required|date|after:departure', 'sale_price' => 'required|integer|between:1000,100000000', 'gate' => 'required|string|max:20']],
+            'schedule' => [['operations','data_admin'], ['number' => 'required|regex:/^[A-Z]{2}[0-9]{2,5}$/', 'route_id' => 'required|integer', 'aircraft_id' => 'required|integer', 'departure' => 'required|date|after:now', 'arrival' => 'required|date|after:departure', 'sale_price' => 'required|integer|between:1000,100000000', 'gate' => 'required|string|max:20']],
             'assign_crew' => [['crew_scheduler'], ['flight_id' => 'required|integer', 'crew_member_id' => 'required|integer']],
             'submit' => [['operations'], ['flight_id' => 'required|integer']],
             'publish' => [['ops_manager'], ['flight_id' => 'required|integer']],
@@ -106,6 +106,7 @@ class OperationsService
         abort_unless($this->db()->table('airports')->where('code', $d['airport_code'])->exists(), 422, 'Sân bay không tồn tại.');
         abort_if($this->db()->table('airport_resources')->where('airport_code', $d['airport_code'])->where('code', $d['code'])->exists(), 409, 'Mã tài nguyên đã tồn tại.');
         $id = $this->db()->table('airport_resources')->insertGetId($d);
+        app(InfrastructureCompatibility::class)->resourceCreated($id, $u);
         $this->audit($u, 'resource.created', $id, null, 'ACTIVE');
 
         return (object) ['id' => $id];
@@ -159,7 +160,7 @@ class OperationsService
         $airport = $this->db()->table('airports')->where('code', $route->origin)->first();
         $from = Carbon::parse($d['from_date'], $airport->timezone);
         $to = Carbon::parse($d['to_date'], $airport->timezone);
-        abort_if($from->diffInDays($to) > 31, 422, 'Mỗi đợt lập lịch tối đa 31 ngày; có thể lập nhiều đợt theo mùa.');
+        abort_if($from->diffInDays($to) > 30, 422, 'Mỗi đợt lập lịch tối đa 31 ngày, gồm cả ngày bắt đầu và kết thúc.');
         $days = array_map('intval', explode(',', $d['weekdays']));
         $ids = [];
         for ($date = $from->copy(); $date->lte($to); $date->addDay()) {
@@ -198,7 +199,12 @@ class OperationsService
             $this->db()->table('aircraft')->where('id', $id)->lockForUpdate()->first();
         }
         foreach ($ids as $id) {
-            $this->publish($u, ['flight_id' => $id]);
+            try {
+                $this->publish($u, ['flight_id' => $id]);
+            } catch (\Symfony\Component\HttpKernel\Exception\HttpExceptionInterface $error) {
+                if (!in_array($error->getStatusCode(),[409,422],true))throw $error;
+                abort($error->getStatusCode(),'Chuyến #'.$id.': '.$error->getMessage());
+            }
         }
 
         return (object) ['flight_ids' => $ids, 'status' => 'SCHEDULED'];
@@ -229,8 +235,12 @@ class OperationsService
 
     private function submit(User $u, array $d): object
     {
+        $base=$this->flight($d['flight_id']);
+        $this->db()->table('airports')->where('code',$base->origin)->lockForUpdate()->first();
+        $this->db()->table('aircraft')->where('id',$base->aircraft_id)->lockForUpdate()->first();
         $f = $this->lockedFlight($u, $d['flight_id']);
         abort_unless($f->status === 'DRAFT', 409, 'Lịch không ở trạng thái nháp.');
+        app(ScheduleConflicts::class)->assertValid($f);
         $this->db()->table('flights')->where('id', $f->id)->update(['status' => 'PENDING']);
         $this->audit($u, 'schedule.submitted', $f->id, 'DRAFT', 'PENDING');
 
@@ -246,6 +256,7 @@ class OperationsService
         $f = $this->lockedFlight($u, $base->id);
         abort_unless($f->status === 'PENDING' && $f->created_by !== $u->id, 409, 'Cần lịch chờ duyệt và người phê duyệt độc lập.');
         abort_unless(now()->lt($f->departure) && $plane->status === 'AVAILABLE', 409, 'Chuyến đã qua giờ hoặc tàu bay chưa khả dụng.');
+        app(ScheduleConflicts::class)->assertValid($f);
         abort_if($this->db()->table('change_reservations')->where('aircraft_id', $plane->id)->where('starts_at', '<', Carbon::parse($f->arrival)->addMinutes(30))->where('ends_at', '>', Carbon::parse($f->departure)->subMinutes(30))->exists(), 409, 'Tàu đang được giữ cho phương án đổi tàu.');
         $conflict = $this->db()->table('flights')->where('aircraft_id', $plane->id)->where('id', '!=', $f->id)->whereNotIn('status', ['DRAFT', 'PENDING', 'CANCELLED'])->where('departure', '<', Carbon::parse($f->arrival)->addMinutes(30))->where('arrival', '>', Carbon::parse($f->departure)->subMinutes(30))->exists();
         abort_if($conflict, 409, 'Xung đột tàu bay hoặc thời gian quay đầu 30 phút.');
@@ -256,7 +267,11 @@ class OperationsService
             $this->checkCrew($member, $f);
         }
         $gate = $this->db()->table('airport_resources')->where('airport_code', $f->origin)->where('code', $f->gate)->where('type', 'GATE')->where('active', true)->lockForUpdate()->first();
+        if ($gate) {
+            app(InfrastructureService::class)->assertAllocatable($gate);
+        }
         abort_unless($gate, 409, 'Cần cửa khởi hành có trong danh mục và đang hoạt động.');
+        app(InfrastructureService::class)->recordFixtureUse($gate, $u, 'flight:'.$f->id);
         $from = Carbon::parse($f->departure)->subMinutes(45);
         $to = Carbon::parse($f->departure)->addMinutes(15);
         abort_if($this->db()->table('resource_allocations')->where('resource_id', $gate->id)->where('flight_id', '!=', $f->id)->where('starts_at', '<', $to)->where('ends_at', '>', $from)->exists(), 409, 'Cửa khởi hành có lịch xung đột.');
@@ -358,11 +373,13 @@ class OperationsService
         $base = $this->flight($d['flight_id']);
         $this->db()->table('airports')->where('code', $base->origin)->lockForUpdate()->first();
         $res = $this->db()->table('airport_resources')->where('id', $d['resource_id'])->lockForUpdate()->first() ?? abort(404);
+        app(InfrastructureService::class)->assertAllocatable($res);
         $f = $this->lockedFlight($u, $d['flight_id']);
         abort_unless($res->active && $res->airport_code === $f->origin && ! $f->pending_change_id && ! in_array($f->status, ['CANCELLED', 'DEPARTED', 'ARRIVED']), 409, 'Tài nguyên không phù hợp chuyến.');
         abort_unless(Carbon::parse($d['starts_at'])->lte(Carbon::parse($f->departure)) && Carbon::parse($d['ends_at'])->gte(Carbon::parse($f->departure)), 422, 'Phân bổ phải bao phủ giờ khởi hành.');
         abort_if($this->db()->table('resource_allocations')->where('resource_id', $res->id)->where('starts_at', '<', $d['ends_at'])->where('ends_at', '>', $d['starts_at'])->exists(), 409, 'Tài nguyên có lịch giao nhau.');
         $id = $this->db()->table('resource_allocations')->insertGetId($d + ['actor_id' => $u->id, 'created_at' => now(), 'updated_at' => now()]);
+        app(InfrastructureService::class)->recordFixtureUse($res, $u, 'allocation:'.$id);
         if ($res->type === 'GATE') {
             $this->db()->table('flights')->where('id', $f->id)->update(['gate' => $res->code, 'version' => $f->version + 1]);
             $this->changed($f->id);

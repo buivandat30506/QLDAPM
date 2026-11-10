@@ -15,6 +15,7 @@ class MasterDataService
         'airports' => ['data_admin', ['name' => 'required|string|max:120', 'city' => 'required|string|max:100', 'timezone' => 'required|timezone']],
         'routes' => ['data_admin', ['active' => 'required|boolean', 'duration_minutes' => 'required|integer|between:15,1440', 'distance_km' => 'required|integer|between:1,30000']],
         'airport_resources' => ['data_admin', ['active' => 'required|boolean']],
+        'airport_infrastructure' => ['data_admin', []],
         'aircraft' => ['fleet_manager', ['type' => 'required|string|max:80', 'capacity' => 'required|integer|between:1,600', 'layout_preset' => 'nullable|in:LEGACY,AUTO,NARROW,WIDE,REGIONAL', 'seat_layout' => 'nullable|array']],
         'crew_members' => ['crew_scheduler', ['qualification' => 'required|string|max:80', 'license_expires' => 'required|date|after:today', 'available' => 'required|boolean']],
     ];
@@ -31,6 +32,7 @@ class MasterDataService
         $base = Validator::make($data, ['entity' => 'required|in:'.implode(',', array_keys(self::RULES)), 'record_id' => 'required|string|max:30', 'reason' => 'required|string|min:5|max:255', 'changes' => 'required|array'])->validate();
         [$role,$rules] = self::RULES[$base['entity']];
         Access::role($u, $role);
+        if ($base['entity'] === 'airport_infrastructure') return app(InfrastructureService::class)->propose($u, (int)$base['record_id'], $base['changes'], $base['reason']);
         $changes = Validator::make($base['changes'], $rules)->validate();
         $db = DB::connection('ops');
 
@@ -64,6 +66,7 @@ class MasterDataService
         $db = DB::connection('ops');
         $base = $db->table('master_changes')->find($id) ?? abort(404);
         Access::role($u, self::RULES[$base->entity][0]);
+        if ($base->entity === 'airport_infrastructure') return app(InfrastructureService::class)->approve($u, $id);
         if (json_decode($base->before_data) === null) {
             return $this->approveImported($u, $id, $base);
         }
@@ -74,13 +77,35 @@ class MasterDataService
             abort_unless($change->status === 'PENDING' && $change->created_by !== $u->id, 409, 'Cần người duyệt độc lập.');
             $actual = (array) $current;
             $before = (array) json_decode($change->before_data);
+            $d = json_decode($change->after_data, true);
+            if ($base->entity === 'airport_resources') unset($actual['infrastructure_id'], $before['infrastructure_id']);
+            // Operational observations are independent of versioned identity data.
+            // Also preserve approval of proposals captured before these nullable columns existed.
+            if ($base->entity === 'airports') {
+                foreach (['operational_status', 'operational_status_note', 'operational_status_updated_by', 'operational_status_updated_at', 'operational_status_source', 'operational_status_simulation_key', 'operational_status_simulation_fingerprint'] as $column) {
+                    unset($actual[$column], $before[$column]);
+                }
+                // A recorded reference-data import may fill formerly blank identifiers
+                // without invalidating an unrelated pending name/city/timezone proposal.
+                $import = $db->table('audit_logs')->where('action', 'airport.identifiers.imported')->where('object_id', $base->record_id)->latest('id')->first();
+                if ($import) {
+                    $importBefore = json_decode($import->before_state, true);
+                    $importAfter = json_decode($import->after_state, true);
+                    foreach (['icao', 'country_code'] as $column) {
+                        if (! array_key_exists($column, $d) && in_array($before[$column] ?? null, [null, ''], true)
+                            && ($importBefore[$column] ?? null) === ($before[$column] ?? null)
+                            && ! empty($importAfter[$column]) && ($actual[$column] ?? null) === $importAfter[$column]) {
+                            unset($actual[$column], $before[$column]);
+                        }
+                    }
+                }
+            }
             if ($base->entity === 'aircraft' && ! array_key_exists('seat_layout', $before) && ($actual['seat_layout'] ?? null) === null) {
                 $before['seat_layout'] = null;
             }
             ksort($actual);
             ksort($before);
             abort_unless($actual === $before, 409, 'Dữ liệu nguồn đã đổi; cần lập phiên bản mới.');
-            $d = json_decode($change->after_data, true);
             if ($change->entity === 'aircraft') {
                 abort_if($db->table('change_reservations')->where('aircraft_id', $current->id)->exists(), 409, 'Tàu đang giữ cho phương án điều chỉnh.');
                 abort_if($db->table('flights')->where('aircraft_id', $current->id)->whereNotIn('status', ['DRAFT', 'PENDING', 'CANCELLED', 'ARRIVED'])->where('arrival', '>', now())->exists(), 409, 'Tàu đã có lịch công bố; cần quy trình đổi tàu.');
@@ -92,6 +117,7 @@ class MasterDataService
                 abort_if($db->table('resource_allocations')->where('resource_id', $current->id)->where('ends_at', '>', now())->exists(), 409, 'Tài nguyên còn phân bổ hiệu lực.');
             }
             $db->table($change->entity)->where($change->entity === 'airports' ? 'code' : 'id', $change->record_id)->update($d);
+            if ($change->entity === 'airport_resources') app(InfrastructureCompatibility::class)->resourceActive((int)$change->record_id, (bool)$d['active'], $u);
             $db->table('master_changes')->where('id', $id)->update(['status' => 'APPROVED', 'approved_by' => $u->id, 'updated_at' => now()]);
             Audit::record('master.approved', (string) $id, 'PENDING', 'APPROVED', $u->id, 'ops');
 

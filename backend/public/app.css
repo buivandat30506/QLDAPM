@@ -86,23 +86,148 @@ body.app-body::selection { background: rgba(22, 119, 255, .18); }
 .sidebar-brand { display: flex; align-items: center; justify-content: space-between; min-height: 72px; padding: 0 22px; border-bottom: 1px solid rgba(255,255,255,.1); }
 .sidebar-brand .brand { color: #fff; font-size: 18px; }
 .sidebar-brand .brand-light { color: #9fb4cc; }
-.sidebar-context { margin: 21px 16px 11px; padding: 12px 14px; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.06); }
-.sidebar-context-label { display: block; margin-bottom: 4px; color: #8fa9c4; font-size: 10px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
-.sidebar-context strong { color: #fff; font-size: 14px; }
-.sidebar-nav { overflow-y: auto; flex: 1 1 auto; padding: 8px 12px 16px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
+.sidebar-context { margin: 10px 16px; padding: 7px 12px; border: 1px solid rgba(255,255,255,.11); border-radius: 10px; background: rgba(255,255,255,.06); }
+.sidebar-context-label { display: block; margin-bottom: 2px; color: #8fa9c4; font-size: 9px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
+.sidebar-context strong { color: #fff; font-size: 12px; }
+.sidebar-nav { min-height: 0; overflow-y: auto; flex: 1 1 auto; padding: 0 12px 12px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
 .sidebar-link { display: flex; align-items: center; gap: 11px; min-height: 42px; margin: 3px 0; padding: 8px 11px; border-radius: 9px; color: #b8cadc; font-size: 13px; text-decoration: none; transition: background .18s ease, color .18s ease, transform .18s ease; }
 .sidebar-link:hover { background: rgba(255,255,255,.08); color: #fff; transform: translateX(2px); }
 .sidebar-link.active { background: linear-gradient(90deg, rgba(22,119,255,.92), rgba(6,182,212,.75)); color: #fff; box-shadow: 0 5px 14px rgba(6, 182, 212, .16); }
 .sidebar-icon { display: inline-grid; width: 21px; place-items: center; color: #88c7e9; font-size: 16px; }
 .sidebar-link.active .sidebar-icon { color: #fff; }
+.sidebar-section + .sidebar-section { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.09); }
+.sidebar-section-label { padding: 8px 11px 5px; color: #8fa9c4; font-size: 10px; font-weight: 700; letter-spacing: .65px; text-transform: uppercase; }
+.sidebar-group { margin: 2px 0; }
+.sidebar-group-summary { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 8px 10px; border-radius: 8px; color: #b8cadc; font-size: 12px; font-weight: 600; line-height: 1.45; list-style: none; cursor: pointer; transition: background .18s ease, color .18s ease; }
+.sidebar-group-summary::-webkit-details-marker { display: none; }
+.sidebar-group-summary > span:nth-child(2), .sidebar-link > span:last-child { min-width: 0; flex: 1; }
+.sidebar-group-summary:hover { color: #fff; background: rgba(255,255,255,.08); }
+.sidebar-group-summary.active { color: #fff; background: rgba(22,119,255,.17); }
+.sidebar-icon { flex: 0 0 21px; }
+.sidebar-chevron { margin-left: auto; flex: 0 0 14px; transition: transform .18s ease; }
+.sidebar-group[open] > summary .sidebar-chevron { transform: rotate(180deg); }
+.sidebar-subnav { display: grid; gap: 2px; margin: 3px 10px 8px 31px; padding-left: 10px; border-left: 1px solid rgba(255,255,255,.15); }
+.sidebar-sublink { padding: 7px 9px; border-radius: 6px; color: #a8bfd5; font-size: 12px; line-height: 1.5; text-decoration: none; }
+.sidebar-sublink:hover { color: #fff; background: rgba(255,255,255,.07); }
+.sidebar-sublink.active { color: #fff; background: #1763ab; font-weight: 650; }
+.sidebar-group-summary:focus-visible, .sidebar-sublink:focus-visible, .sidebar-link:focus-visible { outline: 2px solid #7dd3fc; outline-offset: 2px; }
+.sidebar-section .sidebar-link { min-height: 40px; margin: 2px 0; padding: 8px 10px; gap: 10px; font-size: 12px; font-weight: 600; line-height: 1.45; }
+.staff-context-bar { display: flex; align-items: center; gap: 8px; margin: 16px 0; color: var(--as-muted); font-size: 12px; }
+.workflow-links { margin: 0 0 22px; padding: 12px 16px; border: 1px solid var(--as-border); border-radius: 10px; background: #fff; }
+.workflow-label { display: block; margin-bottom: 8px; color: var(--as-muted); font-size: 11px; font-weight: 700; }
+.workflow-links > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.workflow-links a { padding: 7px 10px; border-radius: 7px; color: var(--as-muted); font-size: 12px; font-weight: 600; text-decoration: none; }
+.workflow-links a:hover { color: var(--as-blue); background: #f1f6fc; }
+.workflow-links a.active { color: #145dcc; background: #e8f1ff; }
+.workflow-links a:focus-visible { outline: 2px solid var(--as-blue); outline-offset: 2px; }
+#boarding-console { scroll-margin-top: 90px; }
+
+/* M01: object-focused airport records and infrastructure. */
+.airport-page { display: grid; gap: 20px; padding: 8px 0 30px; min-width: 0; }
+.airport-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: #71869a; font-size: 12px; }
+.airport-breadcrumb a { text-decoration: none; color: #2e6d9e; }
+.infra-groups { display: flex; flex-wrap: wrap; gap: 7px; }
+.infra-groups a { padding: 9px 12px; border: 1px solid #dbe5f0; border-radius: 9px; background: #fff; color: #526b81; font-size: 12px; font-weight: 600; text-decoration: none; }
+.infra-groups a[aria-current] { color: #fff; border-color: #176ab8; background: #176ab8; }
+.infra-fieldset { padding: 18px; border: 1px solid #dce7f2; border-radius: 10px; min-width: 0; }
+.infra-fieldset legend { float: none; width: auto; padding: 0 6px; font-size: 13px; font-weight: 650; color: #335a77; }
+.infra-fieldset label { display: grid; gap: 7px; }
+.airport-hero { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 8px 0 3px; background: transparent; color: var(--as-ink); }
+.airport-hero h1 { margin: 8px 0; font-size: clamp(24px, 2.5vw, 36px); line-height: 1.25; overflow-wrap: anywhere; }
+.airport-hero p { margin: 0; font-size: 13px; }
+.airport-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.airport-card { min-width: 0; padding: 22px; border: 1px solid var(--as-border); border-radius: 14px; background: #fff; box-shadow: var(--as-shadow-sm); scroll-margin-top: 90px; }
+.airport-card h2 { margin: 0 0 15px; color: var(--as-navy); font-size: 19px; }
+.airport-card h3 { margin: 0 0 12px; color: #38566e; font-size: 14px; }
+.airport-card p.subtle { font-size: 12px; line-height: 1.7; }
+.airport-card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.airport-card-heading h2 { margin-bottom: 7px; }
+.airport-filters { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 10px; padding-bottom: 20px; }
+.airport-filters label { min-width: 0; flex: 1 1 220px; max-width: 520px; }
+.airport-filters label, .airport-form label { display: grid; gap: 7px; color: #51697e; font-size: 12px; font-weight: 600; }
+.airport-filters .btn { flex: 0 0 auto; white-space: nowrap; }
+.airport-table { margin: 0; font-size: 13px; }
+.airport-table th { padding: 13px 12px; border-color: #e2eaf2; background: #f6f9fd; color: #62788b; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.airport-table td { padding: 15px 12px; border-color: #edf1f6; }
+.airport-table tbody tr:hover { background: #f8fbff; }
+.airport-name { color: #174d84; font-weight: 700; text-decoration: none; }
+.airport-name:hover, .airport-detail-link:hover { text-decoration: underline; color: #0969c4; }
+.airport-detail-link { color: #176ab8; font-size: 12px; font-weight: 600; white-space: nowrap; text-decoration: none; }
+.airport-timezone { color: #65788b; font-size: 12px; }
+.airport-status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; border: 1px solid transparent; border-radius: 999px; color: #526173; background: #edf1f5; font-size: 11px; font-weight: 700; line-height: 1.35; white-space: nowrap; transition: box-shadow .18s ease; }
+.airport-status > span { width: 6px; height: 6px; flex: 0 0 6px; border-radius: 50%; background: currentColor; }
+.airport-status--normal { color: #17603d; background: #eaf7ef; border-color: #cae7d5; }
+.airport-status--high { color: #8d5100; background: #fff5df; border-color: #f2d49a; }
+.airport-status--overload, .airport-status--unavailable { color: #a52b38; background: #fff0f1; border-color: #f2cfd5; }
+.airport-status--maintenance { color: #7040a1; background: #f3ecfb; border-color: #dfccef; }
+.airport-status--unknown { border-color: #dde4ec; }
+.airport-status:hover { box-shadow: 0 0 0 3px rgba(102, 144, 188, .07); }
+.airport-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 18px; color: #6a7b8d; font-size: 12px; }
+.airport-pagination .pagination { margin: 0; }
+.airport-empty { padding: 32px 18px; text-align: center; color: #6a7c8e; }
+.airport-empty strong { display: block; margin-bottom: 8px; color: #294b68; font-size: 15px; }
+.airport-empty p { margin: 0; font-size: 13px; line-height: 1.7; }
+.airport-disclosure { padding: 0; }
+.airport-disclosure > summary { padding: 18px 22px; color: #294b68; font-size: 14px; font-weight: 700; cursor: pointer; }
+.airport-disclosure[open] > summary { border-bottom: 1px solid var(--as-border); }
+.airport-form { display: grid; gap: 16px; padding: 20px 0 0; }
+.airport-disclosure > .airport-form { padding: 22px; }
+.airport-form .btn { justify-self: start; }
+.airport-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.airport-inline-links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 12px; font-size: 12px; }
+.airport-picker { width: min(100%, 760px); margin: 12px auto; padding: 34px; }
+.airport-picker-symbol { display: inline-grid; width: 48px; height: 48px; margin-bottom: 18px; place-items: center; border-radius: 13px; background: #edf5ff; color: #176ab8; font-size: 25px; }
+.airport-picker h2 { font-size: 21px; line-height: 1.5; }
+.airport-context { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 15px 20px; border: 1px solid #d9e6f5; border-radius: 12px; background: #eef5fe; font-size: 13px; }
+.airport-context > div { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; min-width: 0; }
+.airport-context > a { margin-left: auto; font-size: 12px; }
+.airport-tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--as-border); padding-bottom: 12px; }
+.airport-card .airport-tabs { margin-bottom: 18px; }
+.airport-tabs a { padding: 8px 13px; border-radius: 7px; color: #60758b; font-size: 12px; font-weight: 650; text-decoration: none; }
+.airport-tabs a[aria-current], .airport-tabs a:hover { color: #145dcc; background: #eaf2ff; }
+.airport-back { width: fit-content; color: #58748c; font-size: 12px; text-decoration: none; }
+.airport-detail-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 20px; min-width: 0; }
+.airport-record-state { font-size: 11px; color: #697e91; }
+.airport-info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; margin: 22px 0 0; }
+.airport-info > div { min-width: 0; }
+.airport-info dt { margin-bottom: 6px; color: #74869a; font-size: 11px; font-weight: 500; }
+.airport-info dd { margin: 0; color: #264961; font-size: 13px; font-weight: 600; line-height: 1.7; overflow-wrap: anywhere; }
+.airport-info--single { grid-template-columns: 1fr; }
+.airport-info-wide { grid-column: 1 / -1; }
+.airport-summary-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 10px 0; border-bottom: 1px solid #edf1f6; font-size: 12px; }
+.airport-inline-detail { margin-top: 18px; padding-top: 14px; border-top: 1px solid #edf1f6; }
+.airport-inline-detail summary { color: #28699e; cursor: pointer; font-size: 13px; font-weight: 600; }
+.airport-history-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid #edf1f6; font-size: 12px; }
+.airport-history-row > div { display: grid; gap: 6px; min-width: 0; overflow-wrap: anywhere; }
+.airport-history-row small { color: #7b8b9b; }
+.airport-history-row form { flex-shrink: 0; }
+.airport-page a:focus-visible, .airport-page summary:focus-visible { outline: 2px solid #1684dc; outline-offset: 3px; border-radius: 4px; }
+@media (max-width: 1100px) { .airport-detail-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) {
+    .airport-hero, .airport-card-heading { flex-direction: column; align-items: flex-start; }
+    .airport-card { padding: 16px; }
+    .airport-disclosure { padding: 0; }
+    .airport-disclosure > summary, .airport-disclosure > .airport-form { padding: 16px; }
+    .airport-form-grid, .airport-info { grid-template-columns: 1fr; }
+    .airport-info-wide { grid-column: auto; }
+    .airport-filters { gap: 12px; }
+    .airport-filters label { flex-basis: 100%; max-width: none; }
+    .airport-hero .btn, .airport-card-heading .btn { font-size: 12px; }
+    .airport-context { padding: 14px; gap: 12px; }
+    .airport-context > a { margin-left: 0; }
+    .airport-history-row { flex-wrap: wrap; }
+    .airport-picker { padding: 22px 16px; }
+    .airport-picker h2 { font-size: 19px; }
+    .airport-tabs a { padding: 8px; font-size: 11px; }
+}
 .sidebar-divider { height: 1px; margin: 17px 8px 12px; background: rgba(255,255,255,.11); }
-.sidebar-footer { padding: 14px 16px 17px; border-top: 1px solid rgba(255,255,255,.1); }
+.sidebar-footer { padding: 8px 16px; border-top: 1px solid rgba(255,255,255,.1); }
 .sidebar-user { display: flex; align-items: center; gap: 9px; padding: 8px; border-radius: 10px; color: #fff; text-decoration: none; }
 .sidebar-user:hover { background: rgba(255,255,255,.08); color: #fff; }
 .sidebar-user-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; }
 .sidebar-user-copy strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
 .sidebar-user-copy small { overflow: hidden; color: #99b0c7; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.sidebar-logout { margin-top: 8px; }
+.sidebar-logout { margin-top: 2px; }
 .sidebar-logout button { width: 100%; padding: 7px 9px; border: 0; border-radius: 7px; background: transparent; color: #99b0c7; text-align: left; font-size: 12px; }
 .sidebar-logout button:hover { background: rgba(255,255,255,.08); color: #fff; }
 .sidebar-close, .sidebar-backdrop, .sidebar-toggle { display: none; }
@@ -250,3 +375,35 @@ body.app-body::selection { background: rgba(22, 119, 255, .18); }
 .sidebar-link.is-locked { opacity: .62; }
 .sidebar-link.is-locked small { margin-left:auto; font-size:.75rem; }
 .dashboard-subpanel { margin-top: 1.5rem; }
+.airport-status--inactive{background:#e8ecf1;color:#526070}
+.airport-status-legend{margin:1rem 0;color:#526579;font-size:.86rem}
+.airport-status-legend summary{cursor:pointer;font-weight:650}
+.airport-status-legend ul{display:grid;gap:.75rem;padding:1rem 0 0 1.2rem}
+.airport-confirm{display:flex!important;align-items:flex-start;gap:.7rem;font-weight:500!important}
+.airport-confirm input{flex:0 0 auto;margin-top:.3rem;width:1rem;height:1rem}
+.infra-type-picker{display:grid;gap:.5rem;min-width:0;flex:1 1 16rem}
+.infra-type-picker label{min-width:0}
+.airport-operation{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px 16px;padding:18px 22px}
+.airport-operation h2{margin:0 0 10px;font-size:17px}
+.airport-operation-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
+.airport-status-updated{display:block;color:#718297;font-size:12px;font-weight:400;line-height:1.5}
+.airport-operation-editor{min-width:0;justify-self:end}
+.airport-operation-editor>summary{list-style:none;cursor:pointer;font-size:12px;white-space:nowrap}
+.airport-operation-editor>summary::-webkit-details-marker{display:none}
+.airport-operation-editor[open]{grid-column:1/-1;justify-self:stretch}
+.airport-operation-editor[open]>summary{display:table;margin-left:auto}
+.airport-operation-editor .airport-form{margin-top:14px;padding-top:14px;border-top:1px solid #edf1f6}
+.airport-list-status{display:grid;justify-items:start;gap:5px}
+.airport-list-status .airport-status-updated{font-size:11px}
+.airport-list-status .airport-status-change{font-size:12px;font-weight:600}
+@media(max-width:480px){.airport-operation{grid-template-columns:minmax(0,1fr);padding:16px;gap:10px}.airport-operation-editor{justify-self:start}.airport-operation-editor[open]>summary{margin-left:0}.airport-operation-meta{gap:8px 10px}}
+
+/* Compact resource actions; expanding one card does not stretch its neighbour. */
+.resource-action-grid { align-items: start; }
+.resource-action.card-surface { padding: 0; min-width: 0; }
+.resource-action > summary { padding: 18px 22px; cursor: pointer; font-size: 17px; font-weight: 700; color: var(--navy); }
+.resource-action[open] > summary { border-bottom: 1px solid #dce5ea; }
+.resource-action > summary:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; border-radius: 12px; }
+.resource-action > form { padding: 0 22px 22px; }
+
+.skip-link:not(:focus-visible){clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}.skip-link:focus-visible{top:12px;clip-path:none;width:auto;height:auto;overflow:visible}

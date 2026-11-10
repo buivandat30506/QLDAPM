@@ -22,6 +22,7 @@ use App\Modules\Shared\Access;
 use App\Modules\Shared\Audit;
 use App\Modules\Shared\UseCaseService;
 use App\Support\WorkspaceForms;
+use App\Support\WorkspaceFlow;
 use App\Support\WorkspacePresentation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class WorkspaceController extends Controller
             'analytics' => ['Phân tích khai thác', ['analyst', 'operations', 'ops_manager']],
             'iot' => ['Thiết bị & cảnh báo', ['integration_admin']],
             'fare' => ['Giá vé & số chỗ', ['data_admin']],
-            'resources' => ['Phân bổ tài nguyên', ['operations']],
+            'resources' => ['Lịch sử dụng hạ tầng', ['operations']],
             'disruptions' => ['Xử lý gián đoạn', ['operations', 'ops_manager']],
             'notifications' => ['Thông báo', Access::ROLES],
             'audit' => ['Nhật ký kiểm toán', ['admin', 'auditor']],
@@ -67,6 +68,15 @@ class WorkspaceController extends Controller
 
     public function index(Request $r, string $section = 'scheduling')
     {
+        if (! $r->expectsJson() && $section === 'catalog' && $r->query('flow') === 'routes') {
+            return app(RouteManagementController::class)->index($r);
+        }
+        if (! $r->expectsJson() && $section === 'scheduling' && $r->query('flow', 'planning') === 'planning') {
+            return app(SchedulePlanningController::class)->index($r);
+        }
+        if ($section === 'catalog' && in_array($r->query('flow', 'airports'), ['airports', 'infrastructure'], true)) {
+            return app(AirportController::class)->index($r);
+        }
         if (isset(BusinessController::AREAS[$section])) {
             return app(BusinessController::class)->index($r, $section);
         }
@@ -75,16 +85,27 @@ class WorkspaceController extends Controller
         $isAdmin = Access::isAdmin($u);
         Access::role($u, ...$meta[1]);
         $r->validate(['q' => 'nullable|string|max:100', 'page' => 'nullable|integer|min:1']);
+        $flow = null;
+        if ($r->has('flow')) {
+            $r->validate(['flow' => 'required|string']);
+            $flow = WorkspaceFlow::definitions($section)[$r->query('flow')] ?? abort(404);
+        }
         $ops = DB::connection('ops');
         $tables = [];
         $forms = [];
         $kpis = [];
         // Form specifications are shared by Blade and the first-party REST workspace.
         $f = fn (string $name, string $label, string $type = 'text', array $options = []) => compact('name', 'label', 'type', 'options');
-        $form = function (string $action, string $title, array $fields) use (&$forms) {
+        $form = function (string $action, string $title, array $fields) use (&$forms, $flow) {
+            if (! WorkspaceFlow::includesForm($flow, $action, $fields)) {
+                return;
+            }
             $forms[] = compact('action', 'title', 'fields');
         };
-        $dataset = function (string $title, $query, array $columns) use (&$tables, $r) {
+        $dataset = function (string $title, $query, array $columns) use (&$tables, $r, $flow) {
+            if (isset($flow['tables']) && ! in_array($title, $flow['tables'], true)) {
+                return;
+            }
             $searchable = array_intersect(array_keys($columns), ['number', 'registration', 'name', 'code', 'tag', 'title', 'subject', 'reference', 'reason', 'body']);
             if ($r->filled('q') && $searchable) {
                 $query->where(function ($q) use ($searchable, $r) {
@@ -124,7 +145,8 @@ class WorkspaceController extends Controller
                 $form('submit_batch', 'Trình duyệt nhiều lịch', [$f('flight_ids', 'Danh sách ID cách nhau dấu phẩy (tối đa 31)')]);
                 $form('submit', 'Trình duyệt lịch', [$f('flight_id', 'Chuyến nháp', 'select', $flights)]);
                 $form('flight_state', 'Cập nhật khai thác', [$f('flight_id', 'Chuyến', 'select', $flights), $f('status', 'Trạng thái mới', 'select', ['BOARDING' => 'Đang đón khách', 'GATE_CLOSED' => 'Đã đóng cửa', 'DEPARTED' => 'Đã khởi hành', 'ARRIVED' => 'Đã hạ cánh']), $f('reason', 'Lý do')]);
-            } else {
+            }
+            if ($u->role === 'ops_manager' || $isAdmin) {
                 $form('publish', 'Phê duyệt và công bố', [$f('flight_id', 'Chuyến chờ duyệt', 'select', $flights)]);
             }
         }
@@ -145,13 +167,13 @@ class WorkspaceController extends Controller
             $form('release_work', 'Giải phóng kỹ thuật — người duyệt độc lập', [$f('work_order_id', 'Lệnh hoàn tất', 'select', $work)]);
         }
         if ($section === 'resources') {
-            $dataset('Lịch tài nguyên', $ops->table('resource_allocations')->whereIn('flight_id', array_keys($flights)), ['id' => 'ID', 'flight_id' => 'Chuyến', 'resource_id' => 'Tài nguyên', 'starts_at' => 'Từ UTC+7', 'ends_at' => 'Đến UTC+7', 'reason' => 'Lý do']);
+            $dataset('Lịch sử dụng theo chuyến bay', $ops->table('resource_allocations')->whereIn('flight_id', array_keys($flights)), ['id' => 'ID', 'flight_id' => 'Chuyến', 'resource_id' => 'Hạng mục hạ tầng', 'starts_at' => 'Bắt đầu', 'ends_at' => 'Kết thúc', 'reason' => 'Lý do']);
             $resourceQuery = $ops->table('airport_resources')->where('active', true);
             if (! $isAdmin) {
                 $resourceQuery->where('airport_code', $u->airport_code);
             }
-            $form('allocate', 'Phân bổ — không cho phép giao thời gian', [$f('flight_id', 'Chuyến', 'select', $flights), $f('resource_id', 'Tài nguyên', 'select', $resourceQuery->pluck('code', 'id')->all()), $f('starts_at', 'Bắt đầu (giờ Việt Nam)', 'datetime-local'), $f('ends_at', 'Kết thúc (giờ Việt Nam)', 'datetime-local'), $f('reason', 'Lý do')]);
-            $form('unallocate', 'Gỡ phân bổ trước điều phối lại', [$f('allocation_id', 'ID phân bổ', 'number'), $f('reason', 'Lý do')]);
+            $form('allocate', 'Xếp lịch sử dụng', [$f('flight_id', 'Chuyến', 'select', $flights), $f('resource_id', 'Hạng mục hạ tầng', 'select', $resourceQuery->pluck('code', 'id')->all()), $f('starts_at', 'Bắt đầu (giờ Việt Nam)', 'datetime-local'), $f('ends_at', 'Kết thúc (giờ Việt Nam)', 'datetime-local'), $f('reason', 'Lý do')]);
+            $form('unallocate', 'Gỡ lịch sử dụng', [$f('allocation_id', 'Lịch sử dụng cần gỡ', 'number'), $f('reason', 'Lý do')]);
         }
         if ($section === 'ground') {
             $q = $ops->table('ground_tasks');
@@ -268,6 +290,9 @@ class WorkspaceController extends Controller
         }
         if (in_array($section, ['catalog', 'fleet', 'crew'])) {
             $entities = $section === 'catalog' ? ['airports' => 'Sân bay', 'routes' => 'Đường bay', 'airport_resources' => 'Tài nguyên'] : ($section === 'fleet' ? ['aircraft' => 'Tàu bay'] : ['crew_members' => 'Tổ bay']);
+            if (isset($flow['entity'])) {
+                $entities = array_intersect_key($entities, [$flow['entity'] => true]);
+            }
             $dataset('Phiên bản dữ liệu / chờ duyệt', $ops->table('master_changes')->whereIn('entity', array_keys($entities)), ['id' => 'ID', 'entity' => 'Danh mục', 'record_id' => 'Bản ghi', 'status' => 'Trạng thái', 'reason' => 'Lý do', 'after_data' => 'Thay đổi', 'created_by' => 'Người lập', 'approved_by' => 'Người duyệt']);
             foreach ($entities as $entity => $label) {
                 $fields = [$f('entity', 'Danh mục', 'hidden', ['value' => $entity]), $f('record_id', 'ID / mã cần sửa')];
@@ -284,7 +309,7 @@ class WorkspaceController extends Controller
             $form('master_approve', 'Duyệt phiên bản dữ liệu — độc lập', [$f('change_id', 'ID đề nghị', 'number')]);
         }
         if ($r->expectsJson()) {
-            return response()->json(['section' => $section, 'title' => $meta[0], 'tables' => $tables, 'kpis' => $kpis]);
+            return response()->json(['section' => $section, 'title' => $flow['title'] ?? $meta[0], 'tables' => $tables, 'kpis' => $kpis]);
         }
         if ($section === 'notifications') {
             return view('notifications', [
@@ -292,7 +317,7 @@ class WorkspaceController extends Controller
                 'unreadCount' => DB::table('notifications')->where('user_id', $u->id)->whereNull('read_at')->count(),
             ]);
         }
-        $forms = app(WorkspaceForms::class)->prepare($forms, $u);
+        $forms = app(WorkspaceForms::class)->prepare($forms, $u, array_keys($entities ?? []));
         $presentation = new WorkspacePresentation($tables);
         if (! in_array($section, ['audit', 'integrations'])) {
             foreach ($tables as &$table) {
@@ -301,13 +326,14 @@ class WorkspaceController extends Controller
             unset($table);
         }
 
-        $transfers = $section === 'finance' ? DB::connection('finance')->table('checkout_intents')->where('method', 'BANK')->whereIn('status', ['PENDING', 'REPORTED'])->orderBy('created_at')->get() : collect();
-        $payouts = $section === 'finance' ? DB::connection('finance')->table('refunds')->whereNotNull('payout_details')->whereIn('status', ['REQUESTED', 'APPROVED'])->get() : collect();
+        $showPayments = $section === 'finance' && $r->query('flow') !== 'reconciliation';
+        $transfers = $showPayments ? DB::connection('finance')->table('checkout_intents')->where('method', 'BANK')->whereIn('status', ['PENDING', 'REPORTED'])->orderBy('created_at')->get() : collect();
+        $payouts = $showPayments ? DB::connection('finance')->table('refunds')->whereNotNull('payout_details')->whereIn('status', ['REQUESTED', 'APPROVED'])->get() : collect();
         foreach ($payouts as $payout) {
             $payout->account = json_decode(Crypt::decryptString($payout->payout_details), true);
         }
 
-        return view('workspace', ['section' => $section, 'title' => $meta[0], 'tables' => $tables, 'forms' => $forms, 'kpis' => $kpis, 'sections' => self::sections(), 'presentation' => $presentation, 'transfers' => $transfers, 'payouts' => $payouts]);
+        return view('workspace', ['section' => $section, 'title' => $flow['title'] ?? $meta[0], 'flow' => $flow, 'tables' => $tables, 'forms' => $forms, 'kpis' => $kpis, 'sections' => self::sections(), 'presentation' => $presentation, 'transfers' => $transfers, 'payouts' => $payouts]);
     }
 
     public function dispatch(Request $r, string $action)
