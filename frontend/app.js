@@ -433,6 +433,17 @@ document.querySelectorAll('[data-camera-scan]').forEach((button) => button.addEv
     if (!(form instanceof HTMLFormElement) || form.dataset.noLoading !== undefined || form.matches('[data-trip-choice], [data-flight-search]') || !form.checkValidity()) return;
     const submitter = event.submitter || form.querySelector('button[type=submit]');
     if (!submitter || submitter.disabled) return;
+    // A disabled submit button is omitted from the native form payload. Keep
+    // its successful name/value pair when the UI locks the button to prevent
+    // duplicate submissions (for example, the mock payment result buttons).
+    if (submitter.name) {
+      const mirror = document.createElement('input');
+      mirror.type = 'hidden';
+      mirror.name = submitter.name;
+      mirror.value = submitter.value;
+      mirror.dataset.submitMirror = 'true';
+      form.appendChild(mirror);
+    }
     submitter.disabled = true;
     submitter.setAttribute('aria-busy', 'true');
     submitter.textContent = 'Đang xử lý…';
