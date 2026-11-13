@@ -17,14 +17,14 @@ const fs=require('fs');const path=require('path');const assert=require('node:ass
   ['routes','/workspace/catalog?flow=routes','Đường bay'],
   ['seasons','/workspace/planning?tab=seasons','DEMO-M02-RECURRING'],
   ['flights','/workspace/planning','Danh sách chuyến bay'],
-  ['review','/workspace/planning?tab=review','Lịch chờ xử lý'],
+  ['review','/workspace/planning?tab=review','Phê duyệt và công bố'],
   ['cabins','/workspace/fleet-cabin','cabin'],
   ['reservations','/modules/m2?flow=bookings','đặt'],
   ['public','/','chuyến'],
  ]){
   const response=await page.goto(new URL(url,base).href,{waitUntil:'load',timeout:90000});assert.equal(response.status(),200,name);assert((await page.locator('main').innerText()).toLowerCase().includes(expected.toLowerCase()),name+' content');
   if(name.startsWith('infrastructure')){assert.equal(await page.locator('select[name="kind"] option[value]:not([value=""])').count(),10,'All ten infrastructure types are usable');for(const label of ['Đường băng','Cầu ống lồng','Băng chuyền hành lý'])assert((await page.locator('main').innerText()).includes(label),name+': '+label);}
-  if(name==='seasons'){const href=await page.locator('.m02-table a[href^="/workspace/planning/plans/"]').first().getAttribute('href');await page.goto(new URL(href,base).href,{waitUntil:'load',timeout:90000});assert((await page.locator('main').innerText()).includes('Chuyến đã phát sinh'));assert.equal(await page.locator('a[href^="/workspace/planning/flights/"]').count(),2);}
+  if(name==='seasons'){const href=await page.locator('.m02-table tr').filter({hasText:'DEMO-M02-RECURRING'}).locator('a[href^="/workspace/planning/plans/"]').getAttribute('href');await page.goto(new URL(href,base).href,{waitUntil:'load',timeout:90000});assert((await page.locator('main').innerText()).includes('Chuyến đã phát sinh'));assert.equal(await page.locator('a[href^="/workspace/planning/flights/"]').count(),2);}
   for(const width of [1440,390]){await page.setViewportSize({width,height:1000});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,name+' overflow');await page.screenshot({path:path.join(directory,name+'-'+width+'.png'),fullPage:true,animations:'disabled'});}
   checks.push({name,status:200});console.log(JSON.stringify(checks.at(-1)));
  }

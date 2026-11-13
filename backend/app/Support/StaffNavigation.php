@@ -32,6 +32,7 @@ final class StaffNavigation
                 $entry['aliases'] = ['workspace/planning', 'workspace/planning/*'];
                 $entry['roles'][] = 'data_admin';
             }
+            if($section==='scheduling'&&$key==='monitoring')$entry['aliases']=['workspace/operations/flights','workspace/operations/flights/*'];
 
             return $entry;
         };

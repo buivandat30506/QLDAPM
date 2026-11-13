@@ -69,7 +69,7 @@ class SidebarWorkflowTest extends TestCase
             ->assertViewIs('m02.planning')->assertViewHas('tab','flights')
             ->assertSee('Phê duyệt và công bố')->assertDontSee('name="flight_state"',false);
         $this->get('/workspace/scheduling?flow=monitoring')->assertOk()
-            ->assertViewHas('forms', fn ($forms) => array_column($forms, 'action') === ['flight_state']);
+            ->assertViewIs('m02.operations')->assertViewHas('flights');
     }
 
     public function test_finance_flows_separate_payment_review_from_reconciliation(): void

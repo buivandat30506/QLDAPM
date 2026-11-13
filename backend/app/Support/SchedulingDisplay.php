@@ -6,6 +6,25 @@ use Carbon\Carbon;
 
 final class SchedulingDisplay
 {
+    public static function planTitle(object $plan): string
+    {
+        if ($plan->from_date === $plan->to_date) {
+            return 'Lịch bay ngày '.Carbon::parse($plan->from_date)->format('d/m/Y');
+        }
+
+        // Translate the generated demo codes; preserve user-defined plan codes.
+        if (preg_match('/^M02-[A-F0-9]{6}-(DAILY|WEEKLY|LONG|MANUAL)$/', $plan->code, $match)) {
+            return [
+                'DAILY' => 'Lịch bay hằng ngày',
+                'WEEKLY' => 'Lịch bay theo tuần',
+                'LONG' => 'Lịch bay dài hạn',
+                'MANUAL' => 'Kế hoạch phát sinh theo đợt',
+            ][$match[1]];
+        }
+
+        return $plan->code;
+    }
+
     public static function time(?string $utc, ?string $zone): string
     {
         return $utc ? Carbon::parse($utc, 'UTC')->setTimezone($zone ?: 'UTC')->format('H:i d/m/Y').' · '.($zone ?: 'UTC') : 'Chưa ghi nhận';

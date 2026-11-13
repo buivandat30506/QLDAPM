@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 /** Local CLI fixture generator, also used by the guarded portable demo installer. */
@@ -85,6 +86,9 @@ class AirportDemoSeeder extends Seeder
 
     public function generate(callable $progress, ?string $directory = null): void
     {
+        if (! Schema::connection('ops')->hasTable('devices')) {
+            throw new \RuntimeException('Full-system demo generation is retired on the compact schema. Existing M01/M02/M03 data is preserved; use airline:m02-demo for scheduling fixtures.');
+        }
         if (! app()->environment('local') || config('payments.mode') !== 'mock' || config('payments.bank.mode') !== 'mock') {
             throw new \RuntimeException('This fixture is restricted to local mock services.');
         }
@@ -553,7 +557,7 @@ class AirportDemoSeeder extends Seeder
                         $end = ($i === 5 && $f->id % 5 === 0) ? 'MISHANDLED' : (($i === 4 && $f->id % 4 === 0) ? 'TRANSFERRED' : 'DELIVERED');
                         $created = Carbon::parse($f->departure)->subMinutes(100);
                         $received = Carbon::parse($f->arrival)->addMinutes(25);
-                        $id = DB::table('baggage')->insertGetId(['tag' => 'BGD'.strtoupper(Str::random(11)), 'request_id' => $request, 'booking_id' => $b->id, 'weight' => min(20,12 + $i * 2.25), 'status' => $end, 'custody' => $f->destination.($end === 'MISHANDLED' ? '-LOST-FOUND' : '-ARRIVALS'), 'created_at' => $created, 'updated_at' => $received]);
+                        $id = DB::table('baggage')->insertGetId(['tag' => 'BGD'.strtoupper(Str::random(11)), 'request_id' => $request, 'booking_id' => $b->id, 'weight' => min(20, 12 + $i * 2.25), 'status' => $end, 'custody' => $f->destination.($end === 'MISHANDLED' ? '-LOST-FOUND' : '-ARRIVALS'), 'created_at' => $created, 'updated_at' => $received]);
                         foreach (['TAGGED', 'ACCEPTED', 'SCREENED', 'LOADED', $end] as $index => $status) {
                             $arrival = $index === 4;
                             $airport = $arrival && $end !== 'MISHANDLED' ? $f->destination : $f->origin;
@@ -768,13 +772,13 @@ class AirportDemoSeeder extends Seeder
         $this->scenario('reconciliation-closed', 'Kỳ lịch sử khớp số liệu và đã khóa bởi người thứ hai.', function () {
             $fin = app(FinanceService::class);
             $day = $this->anchor()->subDays(7)->toDateString();
-            $run = $fin->reconcile($this->user('finance'), $day, $day);
-            $fin->close($this->users['finance.2'], $run->id);
+            $run = app(LegacyReconciliation::class)->reconcile($this->user('finance'), $day, $day);
+            app(LegacyReconciliation::class)->close($this->users['finance.2'], $run->id);
 
             return ['run_id' => $run->id, 'period' => $day];
         });
         $this->scenario('reconciliation-open', 'Kỳ hiện tại có giao dịch đang xử lý để thử phân loại sai lệch và khóa kỳ.', function () {
-            $run = app(FinanceService::class)->reconcile($this->user('finance'), $this->anchor()->toDateString(), $this->anchor()->toDateString());
+            $run = app(LegacyReconciliation::class)->reconcile($this->user('finance'), $this->anchor()->toDateString(), $this->anchor()->toDateString());
 
             return ['run_id' => $run->id];
         });

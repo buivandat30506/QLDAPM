@@ -128,7 +128,23 @@ final class SchedulePlanning
         }
         abort_if(! $rows, 422, 'Khoảng ngày không có ngày hoạt động đã chọn.');
 
-        return ['plan' => $plan, 'rows' => $rows, 'from' => $from, 'to' => $to];
+        return ['plan' => $plan, 'rows' => $rows, 'from' => $from, 'to' => $to, 'route' => $route, 'aircraft' => $db->table('aircraft')->find($plan->aircraft_id)];
+    }
+
+    public function archive(User $user, int $id, int $version): object
+    {
+        return DB::connection('ops')->transaction(function () use ($user, $id, $version) {
+            $old = $this->plan($user, $id);
+            $db = DB::connection('ops');
+            $old = $db->table('flight_seasons')->where('id', $id)->lockForUpdate()->first();
+            abort_unless((int) $old->version === $version, 409, 'Kế hoạch đã thay đổi; tải lại trước khi lưu trữ.');
+            if ($old->status === 'ARCHIVED') {
+                return $old;
+            }$db->table('flight_seasons')->where('id', $id)->update(['status' => 'ARCHIVED', 'version' => $old->version + 1, 'updated_at' => now()]);
+            Audit::record('season.archived', (string) $id, json_encode($old), 'ARCHIVED', $user->id, 'ops');
+
+            return $db->table('flight_seasons')->find($id);
+        }, 3);
     }
 
     public function generate(User $user, int $id, string $from, string $to, int $version): array
@@ -259,12 +275,12 @@ final class SchedulePlanning
             }
             $f = $db->table('flights')->where('id', $f->id)->lockForUpdate()->first();
             abort_unless($change->status === 'PENDING' && (int) $change->created_by !== (int) $user->id, 409, 'Cần người duyệt độc lập.');
-            abort_unless(! $f->published_at && in_array($f->status, ['DRAFT', 'PENDING'], true) && (int) $f->version === (int) $change->source_version && (array) $f === json_decode($change->before_data,true), 409, 'Lịch nguồn đã thay đổi; cần đề nghị mới.');
-            $this->validateCandidate((object) array_merge((array) $f,$data));
-            abort_if($db->table('resource_allocations')->where('flight_id',$f->id)->exists(),409,'Chuyến có lịch hạ tầng; cần xử lý theo quy trình điều hành hiện có.');
-            $db->table('flights')->where('id',$f->id)->update($data + ['version' => $f->version + 1, 'status' => 'DRAFT']);
-            $db->table('flight_schedule_changes')->where('id',$id)->update(['status' => 'APPROVED', 'approved_by' => $user->id, 'updated_at' => now()]);
-            Audit::record('schedule.edit.approved',(string) $f->id,json_encode($f),json_encode($data),$user->id,'ops');
+            abort_unless(! $f->published_at && in_array($f->status, ['DRAFT', 'PENDING'], true) && (int) $f->version === (int) $change->source_version && (array) $f === json_decode($change->before_data, true), 409, 'Lịch nguồn đã thay đổi; cần đề nghị mới.');
+            $this->validateCandidate((object) array_merge((array) $f, $data));
+            abort_if($db->table('resource_allocations')->where('flight_id', $f->id)->exists(), 409, 'Chuyến có lịch hạ tầng; cần xử lý theo quy trình điều hành hiện có.');
+            $db->table('flights')->where('id', $f->id)->update($data + ['version' => $f->version + 1, 'status' => 'DRAFT']);
+            $db->table('flight_schedule_changes')->where('id', $id)->update(['status' => 'APPROVED', 'approved_by' => $user->id, 'updated_at' => now()]);
+            Audit::record('schedule.edit.approved', (string) $f->id, json_encode($f), json_encode($data), $user->id, 'ops');
         }, 3);
     }
 }

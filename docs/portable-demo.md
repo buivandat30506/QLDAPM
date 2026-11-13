@@ -43,9 +43,10 @@ Không dùng mật khẩu của máy khác. Mật khẩu/APP_KEY/database secret
 | Hạ tầng | `/workspace/catalog?flow=infrastructure&airport=BMV` | Đủ 10 loại ở BMV và từng sân bay khác; trạng thái ban đầu được khởi tạo |
 | Đường bay | `/workspace/catalog?flow=routes` | Các đường bay hai chiều, chi tiết và hồ sơ thay đổi |
 | Lịch bay | `/workspace/planning` | Chuyến bay có tàu, tổ bay, giá và trạng thái |
-| Lịch định kỳ | `/workspace/planning?tab=seasons` | `DEMO-M02-RECURRING`, hai chuyến nháp liên kết nguồn |
-| Kiểm tra xung đột | `/workspace/planning?tab=conflicts` | Chọn phạm vi rồi chạy kiểm tra thực tế |
-| Phê duyệt | `/workspace/planning?tab=review` | Chọn chuyến, kiểm tra, xác nhận theo vai trò |
+| Lịch định kỳ | `/workspace/planning?tab=seasons` | Kế hoạch ban đầu cùng 4 kế hoạch trong bộ `portable-m02-v1`, chuyến liên kết nguồn |
+| Kiểm tra và cảnh báo | `/workspace/planning?tab=conflicts` | Chọn bộ `portable-m02-v1` trong bộ lọc: 19 chuyến có xung đột, lỗi điều kiện, cảnh báo và hợp lệ; tiếp tục mỗi đợt 100 chuyến |
+| Phê duyệt | `/workspace/planning?tab=review` | Ba danh sách nháp, chờ duyệt và đã công bố; thao tác theo vai trò |
+| Điều hành chuyến bay | `/workspace/operations/flights` | Chuyến đã công bố dùng chung dữ liệu M02, tổ bay, cổng và lịch sử |
 | Đặt vé | `/` | Chuyến mở bán trong 14 ngày tới, giá và tồn chỗ |
 | Bàn làm việc | `/staff` | Các chức năng theo tài khoản đang dùng |
 

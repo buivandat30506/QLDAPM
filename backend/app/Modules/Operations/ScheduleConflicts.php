@@ -15,9 +15,9 @@ final class ScheduleConflicts
         $issues = [];
         $plane = $db->table('aircraft')->find($flight->aircraft_id);
         $route = isset($flight->route_id) ? $db->table('routes')->find($flight->route_id) : $db->table('routes')->where('origin', $flight->origin)->where('destination', $flight->destination)->first();
-        $add = function (string $reason, string $severity = 'blocking', ?object $other = null) use (&$issues, $plane, $flight, $user) {
+        $add = function (string $reason, string $severity = 'blocking', ?object $other = null, string $category = 'condition', string $code = 'eligibility') use (&$issues, $plane, $flight, $user) {
             $canRead = ! $other || ! $user || ! in_array($user->role, Access::SCOPED, true) || $other->origin === $user->airport_code;
-            $issues[] = ['reason' => $reason, 'severity' => $severity, 'aircraft' => $plane->registration ?? 'Không tìm thấy tàu bay', 'flight_id' => $flight->id ?? null, 'related_id' => $canRead ? ($other->id ?? null) : null, 'related_number' => $other ? ($canRead ? $other->number : 'Lịch ngoài phạm vi sân bay') : null, 'starts_at' => $other->departure ?? $flight->departure, 'ends_at' => $other->arrival ?? $flight->arrival];
+            $issues[] = ['category' => $category, 'code' => $code, 'reason' => $reason, 'severity' => $severity, 'aircraft' => $plane->registration ?? 'Không tìm thấy tàu bay', 'flight_id' => $flight->id ?? null, 'related_id' => $canRead ? ($other->id ?? null) : null, 'related_number' => $other ? ($canRead ? $other->number : 'Lịch ngoài phạm vi sân bay') : null, 'starts_at' => $other->departure ?? $flight->departure, 'ends_at' => $other->arrival ?? $flight->arrival];
         };
         if (! $plane || $plane->status !== 'AVAILABLE') {
             $add('Tàu bay không khả dụng.');
@@ -39,10 +39,11 @@ final class ScheduleConflicts
             $query->whereNotIn('status', ['DRAFT', 'PENDING']);
         }
         foreach ($query->orderBy('departure')->get() as $other) {
-            $add('Trùng lịch tàu bay hoặc khoảng quay đầu 30 phút.', in_array($other->status, ['DRAFT', 'PENDING'], true) ? 'warning' : 'blocking', $other);
+            $proposal = in_array($other->status, ['DRAFT', 'PENDING'], true);
+            $add('Trùng lịch tàu bay hoặc khoảng quay đầu 30 phút.', $proposal ? 'warning' : 'blocking', $other, $proposal ? 'warning' : 'conflict', 'aircraft_overlap');
         }
         if ($db->table('change_reservations')->where('aircraft_id', $flight->aircraft_id)->where('starts_at', '<', $end->copy()->addMinutes(30))->where('ends_at', '>', $start->copy()->subMinutes(30))->exists()) {
-            $add('Tàu bay đang được giữ cho phương án đổi tàu.');
+            $add('Tàu bay đang được giữ cho phương án đổi tàu.', 'blocking', null, 'conflict', 'aircraft_reservation');
         }
 
         return $issues;
@@ -51,6 +52,6 @@ final class ScheduleConflicts
     public function assertValid(object $flight): void
     {
         $issues = $this->inspect($flight, false);
-        abort_if($issues !== [], 409, 'Chuyến '.$flight->number.': '.implode(' ',array_column($issues,'reason')));
+        abort_if($issues !== [], 409, 'Chuyến '.$flight->number.': '.implode(' ', array_column($issues, 'reason')));
     }
 }

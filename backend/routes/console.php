@@ -1,16 +1,13 @@
 <?php
 
 use App\Models\User;
-use App\Modules\Analytics\AnalyticsService;
 use App\Modules\Booking\BookingService;
-use App\Modules\Customer\SupportDesk;
 use App\Modules\Finance\OutboxRelay;
 use App\Modules\Shared\Access;
 use App\Modules\Shared\Audit;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 Artisan::command('airline:relay', function () {
     $failed = app(OutboxRelay::class)->drain();
@@ -27,7 +24,6 @@ Artisan::command('airline:work', function () {
         try {
             app(BookingService::class)->expire();
             app(OutboxRelay::class)->drain();
-            app(SupportDesk::class)->escalateOverdue();
         } catch (Throwable $e) {
             report($e);
         } sleep(2);
@@ -64,36 +60,4 @@ Artisan::command('airline:user {email} {--role=admin} {--airport=HAN}', function
         Audit::record('user.provisioned', (string) $u->id, null, $role);
     });
     $this->info('Account created; password not logged.');
-});
-
-Artisan::command('airline:iot-simulate {user_id} {device_id} {--scenario=normal}', function () {
-    $u = User::findOrFail($this->argument('user_id'));
-    $device = DB::connection('ops')->table('devices')->find($this->argument('device_id')) ?? throw new RuntimeException('Unknown device');
-    Access::role($u, 'integration_admin');
-    Access::airport($u, $device->airport_code);
-    $scenario = $this->option('scenario');
-    if (! in_array($scenario, ['normal', 'duplicate', 'late', 'alert', 'disconnect'])) {
-        $this->error('Invalid scenario');
-
-        return 1;
-    }
-    if ($scenario === 'disconnect') {
-        $this->info('Simulation: disconnected, no telemetry sent; next run can retry with a new scenario.');
-
-        return 0;
-    }
-    $svc = app(AnalyticsService::class);
-    $sequence = $device->last_sequence + ($scenario === 'late' ? 2 : 1);
-    $data = ['event_id' => (string) Str::uuid(), 'device_id' => $device->id, 'sequence' => $sequence, 'value' => $scenario === 'alert' ? $device->threshold + 5 : $device->threshold - 5, 'event_time' => now()->toIso8601String()];
-    $svc->telemetry($u, $data);
-    if ($scenario === 'duplicate') {
-        $svc->telemetry($u, $data);
-    }
-    if ($scenario === 'late') {
-        $data['event_id'] = (string) Str::uuid();
-        $data['sequence'] = $sequence - 1;
-        $data['event_time'] = now()->subMinutes(10)->toIso8601String();
-        $svc->telemetry($u, $data);
-    }
-    $this->info('Simulator completed: '.$scenario.'. No physical equipment controlled.');
 });

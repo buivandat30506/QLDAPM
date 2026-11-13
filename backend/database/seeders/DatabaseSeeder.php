@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
         foreach ([1001 => 'PILOT', 1002 => 'CABIN'] as $id => $position) {
             $ops->table('crew_members')->insertOrIgnore(['id' => $id, 'code' => 'DEMO-'.$position, 'name' => $position === 'PILOT' ? 'Phi công mô phỏng' : 'Tiếp viên mô phỏng', 'position' => $position, 'qualification' => 'A320', 'license_expires' => now()->addYear()->toDateString(), 'available' => true]);
         }
-        $ops->table('devices')->insertOrIgnore(['id' => 100, 'code' => 'SIM-HAN-TEMP', 'airport_code' => 'HAN', 'threshold' => 50]);
         for ($day = 0; $day < 7; $day++) {
             $id = $day + 1;
             $departure = $day === 0 ? now()->addMinutes(45) : now()->addDays($day)->startOfDay()->addHours(4);

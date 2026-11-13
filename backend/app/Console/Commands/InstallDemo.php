@@ -14,6 +14,7 @@ use Database\Seeders\InfrastructureTypeSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class InstallDemo extends Command
@@ -26,6 +27,23 @@ class InstallDemo extends Command
 
     public function handle(): int
     {
+        if (! app()->environment('local', 'testing')) {
+            $this->error('Local/testing installation only.');
+
+            return self::FAILURE;
+        }
+        if (! Schema::connection('ops')->hasTable('devices')) {
+            foreach (['airports', 'routes', 'flights', 'flight_seasons', 'airport_infrastructure'] as $table) {
+                if (! Schema::connection('ops')->hasTable($table)) {
+                    $this->error('Core schema is incomplete; no data was generated.');
+
+                    return self::FAILURE;
+                }
+            }
+            $this->info('Compact core dataset detected. Full-system generation skipped; existing accounts, schedules and bookings preserved.');
+
+            return self::SUCCESS;
+        }
         if (! app()->environment('local') || config('payments.mode') !== 'mock' || config('payments.bank.mode') !== 'mock' || ! in_array(config('mail.mailers.smtp.host'), ['mailpit', 'localhost', '127.0.0.1'], true)) {
             $this->error('Requires local environment, mock payments and local Mailpit.');
 
@@ -104,6 +122,15 @@ class InstallDemo extends Command
                 config(['airline.demo_directory' => $previousDirectory]);
             }
             $this->planning($actor);
+            $previousM02 = config('m02.local_fixtures_enabled');
+            config(['m02.local_fixtures_enabled' => true]);
+            try {
+                if ($this->call('airline:m02-demo', ['--key' => 'portable-m02-v1']) !== self::SUCCESS) {
+                    throw new \RuntimeException('M02 workflow scenarios could not be prepared.');
+                }
+            } finally {
+                config(['m02.local_fixtures_enabled' => $previousM02]);
+            }
             $summary = $this->verifyDataset();
             $db->table('demo_installations')->where('id', self::VERSION)->update(['status' => 'READY', 'summary' => json_encode($summary), 'updated_at' => now()]);
             $this->line(json_encode($summary, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

@@ -490,6 +490,17 @@ document.querySelectorAll('[data-camera-scan]').forEach((button) => button.addEv
     if (!(form instanceof HTMLFormElement) || form.dataset.noLoading !== undefined || form.matches('[data-trip-choice], [data-flight-search]') || !form.checkValidity()) return;
     const submitter = event.submitter || form.querySelector('button[type=submit]');
     if (!submitter || submitter.disabled) return;
+    // Disabled buttons are excluded from the submitted form data. Preserve the
+    // clicked decision before locking the button (payment result, approval, etc.).
+    form.querySelectorAll('[data-loading-submitter]').forEach((input) => input.remove());
+    if (submitter.name) {
+      const decision = document.createElement('input');
+      decision.type = 'hidden';
+      decision.name = submitter.name;
+      decision.value = submitter.value;
+      decision.dataset.loadingSubmitter = '';
+      form.append(decision);
+    }
     submitter.disabled = true;
     submitter.setAttribute('aria-busy', 'true');
     submitter.textContent = 'Đang xử lý…';

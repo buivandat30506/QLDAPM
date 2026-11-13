@@ -2,6 +2,10 @@
 
 Hệ thống quản lý hàng không với khu vực khách hàng, bàn làm việc nhân viên và quản trị tài khoản. PHP 8.4, Laravel 12, Blade/Bootstrap và ba MySQL server độc lập.
 
+Phạm vi hiện tại tập trung **M01–M03, Dashboard và Đặt chuyến đi**. Các màn hình quản trị độc lập ngoài phạm vi giữ điều hướng và hiển thị trạng thái rỗng; các phụ thuộc khai thác, đặt chỗ và thanh toán vẫn hoạt động. Xem [báo cáo phạm vi, dữ liệu bảo toàn và kiểm thử](docs/airline-smart-m01-m03-scope-reduction-report.md).
+
+Bộ local hiện dùng schema core đã giảm từ 123 xuống 84 bảng; database gốc được giữ riêng để rollback. Xem [báo cáo tinh gọn Database, số liệu trước/sau và cách khôi phục](docs/airline-smart-database-core-pruning-report.md).
+
 [Hướng dẫn trình bày giao diện và code](docs/feature-presentation.md): kịch bản demo 15–20 phút, các file/hàm cần mở, dữ liệu và bản đồ 20 phân hệ.
 
 Khách hàng đăng nhập được đưa đến **Trang chủ** (`/home`): ảnh hàng không, lời chào, tìm chuyến nhanh, truy cập hành trình/thông báo/hỗ trợ, chuyến bay sắp tới và hướng dẫn đặt vé. Thống kê mạng bay lấy từ dữ liệu hiện có; thông tin chuyến đi chỉ hiển thị cho chủ tài khoản. [Ảnh và thiết kế trang chủ](docs/homepage-assets.md). Nếu đang đặt vé dở, đăng nhập sẽ quay lại bước đó.

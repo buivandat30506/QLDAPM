@@ -196,7 +196,7 @@ class M02PlanningTest extends TestCase
         $u = $this->user();
         $id = $this->draft($u);
         $this->get('/workspace/planning/plans/new')->assertOk()->assertSee('Thứ Hai')->assertSee('Chủ nhật');
-        $this->get('/workspace/scheduling?flow=planning')->assertOk()->assertDontSee('Kiểm tra xung đột');
+        $this->get('/workspace/scheduling?flow=planning')->assertOk()->assertDontSee('Kiểm tra và cảnh báo');
         $this->get('/workspace/planning?tab=review')->assertForbidden();
         $this->postJson('/workspace/planning/batch', ['flight_ids' => [$id], 'action' => 'publish', 'apply' => 1])->assertForbidden();
         $this->actingAs($this->user('operations', 'SGN'))->get('/workspace/planning/flights/'.$id)->assertForbidden();

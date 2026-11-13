@@ -203,23 +203,6 @@ class PortalController extends Controller
                 ->orderBy('id')->paginate(15)->withQueryString();
             $data['airports'] = DB::connection('ops')->table('airports')->get();
         }
-        if (in_array($r->user()->role, ['finance', 'admin'], true)) {
-            $payments = DB::connection('finance')->table('payments')->latest()->paginate(15);
-            $bookings = DB::table('bookings')->whereIn('id', $payments->pluck('booking_id'))->get()->keyBy('id');
-            $tickets = DB::table('tickets')->whereIn('booking_id', $payments->pluck('booking_id'))->pluck('booking_id')->all();
-            foreach ($payments as $payment) {
-                $booking = $bookings[$payment->booking_id] ?? null;
-                $payment->reference = $booking?->reference ?? '—';
-                $payment->matched = $payment->status === 'CAPTURED' && $booking && (int) $booking->amount === (int) $payment->amount && in_array($payment->booking_id, $tickets);
-            }
-            $data['payments'] = $payments;
-            $data['financeKpis'] = [
-                'Yêu cầu hoàn chờ duyệt' => DB::connection('finance')->table('refunds')->where('status', 'REQUESTED')->count(),
-                'Yêu cầu đổi chờ duyệt' => DB::table('exchange_requests')->where('status', 'PENDING')->count(),
-                'Kỳ chưa khóa' => DB::connection('finance')->table('reconciliation_runs')->where('status', 'OPEN')->count(),
-            ];
-        }
-
         return view('staff-dashboard', $data);
     }
 

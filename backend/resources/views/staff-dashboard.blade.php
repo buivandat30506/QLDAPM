@@ -9,7 +9,7 @@
             <p class="subtle">Xin chào {{ auth()->user()->name }}. Đây là tổng quan các công việc cần xử lý trong ca hiện tại.</p>
         </div>
         <div class="dashboard-hero-meta">
-            <span class="dashboard-live-dot"><i></i> Hệ thống đang hoạt động</span>
+            <span class="dashboard-live-dot"><i></i> Tổng quan khai thác</span>
             <time datetime="{{ now('Asia/Ho_Chi_Minh')->toIso8601String() }}">{{ now('Asia/Ho_Chi_Minh')->format('H:i · d/m/Y') }}</time>
         </div>
     </section>
@@ -18,7 +18,7 @@
         @foreach($kpis as $label => $value)
             <article class="card-surface dashboard-kpi">
                 <div class="dashboard-kpi-heading"><span class="subtle">{{ $label }}</span><span class="dashboard-kpi-icon" aria-hidden="true">{{ $loop->index === 0 ? '↗' : ($loop->index === 1 ? '◷' : ($loop->index === 2 ? '✓' : '◎')) }}</span></div>
-                <strong class="kpi-value">{{ $value }}</strong>
+                <a class="kpi-value" href="{{ $kpiLinks[$label] }}">{{ $value }}</a>
                 <span class="dashboard-kpi-foot">Cập nhật theo dữ liệu hiện tại</span>
             </article>
         @endforeach
@@ -49,16 +49,6 @@
     @if(auth()->user()->role === 'admin')
         <section class="dashboard-subpanel" aria-label="Quản trị tài khoản">
             @include('partials.admin-account-panel')
-        </section>
-    @endif
-    @if(in_array(auth()->user()->role, ['finance', 'admin'], true))
-        <section class="dashboard-subpanel" aria-label="Tài chính và đối soát">
-            @include('partials.finance-summary-panel')
-        </section>
-    @endif
-    @if(in_array(auth()->user()->role, ['airport_agent', 'admin'], true))
-        <section class="dashboard-subpanel" id="boarding-console" aria-label="Kiểm soát lên tàu">
-            @include('partials.staff-boarding-panel')
         </section>
     @endif
 </div>

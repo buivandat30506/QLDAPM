@@ -106,6 +106,12 @@ Route::middleware(['auth', 'verified', 'throttle:90,1'])->group(function () {
     Route::post('/workspace/catalog/routes/{id}/changes', [\App\Http\Controllers\RouteManagementController::class, 'propose'])->whereNumber('id');
     Route::post('/workspace/catalog/routes/{id}/changes/{change}/approve', [\App\Http\Controllers\RouteManagementController::class, 'approve'])->whereNumber(['id','change']);
     Route::get('/workspace/planning', [\App\Http\Controllers\SchedulePlanningController::class, 'index']);
+    Route::get('/workspace/planning/crew-assignments', [\App\Http\Controllers\CoreDependenciesController::class, 'crew']);
+    Route::get('/workspace/operations/ground-tasks', [\App\Http\Controllers\CoreDependenciesController::class, 'ground']);
+    Route::get('/workspace/operations/flights', [\App\Http\Controllers\FlightOperationsController::class,'index']);
+    Route::get('/workspace/operations/flights/{id}', [\App\Http\Controllers\FlightOperationsController::class,'show'])->whereNumber('id');
+    Route::post('/workspace/planning/checks/{token}/continue', [\App\Http\Controllers\SchedulePlanningController::class, 'continueCheck'])->whereUuid('token');
+    Route::post('/workspace/planning/plans/{id}/archive', [\App\Http\Controllers\SchedulePlanningController::class, 'archivePlan'])->whereNumber('id');
     Route::get('/workspace/planning/plans/new', [\App\Http\Controllers\SchedulePlanningController::class, 'planForm']);
     Route::post('/workspace/planning/plans', [\App\Http\Controllers\SchedulePlanningController::class, 'savePlan']);
     Route::get('/workspace/planning/plans/{id}', [\App\Http\Controllers\SchedulePlanningController::class, 'planShow'])->whereNumber('id');
@@ -166,6 +172,7 @@ Route::middleware(['auth', 'verified', 'throttle:60,1'])->group(function () {
     Route::post('/journeys/{id}/refund-destination', [PaymentController::class, 'destination'])->middleware('role:passenger')->whereUuid('id');
     Route::post('/staff/payments/confirm-refund', [PaymentController::class, 'settleRefund'])->middleware('role:finance');
     Route::post('/staff/payments/confirm-transfer', [PaymentController::class, 'decide'])->middleware('role:finance');
+    Route::get('/staff/payments', [PaymentController::class, 'review'])->middleware('role:finance');
     Route::get('/payments/mock/{id}', [MockPaymentController::class, 'show'])->middleware('role:passenger')->whereUuid('id');
     Route::post('/payments/mock/{id}', [MockPaymentController::class, 'pay'])->middleware('role:passenger')->whereUuid('id');
     Route::get('/payments/{provider}/return', [PaymentController::class, 'returned'])->middleware('role:passenger')->whereIn('provider', ['vnpay', 'momo']);

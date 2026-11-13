@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->append(SecurityHeaders::class);
-        $middleware->web(append: [AccountAccess::class]);
+        $middleware->web(append: [AccountAccess::class, \App\Http\Middleware\EnforceReleaseScope::class]);
         $middleware->validateCsrfTokens(except: ['payments/momo/ipn']);
         $middleware->alias(['role' => RequireRole::class]);
     })
