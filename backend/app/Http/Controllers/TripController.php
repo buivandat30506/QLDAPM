@@ -72,6 +72,18 @@ class TripController extends Controller
         return view('trip-passengers', ['quote' => $quote, 'selection' => $selection, 'data' => $data, 'priceChanged' => $priceChanged, 'countries' => TripDetails::COUNTRIES, 'requestKey' => old('idempotency_key', (string) Str::uuid())]);
     }
 
+    /**
+     * Nghiệp vụ: Tiếp nhận thông tin hành khách và tạo đơn đặt chuyến theo lựa chọn đã kiểm tra.
+     * Truy vết: M08/M12 / UR-17..UR-22 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param Request $r
+     * @param TripSelection $selections
+     * @param ReservationService $service
+     * @return mixed
+     */
     public function store(Request $r, TripSelection $selections, ReservationService $service)
     {
         $r->validate(['selection' => 'required|string|max:10000', 'idempotency_key' => 'required|uuid', 'consent' => 'accepted']);

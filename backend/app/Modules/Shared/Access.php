@@ -20,6 +20,16 @@ final class Access
         return $u->role === 'admin';
     }
 
+    /**
+     * Nghiệp vụ: Từ chối thao tác khi vai trò người dùng không thuộc tập vai trò được chấp nhận.
+     * Truy vết: CROSS_CUTTING / UR-23..UR-24 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $u
+     * @return void
+     */
     public static function role(User $u, string ...$roles): void
     {
         abort_unless(self::allows($u, ...$roles), 403, 'Không đủ thẩm quyền.');

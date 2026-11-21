@@ -48,6 +48,7 @@ class MasterFileService
         abort_unless(isset(MasterDataService::RULES[$entity]), 404);
         Access::role($u, MasterDataService::RULES[$entity][0]);
         $columns = match ($entity) {
+            'airport_infrastructure' => ['id', 'airport_code', 'code', 'name', 'type_code', 'parent_id', 'active', 'technical_state', 'description'],
             'airports' => ['code', 'name', 'city', 'timezone'],'routes' => ['id', 'origin', 'destination', 'duration_minutes', 'distance_km', 'active'],'airport_resources' => ['id', 'airport_code', 'code', 'type', 'active'],'aircraft' => ['id', 'registration', 'type', 'capacity', 'status', 'flight_hours', 'cycles'],'crew_members' => ['id', 'code', 'name', 'position', 'qualification', 'license_expires', 'available']
         };
         Audit::record('master.exported', $entity, null, 'CSV', $u->id, 'ops');

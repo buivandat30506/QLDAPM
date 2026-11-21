@@ -27,5 +27,8 @@ abstract class TestCase extends BaseTestCase
             Schema::connection($node)->enableForeignKeyConstraints();
         }
         $this->seed();
+        if (Schema::connection('ops')->hasTable('infrastructure_types')) {
+            DB::connection('ops')->table('infrastructure_types')->insertOrIgnore(array_values(\App\Support\InfrastructureCatalog::types()));
+        }
     }
 }

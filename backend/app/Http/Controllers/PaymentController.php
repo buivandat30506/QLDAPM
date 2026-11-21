@@ -12,6 +12,13 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class PaymentController extends Controller
 {
+    public function review(Request $r)
+    {
+        \App\Modules\Shared\Access::role($r->user(), 'finance');
+        $transfers = DB::connection('finance')->table('checkout_intents')->where('method', 'BANK')->whereIn('status', ['PENDING', 'REPORTED'])->orderBy('created_at')->get();
+        return view('payment-review', compact('transfers'));
+    }
+
     public function destination(Request $r, string $id, FinanceService $service, OutboxRelay $relay)
     {
         $service->destination($r->user(), $id, $r->all());

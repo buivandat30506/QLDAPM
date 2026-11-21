@@ -24,9 +24,10 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
-/** Explicit CLI fixture generator; never called by DatabaseSeeder or normal setup. */
+/** Local CLI fixture generator, also used by the guarded portable demo installer. */
 class AirportDemoSeeder extends Seeder
 {
     private array $state;
@@ -83,12 +84,15 @@ class AirportDemoSeeder extends Seeder
         ['SGN', 'VDO', 130, 1150, 'A321', 220, 1590000],
     ];
 
-    public function generate(callable $progress): void
+    public function generate(callable $progress, ?string $directory = null): void
     {
+        if (! Schema::connection('ops')->hasTable('devices')) {
+            throw new \RuntimeException('Full-system demo generation is retired on the compact schema. Existing M01/M02/M03 data is preserved; use airline:m02-demo for scheduling fixtures.');
+        }
         if (! app()->environment('local') || config('payments.mode') !== 'mock' || config('payments.bank.mode') !== 'mock') {
             throw new \RuntimeException('This fixture is restricted to local mock services.');
         }
-        $this->directory = storage_path('app/private/demo');
+        $this->directory = $directory ?? storage_path('app/private/demo');
         File::ensureDirectoryExists($this->directory);
         $path = $this->directory.'/state.json';
         $this->state = File::exists($path) ? json_decode(File::get($path), true, 512, JSON_THROW_ON_ERROR) : [
@@ -462,7 +466,7 @@ class AirportDemoSeeder extends Seeder
         $this->scenario('mishandled', 'Hành lý thất lạc cần xử lý và bàn giao lại.', function () use ($p3, $boardingFlight, $agent) {
             $b = $this->paid($p3, $boardingFlight, 'mishandled');
             app(BoardingService::class)->checkin($b->id, $p3->id, '3A');
-            $bag = app(BaggageService::class)->tag($agent, ['booking_id' => $b->id, 'weight' => 23, 'request_id' => 'demo-bag-mishandled']);
+            $bag = app(BaggageService::class)->tag($agent, ['booking_id' => $b->id, 'weight' => 19, 'request_id' => 'demo-bag-mishandled']);
             app(BaggageService::class)->scan($agent, ['event_id' => (string) Str::uuid(), 'tag' => $bag->tag, 'flight_id' => $boardingFlight->id, 'status' => 'MISHANDLED', 'location' => 'HAN-BHS', 'custody' => 'HAN-LOST-FOUND']);
 
             return ['reference' => $b->reference, 'booking_id' => $b->id, 'baggage_tag' => $bag->tag, 'email' => $p3->email];
@@ -553,7 +557,7 @@ class AirportDemoSeeder extends Seeder
                         $end = ($i === 5 && $f->id % 5 === 0) ? 'MISHANDLED' : (($i === 4 && $f->id % 4 === 0) ? 'TRANSFERRED' : 'DELIVERED');
                         $created = Carbon::parse($f->departure)->subMinutes(100);
                         $received = Carbon::parse($f->arrival)->addMinutes(25);
-                        $id = DB::table('baggage')->insertGetId(['tag' => 'BGD'.strtoupper(Str::random(11)), 'request_id' => $request, 'booking_id' => $b->id, 'weight' => 12 + $i * 2.25, 'status' => $end, 'custody' => $f->destination.($end === 'MISHANDLED' ? '-LOST-FOUND' : '-ARRIVALS'), 'created_at' => $created, 'updated_at' => $received]);
+                        $id = DB::table('baggage')->insertGetId(['tag' => 'BGD'.strtoupper(Str::random(11)), 'request_id' => $request, 'booking_id' => $b->id, 'weight' => min(20, 12 + $i * 2.25), 'status' => $end, 'custody' => $f->destination.($end === 'MISHANDLED' ? '-LOST-FOUND' : '-ARRIVALS'), 'created_at' => $created, 'updated_at' => $received]);
                         foreach (['TAGGED', 'ACCEPTED', 'SCREENED', 'LOADED', $end] as $index => $status) {
                             $arrival = $index === 4;
                             $airport = $arrival && $end !== 'MISHANDLED' ? $f->destination : $f->origin;
@@ -768,13 +772,13 @@ class AirportDemoSeeder extends Seeder
         $this->scenario('reconciliation-closed', 'Kỳ lịch sử khớp số liệu và đã khóa bởi người thứ hai.', function () {
             $fin = app(FinanceService::class);
             $day = $this->anchor()->subDays(7)->toDateString();
-            $run = $fin->reconcile($this->user('finance'), $day, $day);
-            $fin->close($this->users['finance.2'], $run->id);
+            $run = app(LegacyReconciliation::class)->reconcile($this->user('finance'), $day, $day);
+            app(LegacyReconciliation::class)->close($this->users['finance.2'], $run->id);
 
             return ['run_id' => $run->id, 'period' => $day];
         });
         $this->scenario('reconciliation-open', 'Kỳ hiện tại có giao dịch đang xử lý để thử phân loại sai lệch và khóa kỳ.', function () {
-            $run = app(FinanceService::class)->reconcile($this->user('finance'), $this->anchor()->toDateString(), $this->anchor()->toDateString());
+            $run = app(LegacyReconciliation::class)->reconcile($this->user('finance'), $this->anchor()->toDateString(), $this->anchor()->toDateString());
 
             return ['run_id' => $run->id];
         });

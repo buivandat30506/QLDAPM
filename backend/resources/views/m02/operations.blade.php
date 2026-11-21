@@ -1,0 +1,6 @@
+@extends('m02.layout')
+@section('heading','Theo dõi chuyến bay')
+@section('body')
+<form method="get" class="card-surface m02-actions"><label>Số hiệu chuyến bay<input name="q" value="{{ request('q') }}" placeholder="Tìm chuyến đã công bố"></label><button class="btn btn-primary">Lọc</button><a href="/workspace/scheduling?flow=monitoring">Xóa lọc</a></form>
+<section class="card-surface"><h2>Chuyến bay khai thác <small>{{ $flights->total() }} chuyến</small></h2><div class="m02-table"><table><thead><tr><th>Chuyến / đường bay</th><th>Khởi hành</th><th>Đến</th><th>Tàu bay / cổng</th><th>Trạng thái khai thác</th><th>Thao tác</th></tr></thead><tbody>@forelse($flights as $f)<tr><td>{{ $f->number }}<small>{{ $f->origin }} → {{ $f->destination }}</small></td><td>{{ \App\Support\SchedulingDisplay::time($f->departure,$f->origin_zone) }}</td><td>{{ \App\Support\SchedulingDisplay::time($f->arrival,$f->destination_zone) }}</td><td>{{ $f->registration }} · {{ $f->gate }}</td><td><span class="m02-badge">{{ \App\Support\Ui::label($f->status) }}</span></td><td><a href="/workspace/operations/flights/{{ $f->id }}">Mở điều hành →</a></td></tr>@empty<tr><td colspan="6">Không có chuyến đã công bố phù hợp.</td></tr>@endforelse</tbody></table></div>{{ $flights->links('m02.pagination') }}</section>
+@endsection

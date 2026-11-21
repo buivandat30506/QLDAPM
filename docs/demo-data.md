@@ -1,5 +1,7 @@
 # Bộ dữ liệu thử nghiệm sân bay
 
+**Cài mới trên máy khác:** dùng [bộ cài demo đầy đủ](portable-demo.md) bằng `python scripts/demo.py`. Bộ cài đã gọi dữ liệu sân bay, 10 loại hạ tầng, ví dụ cabin/khứ hồi và M02; các lệnh bên dưới giữ cho thao tác legacy hoặc bổ sung riêng trên môi trường local đã có.
+
 **Bổ sung nhiều hãng:** [1.008 chuyến trong 14 ngày](multi-airline-demo.md), Vietnam Airlines/Vietjet/Bamboo/Vietravel, có bay thẳng, 1–2 điểm dừng và khứ hồi. Lệnh `php artisan airline:demo-flights` chỉ bổ sung lịch/tồn/hạng giá, không tạo giao dịch và không yêu cầu đổi cấu hình thanh toán.
 
 Để thử các chức năng mới **nhiều hành khách, khứ hồi/nhiều chặng và cabin theo tàu**, chạy thêm `php artisan airline:demo-reservations` trong `backend`. Lệnh tạo ba tàu có sơ đồ riêng, sáu chuyến AS9700–AS9705 và hai PNR đã thanh toán. Mở `/plan` để đặt mới; xem [hướng dẫn đầy đủ](reservations-and-cabins.md). Mã PNR và liên kết mẫu nằm trong `backend/storage/app/private/demo/reservations.json`.

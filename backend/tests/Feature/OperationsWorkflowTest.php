@@ -81,7 +81,9 @@ class OperationsWorkflowTest extends TestCase
         }
         $this->action($passenger, 'aircraft', ['registration' => 'VN-HACK', 'type' => 'A320', 'capacity' => 12])->assertForbidden();
         $this->action($this->user('operations', 'SGN'), 'submit', ['flight_id' => 1])->assertForbidden();
-        $this->actingAs($this->user('admin'))->get('/workspace/finance')->assertForbidden();
+        $this->actingAs($this->user('data_admin'))->get('/workspace/finance')->assertForbidden();
+        // Keep the established central Access policy: admin can access staff workspaces.
+        $this->actingAs($this->user('admin'))->get('/workspace/finance')->assertOk();
     }
 
     public function test_master_data_duplicate_codes_and_route_validation(): void
@@ -129,13 +131,14 @@ class OperationsWorkflowTest extends TestCase
         $approver = $this->user('maintenance');
         $work = $this->action($tech, 'work_order', ['aircraft_id' => $f['plane'], 'title' => 'Kiểm tra định kỳ', 'due_at' => now()->addDays(2)->toIso8601String()])->assertOk()->json('id');
         $this->assertDatabaseHas('aircraft', ['id' => $f['plane'], 'status' => 'MAINTENANCE'], 'ops');
-        $this->action($f['ops'], 'submit', ['flight_id' => $f['id']])->assertOk();
+        $this->action($f['ops'], 'submit', ['flight_id' => $f['id']])->assertConflict();
         $this->action($f['manager'], 'publish', ['flight_id' => $f['id']])->assertConflict();
         $this->action($approver, 'release_work', ['work_order_id' => $work])->assertConflict();
         $this->action($tech, 'complete_work', ['work_order_id' => $work, 'evidence' => 'Đã kiểm tra theo checklist mô phỏng.'])->assertOk();
         $this->action($tech, 'release_work', ['work_order_id' => $work])->assertConflict();
         $this->action($approver, 'release_work', ['work_order_id' => $work])->assertOk();
         $this->assertDatabaseHas('aircraft', ['id' => $f['plane'], 'status' => 'AVAILABLE'], 'ops');
+        $this->action($f['ops'], 'submit', ['flight_id' => $f['id']])->assertOk();
         $this->action($f['manager'], 'publish', ['flight_id' => $f['id']])->assertOk();
     }
 
@@ -316,7 +319,7 @@ class OperationsWorkflowTest extends TestCase
     {
         foreach (WorkspaceController::sections() as $section => [$title,$roles]) {
             $u = $this->user($roles[0]);
-            $this->actingAs($u)->get('/workspace/'.$section)->assertOk()->assertSee($title);
+            $this->actingAs($u)->get('/workspace/'.$section)->assertOk()->assertSee(match($section){'catalog'=>'Danh sách sân bay','scheduling'=>'Lập và công bố lịch bay',default=>$title});
         }
     }
 
@@ -457,6 +460,8 @@ class OperationsWorkflowTest extends TestCase
         $f = $this->draft();
         $from = now()->addDays(20)->startOfDay();
         $to = $from->copy()->addDays(2);
+        $this->action($f['ops'], 'season', ['number' => 'AS7000', 'route_id' => 1, 'aircraft_id' => $f['plane'], 'from_date' => $from->toDateString(), 'to_date' => $from->copy()->addDays(31)->toDateString(), 'weekdays' => '1,2,3,4,5,6,7', 'local_departure' => '09:00', 'duration_minutes' => 120, 'sale_price' => 1500000, 'gate' => 'A2'])->assertUnprocessable();
+        $this->assertSame(0,DB::connection('ops')->table('flights')->where('number','AS7000')->count());
         $ids = $this->action($f['ops'], 'season', ['number' => 'AS7000', 'route_id' => 1, 'aircraft_id' => $f['plane'], 'from_date' => $from->toDateString(), 'to_date' => $to->toDateString(), 'weekdays' => '1,2,3,4,5,6,7', 'local_departure' => '09:00', 'duration_minutes' => 120, 'sale_price' => 1500000, 'gate' => 'A2'])->assertOk()->json('flight_ids');
         $this->assertCount(3, $ids);
         $this->action($f['ops'], 'submit_batch', ['flight_ids' => implode(',', $ids)])->assertOk();

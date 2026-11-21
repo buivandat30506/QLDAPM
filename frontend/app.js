@@ -1,9 +1,86 @@
 document.documentElement.classList.add('js');
 
+document.querySelectorAll('[data-infra-type-picker]').forEach((picker) => {
+  const search = picker.querySelector('[data-infra-type-search]');
+  const select = picker.querySelector('[data-infra-type-options]');
+  const count = picker.querySelector('[data-infra-type-count]');
+  search.addEventListener('input', () => {
+    const term = search.value.trim().toLocaleLowerCase('vi');
+    let visible = 0;
+    Array.from(select.options).forEach((option) => {
+      if (!option.value) return;
+      const matches = !term || `${option.textContent} ${option.value}`.toLocaleLowerCase('vi').includes(term);
+      option.hidden = !matches && !option.selected;
+      option.disabled = !matches && !option.selected;
+      if (matches) visible += 1;
+    });
+    picker.querySelectorAll('optgroup').forEach((group) => { group.hidden = !Array.from(group.children).some((option) => !option.hidden); });
+    count.textContent = `${visible} loại phù hợp. Lựa chọn hiện tại được giữ cho đến khi bạn đổi hoặc xóa lọc.`;
+  });
+});
+document.querySelectorAll('[data-infrastructure-allocation]').forEach((form) => {
+  const flight = form.querySelector('[name="flight_id"]');
+  const resource = form.querySelector('[name="resource_id"]');
+  if (!flight || !resource || ![...resource.options].some(option => option.dataset.airport)) return;
+  const sync = () => {
+    const airport = flight.selectedOptions[0]?.dataset.airport;
+    [...resource.options].forEach(option => {
+      if (!option.value) return;
+      const allowed = !!airport && option.dataset.airport === airport;
+      option.disabled = !allowed; option.hidden = !allowed;
+      if (!allowed && option.selected) resource.value = '';
+    });
+    resource.disabled = !airport;
+  };
+  flight.addEventListener('change', sync); sync();
+});
+
+// Progressive enhancement only: GET filters and writes still work without JS.
+document.querySelectorAll('[data-airport-loading]').forEach((form) => {
+  form.addEventListener('submit', () => {
+    if (!form.checkValidity()) return;
+    const status = form.querySelector('[data-airport-loading-status]');
+    if (status) status.hidden = false;
+    form.setAttribute('aria-busy', 'true');
+  });
+});
+window.addEventListener('pageshow', () => {
+  document.querySelectorAll('[data-airport-loading]').forEach((form) => {
+    form.removeAttribute('aria-busy');
+    form.querySelectorAll('[data-airport-loading-status]').forEach((status) => { status.hidden = true; });
+  });
+});
+document.querySelectorAll('[data-airport-page] a[href^="#"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    const target = document.getElementById(link.hash.slice(1));
+    if (target instanceof HTMLDetailsElement) target.open = true;
+  });
+});
+
+/**
+ * Nghiệp vụ: Đọc mạng đường bay trong dữ liệu của biểu mẫu và trả tập rỗng khi JSON lỗi.
+ * Truy vết: NOT_MAPPED / NOT_MAPPED / UC, WBS: NOT_MAPPED.
+ * Phân công hồ sơ mô phỏng: Phan Ngọc Vinh (Frontend).
+ * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+ * Ngày kế hoạch không phải ngày viết hàm.
+ * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+ * @param {HTMLFormElement} form
+ * @returns {Object}
+ */
 const parseNetwork = (form) => {
   try { return JSON.parse(form.dataset.routeNetwork || '{}'); } catch { return {}; }
 };
 
+/**
+ * Nghiệp vụ: Đồng bộ danh sách sân bay đến theo mạng đường bay và điểm đi đang chọn.
+ * Truy vết: NOT_MAPPED / NOT_MAPPED / UC, WBS: NOT_MAPPED.
+ * Phân công hồ sơ mô phỏng: Phan Ngọc Vinh (Frontend).
+ * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+ * Ngày kế hoạch không phải ngày viết hàm.
+ * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+ * @param {HTMLFormElement} form
+ * @returns {void}
+ */
 function syncAirportDestinations(form) {
   const origin = form.querySelector('[data-airport-origin]');
   const destination = form.querySelector('[data-airport-destination]');
@@ -433,19 +510,28 @@ document.querySelectorAll('[data-camera-scan]').forEach((button) => button.addEv
     if (!(form instanceof HTMLFormElement) || form.dataset.noLoading !== undefined || form.matches('[data-trip-choice], [data-flight-search]') || !form.checkValidity()) return;
     const submitter = event.submitter || form.querySelector('button[type=submit]');
     if (!submitter || submitter.disabled) return;
-    // A disabled submit button is omitted from the native form payload. Keep
-    // its successful name/value pair when the UI locks the button to prevent
-    // duplicate submissions (for example, the mock payment result buttons).
+    // Disabled buttons are excluded from the submitted form data. Preserve the
+    // clicked decision before locking the button (payment result, approval, etc.).
+    form.querySelectorAll('[data-loading-submitter]').forEach((input) => input.remove());
     if (submitter.name) {
-      const mirror = document.createElement('input');
-      mirror.type = 'hidden';
-      mirror.name = submitter.name;
-      mirror.value = submitter.value;
-      mirror.dataset.submitMirror = 'true';
-      form.appendChild(mirror);
+      const decision = document.createElement('input');
+      decision.type = 'hidden';
+      decision.name = submitter.name;
+      decision.value = submitter.value;
+      decision.dataset.loadingSubmitter = '';
+      form.append(decision);
     }
     submitter.disabled = true;
     submitter.setAttribute('aria-busy', 'true');
     submitter.textContent = 'Đang xử lý…';
   });
 })();
+
+// Keep one resource action open, including browsers without named-details support.
+document.querySelectorAll('[data-resource-action]').forEach((panel) => {
+  panel.addEventListener('toggle', () => {
+    if (panel.open) document.querySelectorAll('[data-resource-action]').forEach((other) => {
+      if (other !== panel) other.open = false;
+    });
+  });
+});

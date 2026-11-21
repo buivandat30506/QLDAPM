@@ -54,14 +54,7 @@ class ReservationController extends Controller
         $flights = DB::connection('ops')->table('flights')->whereIn('id', $bookings->pluck('flight_id'))->get()->keyBy('id');
         $original = $bookings->where('reservation_initial', true);
         $canCancel = $original->contains('status', 'HELD') && $original->every(fn ($b) => in_array($b->status, ['HELD', 'CANCELLED', 'EXPIRED']));
-        $status = match (true) {
-            $original->contains('status', 'PAYMENT_PENDING') => 'PAYMENT_PENDING',
-            $original->every(fn ($b) => $b->status === 'HELD') => now()->lt($reservation->expires_at) ? 'HELD' : 'EXPIRED',
-            $original->every(fn ($b) => in_array($b->status, ['CONFIRMED', 'CHECKED_IN', 'BOARDED'])) => 'CONFIRMED',
-            $original->every(fn ($b) => $b->status === 'REFUNDED') => 'REFUNDED',
-            $original->every(fn ($b) => in_array($b->status, ['EXPIRED', 'CANCELLED'])) => $original->contains('status', 'EXPIRED') ? 'EXPIRED' : 'CANCELLED',
-            default => 'PARTIAL',
-        };
+        $status = \App\Support\ReservationStatus::fromBookings($reservation,$original);
         $checkout = DB::table('checkout_sessions')->where('booking_id', $original->first()->id)->first();
         $paymentMethods = app(CheckoutService::class)->methods();
         if ($r->expectsJson()) {
