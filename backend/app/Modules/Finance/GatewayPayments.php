@@ -109,6 +109,16 @@ class GatewayPayments
         return $response['payUrl'];
     }
 
+    /**
+     * Nghiệp vụ: Kiểm tra callback VNPay rồi chuyển kết quả sang luồng quyết toán nội bộ.
+     * Truy vết: M08/M12 / UR-17..UR-22 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param array $p
+     * @return void
+     */
     public function vnpay(array $p): void
     {
         $c = config('payments.vnpay');
@@ -150,6 +160,19 @@ class GatewayPayments
         }
     }
 
+    /**
+     * Nghiệp vụ: Ghi nhận kết quả thanh toán trong giao dịch và phát sự kiện theo trạng thái.
+     * Truy vết: M08/M12 / UR-17..UR-22 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param string $id
+     * @param string $status
+     * @param string $transaction
+     * @param ?int $actor
+     * @return void
+     */
     private function settle(string $id, string $status, string $transaction, ?int $actor = null): void
     {
         abort_unless(strlen($transaction) >= 1 && strlen($transaction) <= 120, 422, 'Mã giao dịch không hợp lệ.');

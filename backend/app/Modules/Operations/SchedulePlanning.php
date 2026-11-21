@@ -42,6 +42,18 @@ final class SchedulePlanning
         return $row;
     }
 
+    /**
+     * Nghiệp vụ: Lưu kế hoạch bay trong giao dịch sau khi kiểm tra đầu vào và phiên bản.
+     * Truy vết: M02 / UR-06..UR-10 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $user
+     * @param array $input
+     * @param ?int $id
+     * @return object
+     */
     public function save(User $user, array $input, ?int $id = null): object
     {
         Access::role($user, 'data_admin', 'operations', 'ops_manager');
@@ -147,6 +159,20 @@ final class SchedulePlanning
         }, 3);
     }
 
+    /**
+     * Nghiệp vụ: Sinh các chuyến từ kế hoạch trong khoảng ngày có kiểm soát phiên bản.
+     * Truy vết: M02 / UR-06..UR-10 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $user
+     * @param int $id
+     * @param string $from
+     * @param string $to
+     * @param int $version
+     * @return array
+     */
     public function generate(User $user, int $id, string $from, string $to, int $version): array
     {
         Access::role($user, 'data_admin', 'operations');
@@ -181,6 +207,19 @@ final class SchedulePlanning
         }, 3);
     }
 
+    /**
+     * Nghiệp vụ: Kiểm tra hoặc áp dụng thao tác hàng loạt lên các chuyến đã chọn.
+     * Truy vết: M02 / UR-06..UR-10 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $user
+     * @param string $action
+     * @param array $ids
+     * @param bool $apply
+     * @return array
+     */
     public function batch(User $user, string $action, array $ids, bool $apply): array
     {
         abort_unless(in_array($action, ['submit', 'publish'], true), 422);
@@ -261,6 +300,17 @@ final class SchedulePlanning
         }, 3);
     }
 
+    /**
+     * Nghiệp vụ: Phê duyệt đề nghị chỉnh chuyến theo quyền và điều kiện nghiệp vụ.
+     * Truy vết: M02 / UR-06..UR-10 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $user
+     * @param int $id
+     * @return void
+     */
     public function approveEdit(User $user, int $id): void
     {
         Access::role($user, 'ops_manager');

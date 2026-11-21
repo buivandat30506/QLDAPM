@@ -27,6 +27,17 @@ class MasterDataService
         return ($lock ? $q->lockForUpdate() : $q)->first() ?? abort(404);
     }
 
+    /**
+     * Nghiệp vụ: Lập đề nghị thay đổi dữ liệu chủ sau khi kiểm tra quyền và dữ liệu đầu vào.
+     * Truy vết: M01 / UR-01..UR-05 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $u
+     * @param array $data
+     * @return object
+     */
     public function propose(User $u, array $data): object
     {
         $base = Validator::make($data, ['entity' => 'required|in:'.implode(',', array_keys(self::RULES)), 'record_id' => 'required|string|max:30', 'reason' => 'required|string|min:5|max:255', 'changes' => 'required|array'])->validate();
@@ -61,6 +72,17 @@ class MasterDataService
         });
     }
 
+    /**
+     * Nghiệp vụ: Duyệt dữ liệu chủ với kiểm tra người duyệt độc lập và phiên bản trước thay đổi.
+     * Truy vết: M01 / UR-01..UR-05 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param User $u
+     * @param int $id
+     * @return object
+     */
     public function approve(User $u, int $id): object
     {
         $db = DB::connection('ops');

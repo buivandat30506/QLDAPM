@@ -24,6 +24,16 @@ class AirportController extends Controller
         return $request->only($flow === 'airports' ? ['q', 'page'] : ['airport', 'source', 'kind', 'q', 'page']) + ['flow' => $flow];
     }
 
+    /**
+     * Nghiệp vụ: Tra cứu sân bay và hạ tầng theo luồng, bộ lọc và phạm vi được cấp quyền.
+     * Truy vết: M01 / UR-01..UR-05 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param Request $request
+     * @return mixed
+     */
     public function index(Request $request)
     {
         if ($request->query('flow') === 'infrastructure' && ! $request->has('source') && ! $request->expectsJson() && app(InfrastructureCompatibility::class)->ready()) {
@@ -76,6 +86,17 @@ class AirportController extends Controller
         return $request->expectsJson() ? response()->json($data) : view('m01.infrastructure', $data);
     }
 
+    /**
+     * Nghiệp vụ: Trình bày hồ sơ sân bay, đề nghị sửa và lịch sử thao tác liên quan.
+     * Truy vết: M01 / UR-01..UR-05 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param Request $request
+     * @param string $airport
+     * @return mixed
+     */
     public function show(Request $request, string $airport)
     {
         $record = AirportWorkspace::airport($request->user(), $airport, true);
@@ -117,6 +138,18 @@ class AirportController extends Controller
         return $request->expectsJson() ? response()->json(['status' => $data['operational_status']]) : back()->with('message', 'Đã ghi nhận trạng thái vận hành sân bay.');
     }
 
+    /**
+     * Nghiệp vụ: Kiểm tra dữ liệu hồ sơ và gửi đề nghị sửa sân bay để người khác phê duyệt.
+     * Truy vết: M01 / UR-01..UR-05 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param Request $request
+     * @param string $airport
+     * @param MasterDataService $master
+     * @return mixed
+     */
     public function proposeAirport(Request $request, string $airport, MasterDataService $master)
     {
         AirportWorkspace::airport($request->user(), $airport);

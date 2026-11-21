@@ -33,6 +33,17 @@ class FlightOperationsController extends Controller
         return $r->expectsJson() ? response()->json($flights) : view('m02.operations', compact('flights'));
     }
 
+    /**
+     * Nghiệp vụ: Trình bày chi tiết chuyến khai thác và các sự kiện theo phạm vi người dùng.
+     * Truy vết: M03 / UR-11..UR-13 / UC, WBS: NOT_MAPPED.
+     * Phân công hồ sơ mô phỏng: Lê Đức Toàn (Backend).
+     * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+     * Ngày kế hoạch không phải ngày viết hàm.
+     * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+     * @param Request $r
+     * @param int $id
+     * @return mixed
+     */
     public function show(Request $r, int $id)
     {
         $flight = $this->query($r)->where('f.id', $id)->first() ?? abort(404);

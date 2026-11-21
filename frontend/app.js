@@ -57,10 +57,30 @@ document.querySelectorAll('[data-airport-page] a[href^="#"]').forEach((link) => 
   });
 });
 
+/**
+ * Nghiệp vụ: Đọc mạng đường bay trong dữ liệu của biểu mẫu và trả tập rỗng khi JSON lỗi.
+ * Truy vết: NOT_MAPPED / NOT_MAPPED / UC, WBS: NOT_MAPPED.
+ * Phân công hồ sơ mô phỏng: Phan Ngọc Vinh (Frontend).
+ * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+ * Ngày kế hoạch không phải ngày viết hàm.
+ * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+ * @param {HTMLFormElement} form
+ * @returns {Object}
+ */
 const parseNetwork = (form) => {
   try { return JSON.parse(form.dataset.routeNetwork || '{}'); } catch { return {}; }
 };
 
+/**
+ * Nghiệp vụ: Đồng bộ danh sách sân bay đến theo mạng đường bay và điểm đi đang chọn.
+ * Truy vết: NOT_MAPPED / NOT_MAPPED / UC, WBS: NOT_MAPPED.
+ * Phân công hồ sơ mô phỏng: Phan Ngọc Vinh (Frontend).
+ * Planned task window: NO_EXCEL_DATE_MATCH; chưa đối chiếu task Excel.
+ * Ngày kế hoạch không phải ngày viết hàm.
+ * Tác giả Git: xem FUNCTION_GIT_AUTHORSHIP.csv; không suy từ phân công.
+ * @param {HTMLFormElement} form
+ * @returns {void}
+ */
 function syncAirportDestinations(form) {
   const origin = form.querySelector('[data-airport-origin]');
   const destination = form.querySelector('[data-airport-destination]');
